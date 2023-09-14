@@ -1,0 +1,8 @@
+inputFiles: ["templates/docker-compose.template.yaml"]
+outputFiles: ["../docker-compose.yaml"]
+leftDelim: "#{{"
+rightDelim: "}}#"
+
+context:
+  .:
+    url: deployment.yaml

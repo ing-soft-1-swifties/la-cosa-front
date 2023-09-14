@@ -1,0 +1,32 @@
+# ====================================================
+# Template para el deployment
+
+#{{ print `# ==============================================================` }}#
+#{{ print `# CODIGO AUTOGENERADO - NO MODIFICAR - Ver deployment/deploy.sh y deployment/README.md`}}#
+#{{ print `# ==============================================================` }}#
+
+services:
+  next:
+    container_name: next
+    #{{- if eq .environment `production` }}#
+    #{{ print `build:`}}#
+      #{{ print `context: ./next/`}}#
+      #{{ print `dockerfile: Dockerfile.production`}}#
+    #{{- end }}#
+    #{{- if eq .environment `development` }}#
+    #{{ print `build:`}}#
+      #{{ print `context: ./next/`}}#
+      #{{ print `dockerfile: Dockerfile.development`}}#
+    #{{- end }}#
+    restart: always
+    stop_grace_period: 2s
+    #{{- if eq .environment `development` }}#
+    volumes:
+      - ./next/src:/app/src
+      - ./next/public:/app/public
+      - ./next/next.config.js:/app/next.config.js
+      - ./next/package.json:/app/package.json
+      - ./next/package-lock.json:/app/package-lock.json
+    #{{- end }}#
+    ports:
+      - "3000:3000"

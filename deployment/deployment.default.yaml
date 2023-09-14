@@ -1,0 +1,2 @@
+# Datasource de Gomplate para configurar el deployment
+environment: development # Opciones son: development o production

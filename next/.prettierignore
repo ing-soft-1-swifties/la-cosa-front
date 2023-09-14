@@ -1,0 +1,10 @@
+node_modules/*
+.husky/*
+.next/*
+.gitignore
+.eslintignore
+.eslintrc.json
+.lintstagedrc.js
+.prettierignore
+package-lock.json
+
