@@ -13,21 +13,18 @@ import {
 import { FC } from "react";
 
 import DarkForestBackground from "@/public/lobby/DarkForest.webp";
-import BgImage from "components/utility/BgImage";
-
-const PLAYERS = [
-  "Tomas Ponce",
-  "Franco Molina",
-  "Victoria Lopez",
-  "Lautaro Ebner",
-  "El Profe",
-  "Alejito",
-  "Pepito",
-];
+import BgImage from "@/components/utility/BgImage";
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 const Page: PageWithLayout = () => {
+  const user = useSelector((state: RootState) => state.user);
+  const game = useSelector((state: RootState) => state.game);
+  const isHost = game.host == user.name;
+
   return (
     <Box pos="relative">
+      {/* Imagen de fondo del Lobby */}
       <BgImage
         w="100%"
         imageProps={{
@@ -35,14 +32,23 @@ const Page: PageWithLayout = () => {
           alt: "",
         }}
       />
+
+      {/* Contenido principal */}
       <Container maxW="100rem">
         <Flex flexDir="column" minH="100vh" pt={5} pb={10} px={4}>
           <Box py={4}>
-            <Heading as="h1" fontSize="5xl" fontWeight="bold" textAlign="center" color="white">
-              Lobby #04
+            <Heading
+              as="h1"
+              fontSize="5xl"
+              fontWeight="bold"
+              textAlign="center"
+              color="white"
+            >
+              Lobby #{game.id}
             </Heading>
           </Box>
           <Flex flex="1" bg="rgba(70, 70, 70, 0.85)" borderRadius="3xl">
+            {/* Seccion de los Jugadores en el Lobby: */}
             <Box flexBasis="65%" px={16} py={10}>
               <Heading
                 as="h2"
@@ -59,15 +65,17 @@ const Page: PageWithLayout = () => {
                 columnGap={8}
                 justify="space-between"
               >
-                {PLAYERS.map((player) => {
+                {game.players.map((player) => {
                   return (
-                    <Box key={player} flexBasis="48%">
-                      <PlayerCard name={player} />
+                    <Box key={player.name} flexBasis="48%">
+                      <PlayerCard name={player.name} />
                     </Box>
                   );
                 })}
               </Flex>
             </Box>
+
+            {/* Seccion de Estado de la Partida */}
             <Box
               flex="1"
               bg="rgba(30, 30, 30, 0.7)"
@@ -78,23 +86,19 @@ const Page: PageWithLayout = () => {
             >
               <Flex flexDir="column" justify="center" align="center">
                 <Text color="white" fontWeight="bold" fontSize="lg">
-                  Host: Pepito
+                  Host: {game.host}
                 </Text>
                 <Text color="white" fontWeight="bold" fontSize="lg">
-                  Minimo de Jugadores: 4
+                  Minimo de Jugadores: {game.minPlayers}
                 </Text>
                 <Text color="white" fontWeight="bold" fontSize="lg">
-                  Maximo de Jugadores: 12
+                  Maximo de Jugadores: {game.maxPlayers}
                 </Text>
                 <Text color="white" fontWeight="bold" fontSize="lg" mb={10}>
-                  Jugadores: 6
+                  Jugadores: {game.players.length}
                 </Text>
-                <Button colorScheme="green" mb={6} size="lg">
-                  Iniciar Partida
-                </Button>
-                <Button colorScheme="red" size="lg">
-                  Salir del Lobby
-                </Button>
+                {isHost && <StartGameButton />}
+                <LeaveLobbyButton />
               </Flex>
               <Box mx="auto"></Box>
             </Box>
@@ -105,10 +109,30 @@ const Page: PageWithLayout = () => {
   );
 };
 
+// Boton para inciar la partida
+const StartGameButton: FC<{}> = () => {
+  return (
+    <Button colorScheme="green" mb={6} size="lg">
+      Iniciar Partida
+    </Button>
+  );
+};
+
+// Boton para salir del Lobby
+const LeaveLobbyButton: FC<{}> = () => {
+  return (
+    <Button colorScheme="red" size="lg">
+      Salir del Lobby
+    </Button>
+  );
+};
+
+// Props del compononente de una tarjeta de jugador
 type PlayerCardProps = {
   name: string;
 };
 
+// Componente de una tarjeta de jugador
 const PlayerCard: FC<PlayerCardProps> = ({ name }) => {
   return (
     <Card pl={6}>
