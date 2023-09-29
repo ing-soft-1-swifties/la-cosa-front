@@ -1,5 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
+<<<<<<< HEAD
 import {  } from "path";
+=======
+import { relative } from "path";
+>>>>>>> pagina inicial esperando querys de redux
 import { ReactElement } from "react";
 
 interface IProps {
