@@ -1,0 +1,28 @@
+{
+    "games": [
+        {
+            "id": 1,
+            "name": "juego1",
+            "jugadores": 3,
+            "max": 5
+        },
+        {
+            "id": 1,
+            "name": "juego2",
+            "jugadores": 3,
+            "max": 5
+        },
+        {
+            "id": 1,
+            "name": "juego3",
+            "jugadores": 3,
+            "max": 5
+        },
+        {
+            "id": 1,
+            "name": "juego4",
+            "jugadores": 3,
+            "max": 5
+        }
+    ]
+}
