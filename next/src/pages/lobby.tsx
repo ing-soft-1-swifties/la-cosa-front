@@ -1,26 +1,29 @@
 import { PageWithLayout } from "@/src/pages/_app";
 import {
-  Avatar,
   Box,
   Button,
-  Card,
-  CardBody,
   Container,
   Flex,
   Heading,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import DarkForestBackground from "@/public/lobby/DarkForest.webp";
 import BgImage from "@/components/utility/BgImage";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
+import PlayerCard from "@/components/PlayerCard";
+import { GameState } from "store/gameSlice";
+import { leaveLobby, startGame } from "business/game/gameAPI/manager";
+import { canGameStart } from "business/game";
+import { useRouter } from "next/router";
 
 const Page: PageWithLayout = () => {
   const user = useSelector((state: RootState) => state.user);
   const game = useSelector((state: RootState) => state.game);
-  const isHost = game.host == user.name;
+  const isHost = game.config.host == user.name;
 
   return (
     <Box pos="relative">
@@ -44,7 +47,7 @@ const Page: PageWithLayout = () => {
               textAlign="center"
               color="white"
             >
-              Lobby #{game.id}
+              Lobby {game.uuid}
             </Heading>
           </Box>
           <Flex flex="1" bg="rgba(70, 70, 70, 0.85)" borderRadius="3xl">
@@ -81,23 +84,32 @@ const Page: PageWithLayout = () => {
               bg="rgba(30, 30, 30, 0.7)"
               borderTopRightRadius="3xl"
               borderBottomRightRadius="3xl"
-              pt={24}
+              pt={10}
               pb={10}
             >
               <Flex flexDir="column" justify="center" align="center">
-                <Text color="white" fontWeight="bold" fontSize="lg">
-                  Host: {game.host}
+                <Text
+                  color="white"
+                  fontWeight="bold"
+                  fontSize="4xl"
+                  mb={12}
+                  textDecor="underline"
+                >
+                  {game.config.name}
                 </Text>
                 <Text color="white" fontWeight="bold" fontSize="lg">
-                  Minimo de Jugadores: {game.minPlayers}
+                  Host: {game.config.host}
                 </Text>
                 <Text color="white" fontWeight="bold" fontSize="lg">
-                  Maximo de Jugadores: {game.maxPlayers}
+                  Minimo de Jugadores: {game.config.minPlayers}
+                </Text>
+                <Text color="white" fontWeight="bold" fontSize="lg">
+                  Maximo de Jugadores: {game.config.maxPlayers}
                 </Text>
                 <Text color="white" fontWeight="bold" fontSize="lg" mb={10}>
                   Jugadores: {game.players.length}
                 </Text>
-                {isHost && <StartGameButton />}
+                {isHost && <StartGameButton gameState={game} />}
                 <LeaveLobbyButton />
               </Flex>
               <Box mx="auto"></Box>
@@ -110,39 +122,65 @@ const Page: PageWithLayout = () => {
 };
 
 // Boton para inciar la partida
-const StartGameButton: FC<{}> = () => {
+type StartGameButtonProps = {
+  gameState: GameState;
+};
+
+const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
+  const [startLoading, setStartLoading] = useState(false);
+  const router = useRouter();
+  const startEnabled = canGameStart(gameState);
+
+  const onInitHandle = async () => {
+    setStartLoading(true);
+    startGame()
+      .then(
+        (res) => {
+          // TODO! Go on.
+          // Si todo bien:
+          router.replace("/game");
+        },
+        (reason: any) => {
+          // TODO! Handle rejection of startGame
+
+          
+        }
+      )
+      .finally(() => {
+        setStartLoading(false);
+      });
+  };
+
   return (
-    <Button colorScheme="green" mb={6} size="lg">
-      Iniciar Partida
-    </Button>
+    <Tooltip
+      label="No se cumplen los requisitos para iniciar el juego."
+      display={startEnabled ? "none" : "auto"}
+    >
+      <Button
+        isDisabled={!startEnabled}
+        isLoading={startLoading}
+        onClick={onInitHandle}
+        colorScheme="green"
+        mb={6}
+        size="lg"
+      >
+        Iniciar Partida
+      </Button>
+    </Tooltip>
   );
 };
 
 // Boton para salir del Lobby
 const LeaveLobbyButton: FC<{}> = () => {
+  const router = useRouter();
+  const onLeaveHandle = () => {
+    leaveLobby();
+    router.replace("/");
+  };
   return (
-    <Button colorScheme="red" size="lg">
+    <Button onClick={onLeaveHandle} colorScheme="red" size="lg">
       Salir del Lobby
     </Button>
-  );
-};
-
-// Props del compononente de una tarjeta de jugador
-type PlayerCardProps = {
-  name: string;
-};
-
-// Componente de una tarjeta de jugador
-const PlayerCard: FC<PlayerCardProps> = ({ name }) => {
-  return (
-    <Card pl={6}>
-      <CardBody>
-        <Flex align="center" columnGap={6}>
-          <Avatar name={name} />
-          <Text>{name}</Text>
-        </Flex>
-      </CardBody>
-    </Card>
   );
 };
 

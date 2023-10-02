@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "lint-staged",
     "prepare": "cd .. && husky install ./next/.husky",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "lint-staged": {
     "*": "prettier --write"
@@ -34,7 +34,8 @@
     "react-dom": "18.2.0",
     "react-redux": "^8.1.1",
     "sharp": "^0.32.4",
-    "yup": "^1.3.1"
+    "yup": "^1.3.1",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.3",
