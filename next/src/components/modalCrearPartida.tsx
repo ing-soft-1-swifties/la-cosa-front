@@ -26,7 +26,11 @@ const formSchema = Yup.object({
     .required("Este campo es requerido")
     .min(4, "La cantidad minima de jugadores debe ser 4")
     .max(12, "La cantidad maxima de jugares deber ser 12"),
-  name: Yup.string()
+  nombreJugador: Yup.string()
+    .required("Este campo es requerido")
+    .max(50, "La cantidad maxima de caracteres es 50")
+    .min(3, "La cantidad minima de caracteres es 3"),
+  nombrePartida: Yup.string()
     .required("Este campo es requerido")
     .max(50, "La cantidad maxima de caracteres es 50")
     .min(3, "La cantidad minima de caracteres es 3"),
@@ -36,6 +40,7 @@ const enviarDatosServ = async (values: {
   minPlayers: any;
   maxPlayers: any;
   name: any;
+  namePartida: any;
 }) => {
   try {
     const response = await fetch("http://localhost:3000", {
@@ -46,6 +51,7 @@ const enviarDatosServ = async (values: {
       },
       body: JSON.stringify({
         name: values.name,
+        namePartida: values.namePartida,
         minPlayers: values.minPlayers,
         maxPlayers: values.maxPlayers,
       }),
@@ -83,7 +89,12 @@ function ModalCrearPartida() {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <Formik
-              initialValues={{ minPlayers: 4, maxPlayers: 12, name: "" }}
+              initialValues={{
+                minPlayers: 4,
+                maxPlayers: 12,
+                name: "",
+                namePartida: "",
+              }}
               onSubmit={(values) => {
                 console.log(values); //valores del formulario
                 enviarDatosServ(values); //envia los datos a la api
@@ -94,11 +105,26 @@ function ModalCrearPartida() {
               {({ errors, touched, handleSubmit }) => {
                 return (
                   <form onSubmit={handleSubmit}>
+                    {/* input de name Partida */}
+                    <FormControl
+                      isInvalid={!!errors.namePartida && touched.namePartida} //hubo error y el campo fue tocado
+                    >
+                      <FormLabel htmlFor="namePartida">
+                        Nombre Partida{" "}
+                      </FormLabel>
+                      <Field
+                        as={Input}
+                        name="namePartida"
+                        type="text"
+                        id="namePartida"
+                      />
+                      <FormErrorMessage>{errors.namePartida}</FormErrorMessage>
+                    </FormControl>
                     {/* input name jugador  */}
                     <FormControl
                       isInvalid={!!errors.name && touched.name} //hubo error y el campo fue tocado
                     >
-                      <FormLabel htmlFor="name">Name </FormLabel>
+                      <FormLabel htmlFor="name">Nombre Jugador </FormLabel>
                       <Field as={Input} name="name" type="text" id="name" />
                       <FormErrorMessage>{errors.name}</FormErrorMessage>
                     </FormControl>
