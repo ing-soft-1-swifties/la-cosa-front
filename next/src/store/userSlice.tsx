@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type UserState = {
   name: string;
+  gameConnToken: string | undefined;
 };
 
 const initialState: UserState = {
   name: "Tomas",
+  gameConnToken: undefined,
 };
 
 export const userSlice = createSlice({

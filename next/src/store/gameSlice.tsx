@@ -7,44 +7,60 @@ export enum GameStatus {
 }
 
 type GamePlayer = {
+  uuid: string;
   name: string;
 };
 
-type GameState = {
-  id: string;
-  status: GameStatus;
+type GameConfig = {
+  name: string;
   host: string;
-  maxPlayers: number;
   minPlayers: number;
+  maxPlayers: number;
+};
+
+export type GameState = {
+  uuid: string;
+  config: GameConfig;
+  status: GameStatus;
   players: GamePlayer[];
 };
 
 const initialState: GameState = {
-  id: "#04",
+  uuid: "#04",
+  config: {
+    name: "La partida",
+    host: "Tomas",
+    maxPlayers: 0,
+    minPlayers: 0,
+  },
   status: GameStatus.WAITING,
-  host: "Tomas",
-  maxPlayers: 0,
-  minPlayers: 0,
   players: [
     {
+      uuid: "1",
       name: "Tomas",
     },
     {
+      uuid: "2",
       name: "Franco Molina",
     },
     {
+      uuid: "3",
       name: "Victoria Lopez",
     },
     {
+      uuid: "4",
       name: "Lautaro Ebner",
     },
     {
+      uuid: "5",
       name: "El Profe",
     },
     {
+      uuid: "6",
       name: "Alejito",
     },
     {
+      uuid: "7",
       name: "Pepito",
     },
   ],
@@ -53,7 +69,9 @@ const initialState: GameState = {
 export const gameSlice = createSlice({
   name: "game",
   initialState,
-  reducers: {},
+  reducers: {
+    
+  },
 });
 
 export const {} = gameSlice.actions;
