@@ -6,7 +6,7 @@ import {
 import { setupListeners } from "@reduxjs/toolkit/dist/query/react";
 import gameReducer from "@/store/gameSlice";
 import userReducer from "@/store/userSlice";
-import { gameApi } from "@/store/gamesListApi";
+import { gameApi } from "@/store/gameApi";
 import { getDefaultNormalizer } from "@testing-library/react";
 
 // Creamos el reducer root para extraer el tipo de RootState

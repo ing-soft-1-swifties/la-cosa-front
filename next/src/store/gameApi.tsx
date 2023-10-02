@@ -16,7 +16,7 @@ export const gameApi = createApi({
         getGames: builder.query<GetGamesQueryResult, undefined>({
             query: () => '/games',
         }),
-        getInGame: builder.query<String, {name: string, room_id: number}>({
+        joinGame: builder.query<String, {name: string, room_id: number}>({
             query: ({name, room_id}) => ({
                 url: "/join",
                 method: "POST",
@@ -33,9 +33,9 @@ export const gameApi = createApi({
 type GetGamesQueryResult = {
     'id': number,
     'name': string,
-    'count': string,
+    'count': number,
     'max': number
 }[]
 
 // conseguir el hook de react con el nombre del endpoint
-export const { useGetGamesQuery, useGetInGameQuery } = gameApi
+export const { useGetGamesQuery, useLazyJoinGameQuery } = gameApi

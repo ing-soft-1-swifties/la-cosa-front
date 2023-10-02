@@ -1,7 +1,7 @@
-import { Box, Button, Card, CardBody, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, Flex, Heading, Spacer, Spinner, Text } from "@chakra-ui/react";
 import { } from "path";
 import { FC, ReactElement, useState } from "react";
-import { useGetGamesQuery } from "store/gamesListApi";
+import { useGetGamesQuery } from "@/store/gameApi";
 
 interface IProps {
     children: ReactElement;
@@ -10,7 +10,7 @@ interface IProps {
 
 export default function DefaultLayout() {
 
-    const { data, isError, isLoading, error } = useGetGamesQuery(undefined);
+    const { data: gameList, isError: gameListError, isLoading, error } = useGetGamesQuery(undefined);
 
     return (
         <Box flexBasis="65%" px={16} py={10}>
@@ -29,14 +29,16 @@ export default function DefaultLayout() {
                 rowGap={8}
                 justify="space-between"
             >
-                {data?.map(({ id, name, count, max }) => {
+                {gameListError && gameList?.map(({ id, name, count, max }) => {
                     return (
                         <Box key={id} flexBasis="100%">
                             <GameCard id={id} name={name} count={count} max={max} />
                         </Box>
                     );
                 })}
+            
             </Flex>
+            <Spinner  display={isLoading? "flex" : "none"} />
         </Box>
     );
 }
