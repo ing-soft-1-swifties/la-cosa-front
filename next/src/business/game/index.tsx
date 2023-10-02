@@ -1,4 +1,4 @@
-import { GameState } from "store/gameSlice";
+import { GameState } from "@/store/gameSlice";
 
 export function canGameStart(gameState: GameState) {
   return (

@@ -1,6 +1,10 @@
 import { io } from "socket.io-client";
-import { store } from "store/store";
+import { store } from "@/store/store";
 import { setupGameSocketListeners } from "./listener";
+
+type GameSocketAuth = {
+  token: string;
+};
 
 export let gameSocket = io({
   autoConnect: false,
@@ -20,6 +24,13 @@ export function initGameSocket() {
   setupGameSocketListeners(gameSocket);
 }
 
+export const isConnected = () => {
+  if (!gameSocket.active) return false;
+  if (!gameSocket.disconnected) return false;
+  return true;
+};
 
-
-
+export const isSocketUpToDate = () => {
+  const auth: GameSocketAuth = gameSocket.auth as any;
+  return auth.token == store.getState().user.gameConnToken;
+};

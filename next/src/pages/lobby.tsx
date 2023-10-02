@@ -13,16 +13,18 @@ import { FC, useState } from "react";
 import DarkForestBackground from "@/public/lobby/DarkForest.webp";
 import BgImage from "@/components/utility/BgImage";
 import { useSelector } from "react-redux";
-import { RootState } from "store/store";
+import { RootState } from "@/store/store";
 import PlayerCard from "@/components/PlayerCard";
-import { GameState } from "store/gameSlice";
-import { leaveLobby, startGame } from "business/game/gameAPI/manager";
-import { canGameStart } from "business/game";
+import { GameState } from "@/store/gameSlice";
+import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
+import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
+import useGameSocket from "@/src/hooks/useGameSocket";
 
 const Page: PageWithLayout = () => {
   const user = useSelector((state: RootState) => state.user);
   const game = useSelector((state: RootState) => state.game);
+  const {gameSocket, isConnected} = useGameSocket()
   const isHost = game.config.host == user.name;
 
   return (
@@ -97,6 +99,12 @@ const Page: PageWithLayout = () => {
                 >
                   {game.config.name}
                 </Text>
+
+                {/* TEMPORAL TODO! */}
+                <Text color="white" fontWeight="bold" fontSize="lg">
+                  Connected: {`${isConnected}`}
+                </Text>
+
                 <Text color="white" fontWeight="bold" fontSize="lg">
                   Host: {game.config.host}
                 </Text>
@@ -142,8 +150,6 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
         },
         (reason: any) => {
           // TODO! Handle rejection of startGame
-
-          
         }
       )
       .finally(() => {
@@ -157,6 +163,7 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
       display={startEnabled ? "none" : "auto"}
     >
       <Button
+        data-testid="start-button"
         isDisabled={!startEnabled}
         isLoading={startLoading}
         onClick={onInitHandle}
@@ -178,10 +185,19 @@ const LeaveLobbyButton: FC<{}> = () => {
     router.replace("/");
   };
   return (
-    <Button onClick={onLeaveHandle} colorScheme="red" size="lg">
+    <Button
+      data-testid="leave-button"
+      onClick={onLeaveHandle}
+      colorScheme="red"
+      size="lg"
+    >
       Salir del Lobby
     </Button>
   );
+};
+
+Page.authConfig = {
+  gameAuthProtected: true,
 };
 
 export default Page;
