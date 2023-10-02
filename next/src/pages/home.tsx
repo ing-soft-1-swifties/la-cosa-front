@@ -17,6 +17,7 @@ import { FC, useEffect, useState } from "react";
 import GreenForestBack from "@/public/home/GreenForestWall.jpg";
 import GameList from "components/layouts/home/GameList";
 import GameAlert from "components/layouts/home/GameAlert";
+import BgImage from "components/utility/BgImage";
 
 
 const Page: PageWithLayout = () => {
@@ -36,7 +37,11 @@ const Page: PageWithLayout = () => {
     //se que lo vamos a hacer con querys de redux pero bueno es para ir viendo
 
     return (
-        <Box pos="relative" bg='green.900' bgImage={GreenForestBack} >
+        <Box pos="relative" >
+            <BgImage imageProps={{
+                src: GreenForestBack,
+                alt: '' 
+            }}/>
             <Container maxW="100rem" >
                 <Flex flexDir="column" minH="100vh" pt={5} pb={10} px={4}>
 
