@@ -5,7 +5,14 @@ import { renderWithProviders } from "@/src/utils/test-utils";
 import { RootState } from "store/store";
 import { PreloadedState } from "@reduxjs/toolkit";
 import { GameStatus } from "@/store/gameSlice";
+import mockRouter from "next-router-mock";
+import { act } from "react-dom/test-utils";
 
+// Mock Next Router for all tests.
+jest.mock("next/router", () => jest.requireActual("next-router-mock"));
+
+// Estado generico, caracteristicas:
+// -> No es posible iniciar la partida por falta de jugadores
 const GenericAppState: PreloadedState<RootState> = {
   game: {
     uuid: "1",
@@ -24,6 +31,7 @@ const GenericAppState: PreloadedState<RootState> = {
     ],
   },
   user: {
+    gameConnToken: "",
     name: "Pepito",
   },
 };
@@ -31,6 +39,9 @@ const GenericAppState: PreloadedState<RootState> = {
 describe("Page Lobby", () => {
   it("has text based on state", () => {
     const appState = GenericAppState;
+
+    // Base Lobby Router
+    mockRouter.push("/lobby");
     renderWithProviders(<Lobby />, {
       preloadedState: appState,
     });
@@ -51,9 +62,19 @@ describe("Page Lobby", () => {
     // Jugadores conectados en la partida
     screen.getByText(`Jugadores: ${game.players.length}`);
     // Boton de Iniciar Partida
-    screen.getByText("Iniciar Partida");
+    const startButton = screen.getByTestId("start-button");
+    expect(startButton).toHaveTextContent("Iniciar Partida");
+
+    // Como usamos el estado generico 
+    // TODO!
+    expect(startButton).toBeDisabled();
     // Boton de Salir del Lobby
-    screen.getByText("Salir del Lobby");
+    const leaveButton = screen.getByTestId("leave-button");
+    expect(leaveButton).toHaveTextContent("Salir del Lobby");
+    act(() => {
+      leaveButton.click();
+    });
+    expect(mockRouter.pathname).toBe("/");
   });
 
   it("shows players cards", () => {
