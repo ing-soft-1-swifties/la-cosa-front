@@ -48,6 +48,8 @@ export default function FormJoinLobby() {
               console.log("Respuesta del servidor:", data);
               setGameConnectionToken(data.token);
               router.replace("/lobby");
+            } else if(response.status == 400) {
+              setSubmitError("Nombre de jugador ya asignado en la partida.");
             } else {
               setSubmitError("Error al conectarse con el servidor.");
             }

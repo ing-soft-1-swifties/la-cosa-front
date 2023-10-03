@@ -29,10 +29,10 @@ export default function GameList() {
                 rowGap={8}
                 justify="space-between"
             >
-                {gameListError && gameList?.map(({ id, name, count, max }) => {
+                {!gameListError && gameList?.map(({ id, name, players_count, max_players }) => {
                     return (
                         <Box key={id} flexBasis="100%">
-                            <GameCard id={id} name={name} count={count} max={max} />
+                            <GameCard id={id} name={name} count={players_count} max={max_players} />
                         </Box>
                     );
                 })}
@@ -58,13 +58,14 @@ const GameCard: FC<GameCardProps> = ({ id, name, count, max }, shearingPerLobby)
                     <Text fontSize="2xl" fontWeight="bold" textAlign="center">
                         {name}
                     </Text>
-                    <Text fontSize="2xl" color='gray.300' pl={2}>#{id}</Text>
+                    <Text fontSize="2xl" color='green.300' pl={2}>#{id}</Text>
                     <Spacer />
                     <Flex columnGap={3} alignItems='center' >
                         <Box borderWidth='1px' borderRadius='lg' p={2} verticalAlign='center' color='gray.800'>
                             <Text>{count}/{max}</Text>
                         </Box>
-                        <Button variant='outline' isDisabled={(count == max) && shearingPerLobby}>Entrar</Button>
+                        {/* <Button variant='outline' isDisabled={(count == max) && shearingPerLobby }>Entrar</Button> */}
+                        <Button variant='outline' isDisabled={(count == max) && shearingPerLobby }>Proximamente</Button>
                     </Flex>
                 </Flex>
             </CardBody>

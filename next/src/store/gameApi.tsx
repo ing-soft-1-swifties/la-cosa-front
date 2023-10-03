@@ -5,7 +5,7 @@ import { BaseQueryApi, BaseQueryFn, EndpointDefinitions, createApi, fetchBaseQue
 
 export const gameApi = createApi({
     // nombre de datos
-    reducerPath: "gameListSlice",
+    reducerPath: "gameApi",
     // url a la que le pediumos datos
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8000",
@@ -14,19 +14,21 @@ export const gameApi = createApi({
     // builder separar mutaciones de alteraciones
     endpoints: (builder) => ({
         getGames: builder.query<GetGamesQueryResult, undefined>({
-            query: () => '/games',
+            query: () => '/list',
         }),
-        joinGame: builder.query<String, {name: string, room_id: number}>({
-            query: ({name, room_id}) => ({
-                url: "/join",
-                method: "POST",
-                body: {
-                    "name": name,
-                    "room_id": room_id
-                }
-            })
-
-        })
+        // al final el join lo hacemos con un simple fetch
+        // TO DROP
+        //joinGame: builder.query<String, {name: string, room_id: number}>({
+        //    query: ({name, room_id}) => ({
+        //        url: "/join",
+        //        method: "POST",
+        //        body: {
+        //            "name": name,
+        //            "room_id": room_id
+        //        }
+        //    })
+        //
+        //})
     })
 });
 
