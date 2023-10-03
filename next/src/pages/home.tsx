@@ -17,12 +17,15 @@ import GreenForestBack from "@/public/home/GreenForestWall.jpg";
 import GameList from "components/layouts/home/GameList";
 import GameAlert from "components/layouts/home/GameAlert";
 import BgImage from "components/utility/BgImage";
-import { Formik } from 'formik';
+import { Formik } from "formik";
 import FormJoinLobby from "components/layouts/home/FormJoinLobby";
+import NewGameModal from "components/modalCrearPartida";
+import { useDisclosure } from '@chakra-ui/react';
 
 const Page: PageWithLayout = () => {
   const [shearingPerLobby, setShearingPerLobby] = useState(false);
   const [seeShearError, setSeeError] = useState(false);
+  const disclouseModal = useDisclosure()
 
   useEffect(() => {}, [shearingPerLobby]);
 
@@ -97,7 +100,7 @@ const Page: PageWithLayout = () => {
                       Unirse Partida
                     </Button>
                   </Flex> */}
-                  <FormJoinLobby/>
+                  <FormJoinLobby />
                 </Box>
 
                 <GameAlert
@@ -106,7 +109,9 @@ const Page: PageWithLayout = () => {
                 />
 
                 <Box>
-                  <Button color="green">Crear Partida</Button>
+                  <NewGameModal disclouse={disclouseModal}/>
+
+                  <Button color="green" onClick={disclouseModal.onOpen}>Crear Partida</Button>
                   {/* const { data: gameList, isError: gameListError, isLoading, error } = useGetGamesQuery(undefined); */}
                 </Box>
               </Flex>

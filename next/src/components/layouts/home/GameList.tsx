@@ -8,7 +8,7 @@ interface IProps {
 }
 
 
-export default function DefaultLayout() {
+export default function GameList() {
 
     const { data: gameList, isError: gameListError, isLoading, error } = useGetGamesQuery(undefined);
 

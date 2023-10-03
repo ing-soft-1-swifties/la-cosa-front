@@ -73,7 +73,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
               console.log(values); //valores del formulario
               setSubmitError(undefined);
               try {
-                const response = await fetch("http://localhost:8000", {
+                const response = await fetch("http://localhost:8000/create", {
                   method: "POST", //Envia los datos a la api
                   headers: {
                     //le dice al servidor que tipo de datos se estan enviando
