@@ -10,6 +10,7 @@ import {
 import { Field, Formik } from "formik";
 import router, { Router } from "next/router";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { setGameConnectionToken } from "store/userSlice";
 import * as Yup from "yup";
 
@@ -22,6 +23,7 @@ const formSchema = Yup.object({
 });
 
 export default function FormJoinLobby() {
+  const dispatch = useDispatch();
   const initialRef = React.useRef(null); //esto es para que cuando se abra el modal, el foco vaya al primer input
   const finalRef = React.useRef(null);
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);

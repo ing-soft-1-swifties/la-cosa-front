@@ -16,6 +16,7 @@ import {
 import { Field, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { setGameConnectionToken } from "store/userSlice";
 import * as Yup from "yup";
 
@@ -45,6 +46,7 @@ type NewGameModalProps = {
 function NewGameModal({ disclouse }: NewGameModalProps) {
   const { isOpen, onClose } = disclouse; //esto abre y cierra el modal
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const initialRef = React.useRef(null); //esto es para que cuando se abra el modal, el foco vaya al primer input
   const finalRef = React.useRef(null);
@@ -91,7 +93,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                 if (response.ok) {
                   const data: { token: string } = await response.json(); //convierte los datos a json
                   console.log("Respuesta del servidor:", data);
-                  setGameConnectionToken(data.token);
+                  dispatch(setGameConnectionToken(data.token));
                   router.replace("/lobby");
                 } else {
                   setSubmitError("Error al conectarse con el servidor.");

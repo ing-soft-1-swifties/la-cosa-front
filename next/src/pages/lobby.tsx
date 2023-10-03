@@ -24,7 +24,6 @@ import useGameSocket from "@/src/hooks/useGameSocket";
 const Page: PageWithLayout = () => {
   const user = useSelector((state: RootState) => state.user);
   const game = useSelector((state: RootState) => state.game);
-  const {gameSocket, isConnected} = useGameSocket()
   const isHost = game.config.host == user.name;
 
   return (
@@ -49,7 +48,7 @@ const Page: PageWithLayout = () => {
               textAlign="center"
               color="white"
             >
-              Lobby {game.uuid}
+              Lobby {game.config.id}
             </Heading>
           </Box>
           <Flex flex="1" bg="rgba(70, 70, 70, 0.85)" borderRadius="3xl">
@@ -100,11 +99,6 @@ const Page: PageWithLayout = () => {
                   {game.config.name}
                 </Text>
 
-                {/* TEMPORAL TODO! */}
-                <Text color="white" fontWeight="bold" fontSize="lg">
-                  Connected: {`${isConnected}`}
-                </Text>
-
                 <Text color="white" fontWeight="bold" fontSize="lg">
                   Host: {game.config.host}
                 </Text>
@@ -141,18 +135,21 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
 
   const onInitHandle = async () => {
     setStartLoading(true);
+    console.log("BEFORE START");
     startGame()
       .then(
         (res) => {
-          // TODO! Go on.
-          // Si todo bien:
+          console.log("THEN");
           router.replace("/game");
         },
         (reason: any) => {
+          console.log("FUCK");
+          console.log(reason);
           // TODO! Handle rejection of startGame
         }
       )
       .finally(() => {
+        console.log("FINALLY");
         setStartLoading(false);
       });
   };

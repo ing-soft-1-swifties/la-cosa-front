@@ -7,7 +7,7 @@ type UserState = {
 
 const initialState: UserState = {
   name: "Tomas",
-  gameConnToken: "",
+  gameConnToken: undefined,
 };
 
 export const userSlice = createSlice({
