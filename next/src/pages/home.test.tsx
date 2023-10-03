@@ -1,1 +1,0 @@
-const home = require('./home');
