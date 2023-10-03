@@ -24,17 +24,14 @@ type GameStateData = {
 type NewGameStateData = GameStateData & {};
 
 const onNewGameState = (data: NewGameStateData) => {
-  console.log("NEW GAME STATE");
-  console.log(data);
   const state = {
     config: data.gameState.config,
     players: data.gameState.players.map((player) => ({
       name: player.name,
     })),
-    status: data.gameState.status,
+    status: data.gameState.status
   };
   store.dispatch(setGameState(state));
-  console.log("AFTER");
 };
 
 type RoomNewPlayerData = GameStateData & {};

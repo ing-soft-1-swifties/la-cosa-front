@@ -63,17 +63,9 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     setGameState(state, action: PayloadAction<GameState>) {
-      // state = {
-      //   config: action.payload.config,
-      //   players: action.payload.players.map((player) => ({
-      //     name: player.name,
-      //   })),
-      //   status: action.payload.status,
-      // };
-      state = action.payload
-      // state = action.payload;
-      console.log("UPATED BY:");
-      console.log(state);
+      state.config = action.payload.config
+      state.players = action.payload.players
+      state.status = action.payload.status
     },
   },
 });
