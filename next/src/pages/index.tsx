@@ -1,46 +1,20 @@
 import { PageWithLayout } from "@/src/pages/_app";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  Box,
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Input,
-  ScaleFade,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import GreenForestBack from "@/public/home/GreenForestWall.jpg";
 import GameList from "components/layouts/home/GameList";
-import GameAlert from "components/layouts/home/GameAlert";
 import BgImage from "components/utility/BgImage";
-import { Formik } from "formik";
 import FormJoinLobby from "components/layouts/home/FormJoinLobby";
 import NewGameModal from "components/modalCrearPartida";
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from "@chakra-ui/react";
 
 const Page: PageWithLayout = () => {
-  const [shearingPerLobby, setShearingPerLobby] = useState(false);
-  const [seeShearError, setSeeError] = useState(false);
-  const disclouseModal = useDisclosure()
-
-  useEffect(() => {}, [shearingPerLobby]);
-
-  // query para comprobar que la partida a la que me voy a unir puedo entrar
-  const shearLobby = () => {
-    setShearingPerLobby(true);
-    //si la partida es invalida
-    if (true) setSeeError(true);
-  };
-  //se que lo vamos a hacer con querys de redux pero bueno es para ir viendo
+  const disclouseModal = useDisclosure();
 
   return (
     <Box pos="relative">
       <BgImage
-        w='100%'
+        w="100%"
         imageProps={{
           src: GreenForestBack,
           alt: "",
@@ -55,6 +29,7 @@ const Page: PageWithLayout = () => {
               fontWeight="bold"
               textAlign="center"
               color="white"
+              data-testid="titulo"
             >
               LA COSA
             </Heading>
@@ -79,41 +54,17 @@ const Page: PageWithLayout = () => {
                 columnGap={6}
                 justify="space-between"
               >
-                <Box
-                  minW="100%"
-                  border="4px"
-                  borderColor="white"
-                  borderRadius="2xl"
-                  p={4}
-                >
-                  <Text textAlign="center" pb={4} fontSize="3xl" color="white">
-                    {" "}
-                    Partidas personalizadas
-                  </Text>
-                  {/* <Flex columnGap={3}>
-                    <Input variant="filled" placeholder="ID Partida" />
-                    <Button
-                      isLoading={shearingPerLobby}
-                      pl={8}
-                      pr={8}
-                      onClick={shearLobby}
-                    >
-                      Unirse Partida
-                    </Button>
-                  </Flex> */}
-                  <FormJoinLobby />
-                </Box>
-
-                <GameAlert
-                  seeShearError={seeShearError}
-                  setSeeError={setSeeError}
-                />
+                <FormJoinLobby />
 
                 <Box>
-                  <NewGameModal disclouse={disclouseModal}/>
-
-                  <Button color="green" onClick={disclouseModal.onOpen}>Crear Partida</Button>
-                  {/* const { data: gameList, isError: gameListError, isLoading, error } = useGetGamesQuery(undefined); */}
+                  <NewGameModal disclouse={disclouseModal} />
+                  <Button
+                    data-testid="create-game-btn"
+                    color="green"
+                    onClick={disclouseModal.onOpen}
+                  >
+                    Crear Partida
+                  </Button>
                 </Box>
               </Flex>
             </Box>

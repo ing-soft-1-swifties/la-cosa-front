@@ -56,6 +56,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
       finalFocusRef={finalRef}
       isOpen={isOpen}
       onClose={onClose}
+      data-testid="modal-crear"
     >
       <ModalOverlay />
       <ModalContent>

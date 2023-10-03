@@ -35,9 +35,9 @@ export const gameApi = createApi({
 type GetGamesQueryResult = {
     'id': number,
     'name': string,
-    'count': number,
-    'max': number
+    'players_count': number,
+    'max_players': number
 }[]
 
 // conseguir el hook de react con el nombre del endpoint
-export const { useGetGamesQuery, useLazyJoinGameQuery } = gameApi
+export const { useGetGamesQuery } = gameApi
