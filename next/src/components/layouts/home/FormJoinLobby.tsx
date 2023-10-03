@@ -69,10 +69,9 @@ export default function FormJoinLobby() {
               if (response.ok) {
                 const data: { token: string } = await response.json(); //convierte los datos a json
                 console.log("Respuesta del servidor:", data);
-                setGameConnectionToken(data.token);
+                dispatch(setGameConnectionToken(data.token));
+                console.log(data.token);
                 router.replace("/lobby");
-              } else if (response.status == 400) {
-                setSubmitError("Nombre de jugador ya asignado en la partida.");
               } else {
                 setSubmitError("Error al conectarse con el servidor.");
               }
