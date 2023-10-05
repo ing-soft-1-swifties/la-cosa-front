@@ -6,11 +6,12 @@ type GameSocketAuth = {
   token: string;
 };
 
-export let gameSocket = io({
+export let gameSocket = io("http://localhost:8000", {
   autoConnect: false,
   auth: {
     token: "",
   },
+  transports: ["websocket"],
 });
 
 export function initGameSocket() {

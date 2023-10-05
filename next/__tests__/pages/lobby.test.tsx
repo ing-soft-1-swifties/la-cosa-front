@@ -15,8 +15,8 @@ jest.mock("next/router", () => jest.requireActual("next-router-mock"));
 // -> No es posible iniciar la partida por falta de jugadores
 const GenericAppState: PreloadedState<RootState> = {
   game: {
-    uuid: "1",
     config: {
+      id: 1,
       name: "La partida",
       host: "Pepito",
       minPlayers: 4,
@@ -25,7 +25,6 @@ const GenericAppState: PreloadedState<RootState> = {
     status: GameStatus.WAITING,
     players: [
       {
-        uuid: "CrazyMonkey",
         name: "CrazyMonkey",
       },
     ],
@@ -48,7 +47,7 @@ describe("Page Lobby", () => {
 
     const game = appState.game!;
     // UUID del Lobby
-    screen.getByText(`Lobby ${game.uuid}`);
+    screen.getByText(`Lobby ${game.id}`);
     // Nombre de la partida
     screen.getByText(`${game.config.name}`);
     // Titulo de la lista de Jugadores
@@ -65,7 +64,7 @@ describe("Page Lobby", () => {
     const startButton = screen.getByTestId("start-button");
     expect(startButton).toHaveTextContent("Iniciar Partida");
 
-    // Como usamos el estado generico 
+    // Como usamos el estado generico
     // TODO!
     expect(startButton).toBeDisabled();
     // Boton de Salir del Lobby
