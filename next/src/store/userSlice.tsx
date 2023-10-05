@@ -17,9 +17,12 @@ export const userSlice = createSlice({
     setGameConnectionToken(state, action: PayloadAction<string>) {
       state.gameConnToken = action.payload;
     },
+    setUserName(state, action: PayloadAction<string>) {
+      state.name = action.payload;
+    },
   },
 });
 
-export const { setGameConnectionToken } = userSlice.actions;
+export const { setGameConnectionToken, setUserName } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -135,21 +135,16 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
 
   const onInitHandle = async () => {
     setStartLoading(true);
-    console.log("BEFORE START");
     startGame()
       .then(
         (res) => {
-          console.log("THEN");
-          router.replace("/game");
+          router.push("/game");
         },
         (reason: any) => {
-          console.log("FUCK");
-          console.log(reason);
           // TODO! Handle rejection of startGame
         }
       )
       .finally(() => {
-        console.log("FINALLY");
         setStartLoading(false);
       });
   };

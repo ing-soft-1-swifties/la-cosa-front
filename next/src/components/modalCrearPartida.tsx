@@ -14,6 +14,7 @@ import {
   UseDisclosureReturn,
   Box,
 } from "@chakra-ui/react";
+import { joinPlayerToGame } from "business/game/gameAPI/manager";
 import { Field, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
