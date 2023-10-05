@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type UserState = {
-  name: string;
+  name: string | undefined;
   gameConnToken: string | undefined;
 };
 
 const initialState: UserState = {
-  name: "Tomas",
+  name: undefined,
   gameConnToken: undefined,
 };
 
@@ -14,10 +14,10 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setGameConnectionToken(state, action: PayloadAction<string>) {
+    setGameConnectionToken(state, action: PayloadAction<string | undefined>) {
       state.gameConnToken = action.payload;
     },
-    setUserName(state, action: PayloadAction<string>) {
+    setUserName(state, action: PayloadAction<string | undefined>) {
       state.name = action.payload;
     },
   },

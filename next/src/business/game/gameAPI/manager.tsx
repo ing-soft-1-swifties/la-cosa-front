@@ -4,8 +4,9 @@ import { store } from "@/store/store";
 import { setGameConnectionToken, setUserName } from "@/store/userSlice";
 
 export enum MessageType {
-  ROOM_START_GAME = "start_game",
-  ROOM_EXIT = "room/exit",
+  GET_GAME_STATE = "get_game_state",
+  ROOM_START_GAME = "room_start_game",
+  ROOM_QUIT_GAME = "room_quit_game",
 }
 
 export function joinPlayerToGame(
@@ -22,7 +23,9 @@ export const startGame = () => {
   return gameSocket.emitWithAck(MessageType.ROOM_START_GAME);
 };
 
-export const leaveLobby = () => {
-  gameSocket.emit(MessageType.ROOM_EXIT);
+export const leaveLobby = (router: NextRouter) => {
+  store.dispatch(setUserName(""));
+  store.dispatch(setGameConnectionToken(undefined));
+  gameSocket.emit(MessageType.ROOM_QUIT_GAME);
   gameSocket.disconnect();
 };

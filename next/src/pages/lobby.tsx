@@ -7,6 +7,7 @@ import {
   Heading,
   Text,
   Tooltip,
+  useToast,
 } from "@chakra-ui/react";
 import { FC, useState } from "react";
 
@@ -20,6 +21,7 @@ import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
 import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
 import useGameSocket from "@/src/hooks/useGameSocket";
+import { buildErrorToastOptions, buildSucessToastOptions } from "utils/toasts";
 
 const Page: PageWithLayout = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -132,16 +134,27 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
   const [startLoading, setStartLoading] = useState(false);
   const router = useRouter();
   const startEnabled = canGameStart(gameState);
-
+  const toast = useToast();
   const onInitHandle = async () => {
     setStartLoading(true);
     startGame()
       .then(
-        (res) => {
-          router.push("/game");
+        () => {
+          toast(
+            buildSucessToastOptions({
+              title: "La partida comenzo!",
+              description: "",
+            })
+          );
+          router.replace("/game");
         },
         (reason: any) => {
-          // TODO! Handle rejection of startGame
+          toast(
+            buildErrorToastOptions({
+              title: "Error iniciando partida",
+              description: `${reason}`,
+            })
+          );
         }
       )
       .finally(() => {
@@ -172,14 +185,12 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
 // Boton para salir del Lobby
 const LeaveLobbyButton: FC<{}> = () => {
   const router = useRouter();
-  const onLeaveHandle = () => {
-    leaveLobby();
-    router.replace("/");
-  };
   return (
     <Button
       data-testid="leave-button"
-      onClick={onLeaveHandle}
+      onClick={() => {
+        leaveLobby(router);
+      }}
       colorScheme="red"
       size="lg"
     >

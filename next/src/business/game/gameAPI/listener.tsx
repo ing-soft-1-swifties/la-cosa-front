@@ -3,18 +3,17 @@ import { GameState, setGameState } from "@/store/gameSlice";
 import { store } from "@/store/store";
 
 export enum EventType {
-  NEW_GAME_STATE = "newGameState",
-  ROOM_NEW_PLAYER = "room/newPlayer",
-
-  ROOM_KICKED = "room/kicked",
-  ROOM_START = "room/start",
+  ON_ROOM_NEW_PLAYER = "on_room_new_player",
+  ON_ROOM_LEFT_PLAYER = "on_room_left_player",
+  ON_ROOM_START_GAME = "on_room_start_game",
+  ON_ROOM_CANCELLED_GAME = "on_room_cancelled_game",
 }
 
 export const setupGameSocketListeners = (gameSocket: Socket) => {
-  gameSocket.on(EventType.NEW_GAME_STATE, onNewGameState);
-  gameSocket.on(EventType.ROOM_NEW_PLAYER, onRoomNewPlayer);
-  gameSocket.on(EventType.ROOM_KICKED, onRoomKicked);
-  gameSocket.on(EventType.ROOM_START, onRoomStart);
+  gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, onRoomNewPlayer);
+  gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, onRoomLeftPlayer);
+  gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
+  gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
 };
 
 type GameStateData = {
@@ -29,23 +28,19 @@ const onNewGameState = (data: NewGameStateData) => {
     players: data.gameState.players.map((player) => ({
       name: player.name,
     })),
-    status: data.gameState.status
+    status: data.gameState.status,
   };
   store.dispatch(setGameState(state));
 };
 
 type RoomNewPlayerData = GameStateData & {};
+const onRoomNewPlayer = (data: RoomNewPlayerData) => {};
 
-const onRoomNewPlayer = (data: NewGameStateData) => {};
+type RoomLeftPlayerData = GameStateData & {};
+const onRoomLeftPlayer = (data: RoomLeftPlayerData) => {};
 
-type RoomKickedData = {
-  reason: string;
-};
+type RoomStartGameData = GameStateData & {};
+const onRoomStartGame = (data: RoomStartGameData) => {};
 
-const onRoomKicked = (data: RoomKickedData) => {
-  console.log(`Kicked because: ${data.reason}`);
-};
-
-type RoomStartData = GameStateData & {};
-
-const onRoomStart = (data: RoomKickedData) => {};
+type RoomCancelledGameData = GameStateData & {};
+const onRoomCancelledGame = (data: RoomCancelledGameData) => {};
