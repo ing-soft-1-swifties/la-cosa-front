@@ -20,7 +20,6 @@ import { GameState } from "@/store/gameSlice";
 import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
 import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
-import useGameSocket from "@/src/hooks/useGameSocket";
 import { buildErrorToastOptions, buildSucessToastOptions } from "utils/toasts";
 
 const Page: PageWithLayout = () => {
@@ -113,6 +112,19 @@ const Page: PageWithLayout = () => {
                 <Text color="white" fontWeight="bold" fontSize="lg" mb={10}>
                   Jugadores: {game.players.length}
                 </Text>
+                {!isHost && (
+                  <Text
+                    color="white"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    mb={10}
+                    textDecor="underline"
+                    textUnderlineOffset="4px"
+                    textDecorationStyle="double"
+                  >
+                    Esperando a que el host inicie la partida
+                  </Text>
+                )}
                 {isHost && <StartGameButton gameState={game} />}
                 <LeaveLobbyButton />
               </Flex>
