@@ -11,7 +11,7 @@ import { Field, Formik } from "formik";
 import router, { Router } from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setGameConnectionToken } from "store/userSlice";
+import { setGameConnectionToken } from "@/store/userSlice";
 import * as Yup from "yup";
 
 const formSchema = Yup.object({
@@ -40,12 +40,11 @@ export default function FormJoinLobby() {
       >
         <Text
           textAlign="center"
-          data-testid=" titulo"
+          data-testid="form-join-lobby_titulo"
           pb={4}
           fontSize="3xl"
           color="white"
         >
-          {" "}
           Partidas personalizadas
         </Text>
 

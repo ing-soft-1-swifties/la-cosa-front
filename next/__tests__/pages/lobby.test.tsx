@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import Lobby from "@/src/pages/lobby";
 import "@testing-library/jest-dom";
 import { renderWithProviders } from "@/src/utils/test-utils";
-import { RootState } from "store/store";
+import { RootState } from "@/store/store";
 import { PreloadedState } from "@reduxjs/toolkit";
 import { GameStatus } from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
@@ -47,7 +47,7 @@ describe("Page Lobby", () => {
 
     const game = appState.game!;
     // UUID del Lobby
-    screen.getByText(`Lobby ${game.id}`);
+    screen.getByText(`Lobby ${game.config.id}`);
     // Nombre de la partida
     screen.getByText(`${game.config.name}`);
     // Titulo de la lista de Jugadores
