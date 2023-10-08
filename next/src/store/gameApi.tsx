@@ -32,7 +32,7 @@ export const gameApi = createApi({
     })
 });
 
-type GetGamesQueryResult = {
+export type GetGamesQueryResult = {
     'id': number,
     'name': string,
     'players_count': number,

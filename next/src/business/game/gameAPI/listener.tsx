@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import { GameState, setGameState } from "@/store/gameSlice";
-import { store } from "store/store";
+import { store } from "@/store/store";
 
 export enum EventType {
   NEW_GAME_STATE = "newGameState",

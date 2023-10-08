@@ -22,7 +22,7 @@ const GameList: FC<GameListProps> = () => {
   } = useGetGamesQuery(undefined, { pollingInterval: 5000 });
 
   return (
-    <Box flexBasis="65%" px={16} py={10} pos="relative">
+    <Box flexBasis="65%" px={16} py={10} pos="relative" data-testid="game-list">
       <Heading
         as="h2"
         mb={6}
@@ -44,6 +44,7 @@ const GameList: FC<GameListProps> = () => {
           size="xl"
           thickness="7px"
           color="green.400"
+          data-testid="game-list_spinner"
         />
       ) : gameListError ? (
         <Text color="red.500" textAlign="center" fontSize="2xl" mt={20}>

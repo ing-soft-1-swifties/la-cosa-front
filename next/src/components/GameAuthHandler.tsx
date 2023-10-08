@@ -1,10 +1,10 @@
 import { initGameSocket, isSocketUpToDate } from "@/src/business/game/gameAPI";
 import { Box, Portal, Text } from "@chakra-ui/react";
-import useGameSocket from "hooks/useGameSocket";
+import useGameSocket from "@/src/hooks/useGameSocket";
 import { useRouter } from "next/router";
 import { FC, ReactNode, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "store/store";
+import { RootState } from "@/store/store";
 
 type GameAuthHandlerProps = {
   children: ReactNode;
