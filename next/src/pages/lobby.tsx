@@ -20,7 +20,7 @@ import { GameState } from "@/store/gameSlice";
 import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
 import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
-import { buildErrorToastOptions, buildSucessToastOptions } from "utils/toasts";
+import { buildErrorToastOptions, buildSucessToastOptions } from "@/src/utils/toasts";
 
 const Page: PageWithLayout = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -178,9 +178,10 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
     <Tooltip
       label="No se cumplen los requisitos para iniciar el juego."
       display={startEnabled ? "none" : "auto"}
+      data-testid="lobby_start_button_tooltip"
     >
       <Button
-        data-testid="start-button"
+        data-testid="lobby_start_button"
         isDisabled={!startEnabled}
         isLoading={startLoading}
         onClick={onInitHandle}
@@ -199,7 +200,7 @@ const LeaveLobbyButton: FC<{}> = () => {
   const router = useRouter();
   return (
     <Button
-      data-testid="leave-button"
+      data-testid="lobby_leave_button"
       onClick={() => {
         leaveLobby(router);
       }}

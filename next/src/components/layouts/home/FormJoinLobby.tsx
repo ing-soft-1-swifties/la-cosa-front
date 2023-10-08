@@ -7,7 +7,7 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
-import { joinPlayerToGame } from "business/game/gameAPI/manager";
+import { joinPlayerToGame } from "@/src/business/game/gameAPI/manager";
 import { Field, Formik } from "formik";
 import router from "next/router";
 import React, { useState } from "react";

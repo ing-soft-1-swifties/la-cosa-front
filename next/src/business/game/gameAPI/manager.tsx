@@ -28,4 +28,5 @@ export const leaveLobby = (router: NextRouter) => {
   store.dispatch(setGameConnectionToken(undefined));
   gameSocket.emit(MessageType.ROOM_QUIT_GAME);
   gameSocket.disconnect();
+  router.replace("/");
 };
