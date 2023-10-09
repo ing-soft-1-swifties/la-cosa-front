@@ -7,17 +7,22 @@ import { PreloadedState } from "@reduxjs/toolkit";
 import { GameStatus } from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
 import { act } from "react-dom/test-utils";
-import {
-  buildSocket,
-  gameSocket,
-  initGameSocket,
-} from "@/src/business/game/gameAPI";
+// import {
+//   buildSocket,
+//   initGameSocket,
+// } from "@/src/business/game/gameAPI";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import { AddressInfo } from "node:net";
 import { setGameConnectionToken } from "@/store/userSlice";
-import { MessageType, leaveLobby } from "@/src/business/game/gameAPI/manager";
+import { MessageType } from "@/src/business/game/gameAPI/manager";
 import { Socket } from "socket.io-client";
+import { io as ioc } from "socket.io-client";
+import {
+  EventType,
+  GameStateData,
+  setupGameSocketListeners,
+} from "@/src/business/game/gameAPI/listener";
 
 // Mock Next Router for all tests.
 jest.mock("next/router", () => jest.requireActual("next-router-mock"));
@@ -40,6 +45,37 @@ const HostAppState: PreloadedState<RootState> = {
     players: [
       {
         name: "Pepito",
+      },
+    ],
+  },
+  user: {
+    gameConnToken: TEST_CONNECTION_TOKEN,
+    name: "Pepito",
+  },
+};
+
+const HostAppStateGameReady: PreloadedState<RootState> = {
+  game: {
+    config: {
+      id: 1,
+      name: "La partida",
+      host: "Pepito",
+      minPlayers: 4,
+      maxPlayers: 12,
+    },
+    status: GameStatus.WAITING,
+    players: [
+      {
+        name: "Pepito",
+      },
+      {
+        name: "Pepito_2",
+      },
+      {
+        name: "Pepito_3",
+      },
+      {
+        name: "Pepito_4",
       },
     ],
   },
@@ -77,9 +113,18 @@ const NotHostAppState: PreloadedState<RootState> = {
   },
 };
 
+const mockGameSocket = jest.fn();
+jest.mock("../../src/business/game/gameAPI/index", () => ({
+  get gameSocket() {
+    return mockGameSocket();
+  },
+}));
+
 describe("Page Lobby", () => {
   let ioserver: any;
   let serverSocket: Socket;
+  let clientSocket: Socket;
+
   beforeAll((done) => {
     mockRouter.replace("/lobby");
 
@@ -93,19 +138,19 @@ describe("Page Lobby", () => {
       ioserver.on("connection", (socket: Socket) => {
         serverSocket = socket;
       });
-      buildSocket(`http://localhost:${port}`);
-      initGameSocket();
-      gameSocket.on("connect", done);
-      gameSocket.on(MessageType.ROOM_QUIT_GAME, () => {
-        console.log("IPNFGAPMFDW{APWMDP{W")
-      })
-      serverSocket.emit(MessageType.ROOM_QUIT_GAME)
+
+      clientSocket = ioc(`http://localhost:${port}`, {
+        transports: ["websocket"],
+      });
+      setupGameSocketListeners(clientSocket);
+      mockGameSocket.mockReturnValue(clientSocket);
+      clientSocket.on("connect", done);
     });
   });
 
   afterAll(() => {
     ioserver.close();
-    gameSocket.disconnect();
+    clientSocket.disconnect();
   });
 
   it("renders", () => {
@@ -149,6 +194,61 @@ describe("Page Lobby", () => {
     expect(startButton).toBeDisabled();
   });
 
+  it("begin game button starts game", async () => {
+    act(() => {
+      renderWithProviders(<Lobby />, {
+        preloadedState: HostAppStateGameReady,
+      });
+    });
+    const startButton = screen.getByTestId("lobby_start_button");
+
+    // Mockeamos la respuesta del server socket
+    serverSocket.once(MessageType.ROOM_START_GAME, (callback) => {
+      const newState: GameStateData = {
+        gameState: {
+          config: {
+            id: 1234,
+            name: "1234",
+            host: "1234",
+            minPlayers: 5,
+            maxPlayers: 11,
+          },
+          players: [],
+          status: GameStatus.PLAYING,
+        },
+      };
+      serverSocket.emit(EventType.ON_ROOM_START_GAME, newState);
+      callback();
+    });
+
+    await act(async () => {
+      startButton.click();
+      // Damos un margen de 1000ms para que se hayan procesado los asyncs
+      // Es importante que se haga aca para que no salte error por actualizacion de estado fuera de act
+      await new Promise((res) => setTimeout(res, 1000));
+    });
+
+    // Veamos que se haya actualizado el estado a partir de la respuesta mockeada
+    expect(store.getState().game.config.id).toBe(1234);
+    expect(store.getState().game.config.name).toBe("1234");
+    expect(store.getState().game.config.host).toBe("1234");
+    expect(store.getState().game.config.minPlayers).toBe(5);
+    expect(store.getState().game.config.maxPlayers).toBe(11);
+    expect(store.getState().game.players).toEqual([]);
+    expect(store.getState().game.status).toBe(GameStatus.PLAYING);
+
+    // Veamos que se haya enrutado a la pagina del juego
+    expect(mockRouter.pathname).toBe("/game");
+  });
+
+  it("begin game button is not present because user is not host", () => {
+    renderWithProviders(<Lobby />, {
+      preloadedState: NotHostAppState,
+    });
+    const startButton = screen.queryByTestId("lobby_start_button");
+    expect(startButton).not.toBeInTheDocument();
+  });
+
   it("renders leave game button", () => {
     renderWithProviders(<Lobby />, {
       preloadedState: HostAppState,
@@ -161,15 +261,16 @@ describe("Page Lobby", () => {
     renderWithProviders(<Lobby />, {
       preloadedState: HostAppState,
     });
-    serverSocket.on(MessageType.ROOM_QUIT_GAME, () => {
-      done();
+    let disconnected_or_quitted = false;
+    serverSocket.once(MessageType.ROOM_QUIT_GAME, () => {
+      if (disconnected_or_quitted) done();
+      disconnected_or_quitted = true;
     });
-    console.log(serverSocket.listeners(MessageType.ROOM_QUIT_GAME))
-    gameSocket.emit(MessageType.ROOM_QUIT_GAME);
-    console.log(gameSocket)
-    gameSocket.emit(MessageType.ROOM_QUIT_GAME, () => {
-      done()
-    })
+    serverSocket.once("disconnect", () => {
+      if (disconnected_or_quitted) done();
+      disconnected_or_quitted = true;
+    });
+
     const leaveButton = screen.getByTestId("lobby_leave_button");
     act(() => {
       leaveButton.click();
@@ -187,5 +288,13 @@ describe("Page Lobby", () => {
     game.players.forEach((player) => {
       screen.getByText(player.name);
     });
+  });
+
+  it("updates state on player join", () => {
+    return false;
+  });
+
+  it("updates state on player leave", () => {
+    return false;
   });
 });

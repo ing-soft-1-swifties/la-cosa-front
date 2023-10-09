@@ -16,31 +16,41 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
 };
 
-type GameStateData = {
+export type GameStateData = {
   gameState: GameState;
 };
 
-type NewGameStateData = GameStateData & {};
-
-const onNewGameState = (data: NewGameStateData) => {
-  const state = {
+function calculateNewGameState(data: GameStateData) {
+  return {
     config: data.gameState.config,
     players: data.gameState.players.map((player) => ({
       name: player.name,
     })),
     status: data.gameState.status,
   };
-  store.dispatch(setGameState(state));
+}
+
+type NewGameStateData = GameStateData & {};
+const onNewGameState = (data: NewGameStateData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
 };
 
 type RoomNewPlayerData = GameStateData & {};
-const onRoomNewPlayer = (data: RoomNewPlayerData) => {};
+const onRoomNewPlayer = (data: RoomNewPlayerData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
+};
 
 type RoomLeftPlayerData = GameStateData & {};
-const onRoomLeftPlayer = (data: RoomLeftPlayerData) => {};
+const onRoomLeftPlayer = (data: RoomLeftPlayerData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
+};
 
 type RoomStartGameData = GameStateData & {};
-const onRoomStartGame = (data: RoomStartGameData) => {};
+const onRoomStartGame = (data: RoomStartGameData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
+};
 
 type RoomCancelledGameData = GameStateData & {};
-const onRoomCancelledGame = (data: RoomCancelledGameData) => {};
+const onRoomCancelledGame = (data: RoomCancelledGameData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
+};

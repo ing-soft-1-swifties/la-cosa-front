@@ -9,25 +9,27 @@ type GameSocketAuth = {
 export let gameSocket: Socket;
 
 export function buildSocket(connection: string) {
-  gameSocket = io(connection, {
+  const socket = io(connection, {
     autoConnect: false,
     auth: {
       token: "",
     },
     transports: ["websocket"],
   });
-  setupGameSocketListeners(gameSocket);
+  setupGameSocketListeners(socket);
+  return socket;
 }
-buildSocket("http://localhost:8000");
+gameSocket = buildSocket("http://localhost:8000");
 
-export function initGameSocket() {
+export function initGameSocket(connSocket: Socket | undefined) {
+  const socket = connSocket ?? gameSocket;
   const connectionToken = store.getState().user.gameConnToken;
   if (connectionToken == null) return;
-  if (!gameSocket.disconnected) gameSocket.disconnect();
-  gameSocket.auth = {
+  if (!socket.disconnected) socket.disconnect();
+  socket.auth = {
     token: connectionToken,
   };
-  gameSocket.connect();
+  socket.connect();
 }
 
 export const isConnected = () => {

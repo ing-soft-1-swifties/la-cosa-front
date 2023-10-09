@@ -27,6 +27,9 @@ export const leaveLobby = (router: NextRouter) => {
   store.dispatch(setUserName(""));
   store.dispatch(setGameConnectionToken(undefined));
   gameSocket.emit(MessageType.ROOM_QUIT_GAME);
-  gameSocket.disconnect();
+  // Damos un margen de tiempo para desconectarnos del socket.
+  setTimeout(() => {
+    gameSocket.disconnect();
+  }, 400);
   router.replace("/");
 };
