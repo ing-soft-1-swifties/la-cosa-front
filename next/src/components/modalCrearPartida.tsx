@@ -115,6 +115,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                       isInvalid={
                         !!errors.nombrePartida && touched.nombrePartida
                       } //hubo error y el campo fue tocado
+                      data-testid="nombrePartida"
                     >
                       <FormLabel htmlFor="nombrePartida">
                         Nombre Partida
@@ -124,8 +125,9 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="nombrePartida"
                         type="text"
                         id="nombrePartida"
+                        data-testid="nombrePartidaInput"
                       />
-                      <FormErrorMessage>
+                      <FormErrorMessage data-testid="nombrePartidaErrormsj">
                         {errors.nombrePartida}
                       </FormErrorMessage>
                     </FormControl>
@@ -134,6 +136,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                       isInvalid={
                         !!errors.nombreJugador && touched.nombreJugador
                       } //hubo error y el campo fue tocado
+                      data-testid="nombreJugador"
                     >
                       <FormLabel htmlFor="nombreJugador">
                         Nombre Jugador
@@ -143,14 +146,17 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="nombreJugador"
                         type="text"
                         id="nombreJugador"
+                        data-testid="nombreJugadorInput"
                       />
-                      <FormErrorMessage>
+
+                      <FormErrorMessage data-testid="nombreJugadorErrorMessage">
                         {errors.nombreJugador}
                       </FormErrorMessage>
                     </FormControl>
                     {/* input de jugadores minimos  */}
                     <FormControl
                       isInvalid={!!errors.minPlayers && touched.minPlayers} //hubo error y el campo fue tocado
+                      data-testid="minPlayers"
                     >
                       <FormLabel htmlFor="minPlayers">
                         Minimo de Jugadores
@@ -160,12 +166,16 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="minPlayers"
                         type="text"
                         id="minPlayers"
+                        data-testid="minPlayersInput"
                       />
-                      <FormErrorMessage>{errors.minPlayers}</FormErrorMessage>
+                      <FormErrorMessage data-testid="minPlayersErrorMessage">
+                        {errors.minPlayers}
+                      </FormErrorMessage>
                     </FormControl>
                     {/* input de jugadores maximos  */}
                     <FormControl
                       isInvalid={!!errors.maxPlayers && touched.maxPlayers} //hubo error y el campo fue tocado
+                      data-testid="maxPlayers"
                     >
                       <FormLabel htmlFor="maxPlayers">
                         Maximo de Jugadores
@@ -175,11 +185,19 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="maxPlayers"
                         type="text"
                         id="maxPlayers"
+                        data-testid="maxPlayersInput"
                       />
-                      <FormErrorMessage>{errors.maxPlayers}</FormErrorMessage>
+                      <FormErrorMessage data-testid="maxPlayersErrorMessage">
+                        {errors.maxPlayers}
+                      </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={submitError != null}>
-                      <FormErrorMessage>{submitError}</FormErrorMessage>
+                    <FormControl
+                      isInvalid={submitError != null}
+                      data-testid="submitErrorFormControl"
+                    >
+                      <FormErrorMessage data-testid="submitErrorErrorMessage">
+                        {submitError}
+                      </FormErrorMessage>
                     </FormControl>
                     <Flex justify="flex-end" align="center" mt="5">
                       <Button type="submit" colorScheme="green" mr={3}>
