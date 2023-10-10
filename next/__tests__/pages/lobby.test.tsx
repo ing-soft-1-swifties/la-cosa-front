@@ -2,9 +2,9 @@ import { screen } from "@testing-library/react";
 import Lobby from "@/src/pages/lobby";
 import "@testing-library/jest-dom";
 import { renderWithProviders } from "@/src/utils/test-utils";
-import { RootState, store } from "@/store/store";
+import { RootState, setupStore, store } from "@/store/store";
 import { PreloadedState } from "@reduxjs/toolkit";
-import { GameStatus } from "@/store/gameSlice";
+import { GameStatus, initialState, setGameState } from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
 import { act } from "react-dom/test-utils";
 // import {
@@ -23,6 +23,7 @@ import {
   GameStateData,
   setupGameSocketListeners,
 } from "@/src/business/game/gameAPI/listener";
+import { gameSocket } from "@/src/business/game/gameAPI";
 
 // Mock Next Router for all tests.
 jest.mock("next/router", () => jest.requireActual("next-router-mock"));
@@ -151,6 +152,15 @@ describe("Page Lobby", () => {
   afterAll(() => {
     ioserver.close();
     clientSocket.disconnect();
+  });
+
+  beforeEach(async () => {
+    if (clientSocket.disconnected) {
+      clientSocket.connect();
+      // Wait for reconnection
+      await new Promise((res) => setTimeout(res, 200));
+    }
+    store.dispatch(setGameState(initialState));
   });
 
   it("renders", () => {
@@ -290,11 +300,62 @@ describe("Page Lobby", () => {
     });
   });
 
-  it("updates state on player join", () => {
-    return false;
+  it("updates state on player join", async () => {
+    act(() => {
+      renderWithProviders(<Lobby />, {
+        preloadedState: HostAppState,
+        store,
+      });
+    });
+
+    const newState: GameStateData = {
+      gameState: HostAppState.game!,
+    };
+
+    newState.gameState.players = newState.gameState.players.concat([
+      {
+        name: "TheAmazingNewPlayer",
+      },
+    ]);
+
+    expect(screen.queryByText("TheAmazingNewPlayer")).not.toBeInTheDocument();
+    await act(async () => {
+      serverSocket.emit(EventType.ON_ROOM_NEW_PLAYER, newState);
+    });
+    // Damos un margen de 1000ms para que se hayan procesado los asyncs
+    await new Promise((res) => setTimeout(res, 1000));
+    screen.getByText("TheAmazingNewPlayer");
   });
 
-  it("updates state on player leave", () => {
-    return false;
+  it("updates state on player leave", async () => {
+    // Reseteamos el store de la apps
+    store.dispatch(setGameState(HostAppStateGameReady.game!));
+
+    // Renderizamos con el store de la App.
+    act(() => {
+      renderWithProviders(<Lobby />, {
+        store,
+      });
+    });
+
+    // Construimos un nuevo estado
+    const newState: GameStateData = {
+      gameState: HostAppStateGameReady.game!,
+    };
+    newState.gameState.players = newState.gameState.players.filter((player) => {
+      return player.name != "Pepito_2";
+    });
+
+    // Veamos que el jugador inicialmente este en la partida
+    screen.getByText("Pepito_2");
+
+    // Emitimos el evento de que un jugador abandono la partida
+    await act(async () => {
+      serverSocket.emit(EventType.ON_ROOM_LEFT_PLAYER, newState);
+    });
+
+    // Damos un margen de 1000ms para que se hayan procesado los asyncs
+    await new Promise((res) => setTimeout(res, 1000));
+    expect(screen.queryByText("Pepito_2")).not.toBeInTheDocument();
   });
 });

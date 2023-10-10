@@ -24,7 +24,7 @@ export type GameState = {
   players: GamePlayer[];
 };
 
-const initialState: GameState = {
+export const initialState: GameState = {
   config: {
     id: -1,
     name: "",
