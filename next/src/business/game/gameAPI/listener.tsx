@@ -61,6 +61,7 @@ function calculateNewGameState(data: GameStateData) {
     })),
     status: data.gameState.status,
     playerData : {cards: data.gameState.playerData.cards,
+                  playerID: data.gameState.playerData.playerID,
                   cardSelected: undefined
     },
   };

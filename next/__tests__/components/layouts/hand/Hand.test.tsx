@@ -92,10 +92,59 @@ const PlayerInGameState: PreloadedState<RootState> = {
   },
 };
 
+<<<<<<< HEAD
 
 describe("Page Game", () => {
   
   beforeEach(async () => {
+=======
+const mockGameSocket = jest.fn();
+jest.mock("../../src/business/game/gameAPI/index", () => ({
+  get gameSocket() {
+    return mockGameSocket();
+  },
+}));
+
+describe("Page Lobby", () => {
+  let ioserver: any;
+  let serverSocket: Socket;
+  let clientSocket: Socket;
+
+  beforeAll((done) => {
+    mockRouter.replace("/lobby");
+
+    // Setup Game Socket
+    store.dispatch(setGameConnectionToken(TEST_CONNECTION_TOKEN));
+    const httpServer = createServer();
+    ioserver = new Server(httpServer);
+    httpServer.listen(() => {
+      const addr = httpServer.address() as AddressInfo;
+      const port = addr.port;
+      ioserver.on("connection", (socket: Socket) => {
+        serverSocket = socket;
+      });
+
+      clientSocket = ioc(`http://localhost:${port}`, {
+        transports: ["websocket"],
+      });
+      setupGameSocketListeners(clientSocket);
+      mockGameSocket.mockReturnValue(clientSocket);
+      clientSocket.on("connect", done);
+    });
+  });
+
+  afterAll(() => {
+    ioserver.close();
+    clientSocket.disconnect();
+  });
+
+  beforeEach(async () => {
+    if (clientSocket.disconnected) {
+      clientSocket.connect();
+      // Wait for reconnection
+      await new Promise((res) => setTimeout(res, 200));
+    }
+>>>>>>> hand y carta terminado con sus estados y redux falta test
     store.dispatch(setGameState(initialState));
   });
 
@@ -108,6 +157,7 @@ describe("Page Game", () => {
       preloadedState: PlayerInGameState,
     });
     const game = PlayerInGameState.game!;
+<<<<<<< HEAD
     screen.getByTestId(`HAND`);
     // Cards
     screen.getByTestId(`GAME_CARD_${game.playerData.cards[0].id}`);
@@ -115,5 +165,14 @@ describe("Page Game", () => {
     screen.getByTestId(`GAME_CARD_${game.playerData.cards[2].id}`);
     screen.getByTestId(`GAME_CARD_${game.playerData.cards[3].id}`);
     screen.getByTestId(`GAME_CARD_${game.playerData.cards[4].id}`);
+=======
+    // Cards
+    screen.getByTestId(`Hand_card_${game.playerData.cards[0].id}`);
+    screen.getByTestId(`Hand_card_${game.playerData.cards[1].id}`);
+    screen.getByTestId(`Hand_card_${game.playerData.cards[2].id}`);
+    screen.getByTestId(`Hand_card_${game.playerData.cards[3].id}`);
+    screen.getByTestId(`Hand_card_${game.playerData.cards[4].id}`);
+    screen.getByTestId(`Hand_card_${game.playerData.cards[5].id}`);
+>>>>>>> hand y carta terminado con sus estados y redux falta test
   });
 });
