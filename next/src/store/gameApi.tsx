@@ -18,7 +18,7 @@ export const gameApi = createApi({
         }),
         // al final el join lo hacemos con un simple fetch
         // TO DROP
-        //joinGame: builder.query<String, {name: string, room_id: number}>({
+        //joinGame: builder.query<string, {name: string, room_id: number}>({
         //    query: ({name, room_id}) => ({
         //        url: "/join",
         //        method: "POST",

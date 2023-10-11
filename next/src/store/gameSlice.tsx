@@ -1,3 +1,4 @@
+import { StatHelpText } from "@chakra-ui/react";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export enum GameStatus {
@@ -20,11 +21,36 @@ type GameConfig = {
   maxPlayers: number;
 };
 
+type PlayerData = {
+  cards: card[];
+  cardSelected: number | undefined;
+  playerID: number;
+};
+
+// no se si poner en ingles estos nombres pero por ahora nos manejamos asi
+export enum CardTypes {
+  AWAY = "ALEJATE",
+  PANIC = "PANICO",
+}
+export enum CardSubTypes {
+  CONTAGION = "CONTAGIO",
+  ACTION = "ACCION",
+  DEFENSE = "DEFENSA",
+  OBSTACLE = "OBSTACULO",
+}
+
+type card = {
+  id: number;
+  name: string;
+  type: CardTypes;
+  subType: CardSubTypes;
+};
+
 export type GameState = {
   config: GameConfig;
   status: GameStatus;
   players: GamePlayer[];
-  playerID: number;
+  playerData: PlayerData;
 };
 
 export const initialState: GameState = {
@@ -44,17 +70,63 @@ export const initialState: GameState = {
     { name: "otro4", id: 126, position: 4 },
     { name: "otro5", id: 126, position: 5 },
   ],
-  playerID: 123,
+  playerData: {
+    playerID: 123,
+    cards: [
+      {
+        id: 1,
+        name: "Lanzallamas",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+      },
+      {
+        id: 2,
+        name: "Infectado",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+      },
+      {
+        id: 3,
+        name: "¡Nada de barbacoas!",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+      },
+      {
+        id: 4,
+        name: "¡No, gracias!",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+      },
+      // {
+      //   id: 5,
+      //   name: "La cosa",
+      //   type: CardTypes.AWAY,
+      //   subType: CardSubTypes.ACTION,
+      // },
+    ],
+    cardSelected: 1,
+  },
+};
+
+export type BackendGameState = {
+  config: GameConfig;
+  status: GameStatus;
+  players: GamePlayer[];
+  playerData: PlayerData;
 };
 
 export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    setGameState(state, action: PayloadAction<GameState>) {
+    setGameState(state, action: PayloadAction<BackendGameState>) {
       state.config = action.payload.config;
       state.players = action.payload.players;
       state.status = action.payload.status;
+      state.playerData = action.payload.playerData;
+    },
+    setSelectedCard(state, action:PayloadAction<number | undefined>){
+      state.playerData.cardSelected = action.payload;
     },
     resetGameState(state) {
       state.config = initialState.config
@@ -64,6 +136,6 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { setGameState } = gameSlice.actions;
+export const { setGameState, setSelectedCard } = gameSlice.actions;
 
 export default gameSlice.reducer;
