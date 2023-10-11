@@ -3,49 +3,54 @@ import { GameState, setGameState } from "@/store/gameSlice";
 import { store } from "@/store/store";
 
 export enum EventType {
-  NEW_GAME_STATE = "newGameState",
-  ROOM_NEW_PLAYER = "room/newPlayer",
-
-  ROOM_KICKED = "room/kicked",
-  ROOM_START = "room/start",
+  ON_ROOM_NEW_PLAYER = "on_room_new_player",
+  ON_ROOM_LEFT_PLAYER = "on_room_left_player",
+  ON_ROOM_START_GAME = "on_room_start_game",
+  ON_ROOM_CANCELLED_GAME = "on_room_cancelled_game",
 }
 
 export const setupGameSocketListeners = (gameSocket: Socket) => {
-  gameSocket.on(EventType.NEW_GAME_STATE, onNewGameState);
-  gameSocket.on(EventType.ROOM_NEW_PLAYER, onRoomNewPlayer);
-  gameSocket.on(EventType.ROOM_KICKED, onRoomKicked);
-  gameSocket.on(EventType.ROOM_START, onRoomStart);
+  gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, onRoomNewPlayer);
+  gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, onRoomLeftPlayer);
+  gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
+  gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
 };
 
-type GameStateData = {
+export type GameStateData = {
   gameState: GameState;
 };
 
-type NewGameStateData = GameStateData & {};
-
-const onNewGameState = (data: NewGameStateData) => {
-  const state = {
+function calculateNewGameState(data: GameStateData) {
+  return {
     config: data.gameState.config,
     players: data.gameState.players.map((player) => ({
       name: player.name,
     })),
-    status: data.gameState.status
+    status: data.gameState.status,
   };
-  store.dispatch(setGameState(state));
+}
+
+type NewGameStateData = GameStateData & {};
+const onNewGameState = (data: NewGameStateData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
 };
 
 type RoomNewPlayerData = GameStateData & {};
-
-const onRoomNewPlayer = (data: NewGameStateData) => {};
-
-type RoomKickedData = {
-  reason: string;
+const onRoomNewPlayer = (data: RoomNewPlayerData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
 };
 
-const onRoomKicked = (data: RoomKickedData) => {
-  console.log(`Kicked because: ${data.reason}`);
+type RoomLeftPlayerData = GameStateData & {};
+const onRoomLeftPlayer = (data: RoomLeftPlayerData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
 };
 
-type RoomStartData = GameStateData & {};
+type RoomStartGameData = GameStateData & {};
+const onRoomStartGame = (data: RoomStartGameData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
+};
 
-const onRoomStart = (data: RoomKickedData) => {};
+type RoomCancelledGameData = GameStateData & {};
+const onRoomCancelledGame = (data: RoomCancelledGameData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
+};

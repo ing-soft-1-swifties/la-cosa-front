@@ -7,7 +7,6 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query/react";
 import gameReducer from "@/store/gameSlice";
 import userReducer from "@/store/userSlice";
 import { gameApi } from "@/store/gameApi";
-import { getDefaultNormalizer } from "@testing-library/react";
 
 // Creamos el reducer root para extraer el tipo de RootState
 const rootReducer = combineReducers({
@@ -22,7 +21,8 @@ export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
     devTools: process.env.NODE_ENV !== "production",
     reducer: rootReducer,
     preloadedState,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(gameApi.middleware)
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(gameApi.middleware),
   });
 };
 

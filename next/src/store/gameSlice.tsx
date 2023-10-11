@@ -24,38 +24,16 @@ export type GameState = {
   players: GamePlayer[];
 };
 
-const initialState: GameState = {
+export const initialState: GameState = {
   config: {
-    id: 4,
-    name: "La partida",
-    host: "Tomas",
-    minPlayers: 1,
+    id: -1,
+    name: "",
+    host: "",
+    minPlayers: 4,
     maxPlayers: 12,
   },
   status: GameStatus.WAITING,
-  players: [
-    {
-      name: "Tomas",
-    },
-    {
-      name: "Franco Molina",
-    },
-    {
-      name: "Victoria Lopez",
-    },
-    {
-      name: "Lautaro Ebner",
-    },
-    {
-      name: "El Profe",
-    },
-    {
-      name: "Alejito",
-    },
-    {
-      name: "Pepito",
-    },
-  ],
+  players: [],
 };
 
 export const gameSlice = createSlice({
@@ -63,9 +41,9 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     setGameState(state, action: PayloadAction<GameState>) {
-      state.config = action.payload.config
-      state.players = action.payload.players
-      state.status = action.payload.status
+      state.config = action.payload.config;
+      state.players = action.payload.players;
+      state.status = action.payload.status;
     },
   },
 });

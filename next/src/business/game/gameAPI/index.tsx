@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 import { store } from "@/store/store";
 import { setupGameSocketListeners } from "./listener";
 
@@ -6,23 +6,30 @@ type GameSocketAuth = {
   token: string;
 };
 
-export let gameSocket = io("http://localhost:8000", {
-  autoConnect: false,
-  auth: {
-    token: "",
-  },
-  transports: ["websocket"],
-});
+export let gameSocket: Socket;
 
-export function initGameSocket() {
+export function buildSocket(connection: string) {
+  const socket = io(connection, {
+    autoConnect: false,
+    auth: {
+      token: "",
+    },
+    transports: ["websocket"],
+  });
+  setupGameSocketListeners(socket);
+  return socket;
+}
+gameSocket = buildSocket("http://localhost:8000");
+
+export function initGameSocket(connSocket: Socket | undefined) {
+  const socket = connSocket ?? gameSocket;
   const connectionToken = store.getState().user.gameConnToken;
   if (connectionToken == null) return;
-  if (!gameSocket.disconnected) gameSocket.disconnect();
-  gameSocket.auth = {
+  if (!socket.disconnected) socket.disconnect();
+  socket.auth = {
     token: connectionToken,
   };
-  gameSocket.connect();
-  setupGameSocketListeners(gameSocket);
+  socket.connect();
 }
 
 export const isConnected = () => {

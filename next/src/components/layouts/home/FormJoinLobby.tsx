@@ -7,8 +7,9 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
+import { joinPlayerToGame } from "@/src/business/game/gameAPI/manager";
 import { Field, Formik } from "formik";
-import router, { Router } from "next/router";
+import router from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setGameConnectionToken } from "@/store/userSlice";
@@ -24,8 +25,6 @@ const formSchema = Yup.object({
 
 export default function FormJoinLobby() {
   const dispatch = useDispatch();
-  const initialRef = React.useRef(null); //esto es para que cuando se abra el modal, el foco vaya al primer input
-  const finalRef = React.useRef(null);
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
 
   return (
@@ -51,7 +50,6 @@ export default function FormJoinLobby() {
         <Formik
           initialValues={{ room_id: "", name: "" }}
           onSubmit={async (values) => {
-            console.log(values); //valores del formulario
             setSubmitError(undefined);
             try {
               const response = await fetch("http://localhost:8000/join", {
@@ -67,10 +65,7 @@ export default function FormJoinLobby() {
               });
               if (response.ok) {
                 const data: { token: string } = await response.json(); //convierte los datos a json
-                console.log("Respuesta del servidor:", data);
-                dispatch(setGameConnectionToken(data.token));
-                console.log(data.token);
-                router.replace("/lobby");
+                joinPlayerToGame(values.name, data.token, router);
               } else {
                 setSubmitError("Error al conectarse con el servidor.");
               }
@@ -89,7 +84,7 @@ export default function FormJoinLobby() {
                   isInvalid={!!errors.name && touched.name} //hubo error y el campo fue tocado
                 >
                   <FormLabel htmlFor="name" color="white">
-                    Nombre{" "}
+                    Nombre
                   </FormLabel>
                   <Field
                     color="white"
@@ -105,8 +100,7 @@ export default function FormJoinLobby() {
                   isInvalid={!!errors.room_id && touched.room_id} //hubo error y el campo fue tocado
                 >
                   <FormLabel htmlFor="room_id" pt={4} color="white">
-                    {" "}
-                    ID de partida{" "}
+                    ID de partida
                   </FormLabel>
                   <Field
                     color="white"
