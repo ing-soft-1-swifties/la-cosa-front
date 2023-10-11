@@ -60,9 +60,10 @@ function calculateNewGameState(data: GameStateData) {
       position: player.position,
     })),
     status: data.gameState.status,
-    playerData : {cards: data.gameState.playerData.cards,
-                  playerID: data.gameState.playerData.playerID,
-                  cardSelected: undefined
+    playerData: {
+      cards: data.gameState.playerData.cards,
+      playerID: data.gameState.playerData.playerID,
+      cardSelected: undefined,
     },
   };
 }
