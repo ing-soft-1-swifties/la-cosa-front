@@ -6,6 +6,7 @@ import { buildSucessToastOptions } from "@/src/utils/toasts";
 import useGameSocket from "@/src/hooks/useGameSocket";
 import GameTable from "@/src/components/Table";
 import { EventType } from "@/src/business/game/gameAPI/listener";
+import Hand from "@/src/components/layouts/game/Hand";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
@@ -22,6 +23,7 @@ const Page: PageWithLayout = () => {
   return (
     <Box pos="relative">
       <GameTable />
+      <Hand/>
     </Box>
   );
 };

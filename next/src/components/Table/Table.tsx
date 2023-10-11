@@ -16,9 +16,9 @@ function getTranslatesForPosition(position: number, playerAmount: number): { x: 
 }
 
 const Table: FC<TableProps> = () => {
-  const players = useSelector((state: RootState) => state.game.players.filter(p => p.id !== state.game.playerID))
+  const players = useSelector((state: RootState) => state.game.players.filter(p => p.id !== state.game.playerData.playerID))
   // const players = useSelector((state: RootState) => state.game.players)
-  const localPlayer = useSelector((state: RootState) => state.game.players.find(p => p.id === state.game.playerID))
+  const localPlayer = useSelector((state: RootState) => state.game.players.find(p => p.id === state.game.playerData.playerID))
 
   if (localPlayer == undefined) {
     throw new Error("No player in the game has this player's id!")
