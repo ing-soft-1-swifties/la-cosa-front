@@ -1,4 +1,4 @@
-import type { FC, ReactElement, ReactNode } from "react";
+import { FC, ReactElement, ReactNode, useEffect } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
@@ -9,6 +9,7 @@ import { store } from "@/store/store";
 import SiteTheme from "@/src/theme";
 import "@/src/styles/globals.css";
 import GameAuthHandler from "@/components/GameAuthHandler";
+import { useRouter } from "next/router";
 
 type SiteAppProps = {
   children: ReactNode;
@@ -18,6 +19,28 @@ const { ToastContainer, toast } = createStandaloneToast(SiteTheme);
 export const StandaloneToast = toast;
 
 export const SiteApp: FC<SiteAppProps> = ({ children }) => {
+  const router = useRouter();
+  useEffect(() => {
+    const onRouteChangeComplete = (url: string) => {
+      switch (url) {
+        case "/": {
+          
+        }
+        case "/lobby": {
+        }
+        case "game": {
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    };
+    router.events.on("routeChangeComplete", onRouteChangeComplete);
+    return () => {
+      router.events.off("routeChangeComplete", onRouteChangeComplete);
+    };
+  }, []);
   return (
     <>
       <Head>

@@ -17,12 +17,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import PlayerCard from "@/components/PlayerCard";
 import { GameState } from "@/store/gameSlice";
-import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
+import {
+  leaveLobby,
+  requestStartGame,
+} from "@/src/business/game/gameAPI/manager";
 import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
 import {
   buildErrorToastOptions,
-  buildSucessToastOptions,
 } from "@/src/utils/toasts";
 
 const Page: PageWithLayout = () => {
@@ -147,22 +149,13 @@ type StartGameButtonProps = {
 
 const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
   const [startLoading, setStartLoading] = useState(false);
-  const router = useRouter();
   const startEnabled = canGameStart(gameState);
   const toast = useToast();
   const onInitHandle = async () => {
     setStartLoading(true);
-    startGame()
+    requestStartGame()
       .then(
-        () => {
-          toast(
-            buildSucessToastOptions({
-              title: "La partida comenzo!",
-              description: "",
-            })
-          );
-          router.replace("/game");
-        },
+        () => {},
         (reason: any) => {
           toast(
             buildErrorToastOptions({

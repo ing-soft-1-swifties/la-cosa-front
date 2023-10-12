@@ -16,12 +16,13 @@ const GameAuthHandler: FC<GameAuthHandlerProps> = ({ children }) => {
   const { isConnected } = useGameSocket();
 
   useEffect(() => {
-    if (token == null) router.replace("/");
+    if (token == null) router.push("/");
   }, [token, router]);
   if (token == null) return <></>;
 
   // Iniciamos el Socket con la autentificacion si el socket esta desactualizado.
   if (!isSocketUpToDate()) initGameSocket();
+
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import { GameState, setGameState } from "@/store/gameSlice";
 import { store } from "@/store/store";
-import { cancelGame, CancelGameReason } from "./manager";
+import { cancelGame, CancelGameReason, startGame } from "./manager";
 
 export enum EventType {
   ON_ROOM_NEW_PLAYER = "on_room_new_player",
@@ -15,7 +15,7 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, onRoomLeftPlayer);
   gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
-  gameSocket.on("disconnect", onGameSocketDisconnect);
+  gameSocket.on("disconnect", onGameSocketDisconnect as any);
 };
 
 export type GameStateData = {
@@ -50,6 +50,7 @@ const onRoomLeftPlayer = (data: RoomLeftPlayerData) => {
 type RoomStartGameData = GameStateData & {};
 const onRoomStartGame = (data: RoomStartGameData) => {
   store.dispatch(setGameState(calculateNewGameState(data)));
+startGame();
 };
 
 const onRoomCancelledGame = () => {

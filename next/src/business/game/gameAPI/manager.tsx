@@ -59,9 +59,19 @@ export function cancelGame(reason: CancelGameReason) {
   store.dispatch(setGameConnectionToken(undefined));
 }
 
-export const startGame = () => {
+export const requestStartGame = () => {
   return gameSocket.emitWithAck(MessageType.ROOM_START_GAME);
 };
+
+export function startGame() {
+  StandaloneToast(
+    buildSucessToastOptions({
+      title: "La partida comenzo!",
+      description: "",
+    })
+  );
+  Router.push("/game");
+}
 
 export const leaveLobby = () => {
   Router.push("/");

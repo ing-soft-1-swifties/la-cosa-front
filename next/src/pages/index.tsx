@@ -6,9 +6,16 @@ import BgImage from "@/components/utility/BgImage";
 import FormJoinLobby from "@/components/layouts/home/FormJoinLobby";
 import NewGameModal from "@/components/modalCrearPartida";
 import { useDisclosure } from "@chakra-ui/react";
+import useGameSocket from "hooks/useGameSocket";
 
 const Page: PageWithLayout = () => {
   const disclouseModal = useDisclosure();
+  const { gameSocket } = useGameSocket();
+
+  // Si estamos en / salimos de cualquier partida que podriamos llegar a estar.
+  if (gameSocket.connected) {
+    gameSocket.disconnect();
+  }
   return (
     <Box pos="relative">
       <BgImage
