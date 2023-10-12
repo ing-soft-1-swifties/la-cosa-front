@@ -92,52 +92,10 @@ const PlayerInGameState: PreloadedState<RootState> = {
   },
 };
 
-const mockGameSocket = jest.fn();
-jest.mock("../../src/business/game/gameAPI/index", () => ({
-  get gameSocket() {
-    return mockGameSocket();
-  },
-}));
 
-describe("Page Lobby", () => {
-  let ioserver: any;
-  let serverSocket: Socket;
-  let clientSocket: Socket;
-
-  beforeAll((done) => {
-    mockRouter.replace("/lobby");
-
-    // Setup Game Socket
-    store.dispatch(setGameConnectionToken(TEST_CONNECTION_TOKEN));
-    const httpServer = createServer();
-    ioserver = new Server(httpServer);
-    httpServer.listen(() => {
-      const addr = httpServer.address() as AddressInfo;
-      const port = addr.port;
-      ioserver.on("connection", (socket: Socket) => {
-        serverSocket = socket;
-      });
-
-      clientSocket = ioc(`http://localhost:${port}`, {
-        transports: ["websocket"],
-      });
-      setupGameSocketListeners(clientSocket);
-      mockGameSocket.mockReturnValue(clientSocket);
-      clientSocket.on("connect", done);
-    });
-  });
-
-  afterAll(() => {
-    ioserver.close();
-    clientSocket.disconnect();
-  });
-
+describe("Page Game", () => {
+  
   beforeEach(async () => {
-    if (clientSocket.disconnected) {
-      clientSocket.connect();
-      // Wait for reconnection
-      await new Promise((res) => setTimeout(res, 200));
-    }
     store.dispatch(setGameState(initialState));
   });
 
@@ -150,12 +108,12 @@ describe("Page Lobby", () => {
       preloadedState: PlayerInGameState,
     });
     const game = PlayerInGameState.game!;
+    screen.getByTestId(`HAND`);
     // Cards
-    screen.getByTestId(`Hand_card_${game.playerData.cards[0].id}`);
-    screen.getByTestId(`Hand_card_${game.playerData.cards[1].id}`);
-    screen.getByTestId(`Hand_card_${game.playerData.cards[2].id}`);
-    screen.getByTestId(`Hand_card_${game.playerData.cards[3].id}`);
-    screen.getByTestId(`Hand_card_${game.playerData.cards[4].id}`);
-    screen.getByTestId(`Hand_card_${game.playerData.cards[5].id}`);
+    screen.getByTestId(`GAME_CARD_${game.playerData.cards[0].id}`);
+    screen.getByTestId(`GAME_CARD_${game.playerData.cards[1].id}`);
+    screen.getByTestId(`GAME_CARD_${game.playerData.cards[2].id}`);
+    screen.getByTestId(`GAME_CARD_${game.playerData.cards[3].id}`);
+    screen.getByTestId(`GAME_CARD_${game.playerData.cards[4].id}`);
   });
 });

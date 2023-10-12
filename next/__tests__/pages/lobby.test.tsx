@@ -48,6 +48,10 @@ const HostAppState: PreloadedState<RootState> = {
         name: "Pepito",
       },
     ],
+    playerData: {
+      cards: [],
+      cardSelected: undefined,
+    },
   },
   user: {
     gameConnToken: TEST_CONNECTION_TOKEN,
@@ -79,6 +83,10 @@ const HostAppStateGameReady: PreloadedState<RootState> = {
         name: "Pepito_4",
       },
     ],
+    playerData: {
+      cards: [],
+      cardSelected: undefined,
+    },
   },
   user: {
     gameConnToken: TEST_CONNECTION_TOKEN,
@@ -107,6 +115,10 @@ const NotHostAppState: PreloadedState<RootState> = {
         name: "NotPepito",
       },
     ],
+    playerData: {
+      cards: [],
+      cardSelected: undefined,
+    },
   },
   user: {
     gameConnToken: TEST_CONNECTION_TOKEN,
@@ -225,6 +237,10 @@ describe("Page Lobby", () => {
           },
           players: [],
           status: GameStatus.PLAYING,
+          playerData: {
+            cards: [],
+            cardSelected: undefined,
+          },
         },
       };
       serverSocket.emit(EventType.ON_ROOM_START_GAME, newState);

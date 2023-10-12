@@ -43,7 +43,7 @@ type card = {
   id: number;
   name: string;
   type: CardTypes;
-  subType: CardSubTypes;
+  subType: CardSubTypes | undefined;
 };
 
 export type GameState = {
@@ -72,39 +72,8 @@ export const initialState: GameState = {
   ],
   playerData: {
     playerID: 123,
-    cards: [
-      {
-        id: 1,
-        name: "Lanzallamas",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-      },
-      {
-        id: 2,
-        name: "Infectado",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-      },
-      {
-        id: 3,
-        name: "¡Nada de barbacoas!",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-      },
-      {
-        id: 4,
-        name: "¡No, gracias!",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-      },
-      // {
-      //   id: 5,
-      //   name: "La cosa",
-      //   type: CardTypes.AWAY,
-      //   subType: CardSubTypes.ACTION,
-      // },
-    ],
-    cardSelected: 1,
+    cards: [],
+    cardSelected: undefined,
   },
 };
 

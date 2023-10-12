@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import {} from "path";
 import { FC } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "store/store";
 import IMG_INFECTED from "@/public/cards/Infectado.jpg";
 import IMG_FLAMETHROWER from "@/public/cards/Lanzallamas.jpg";
@@ -21,7 +21,7 @@ enum Card {
   INFECTED = "Infectado",
   NOBBQ = "¡Nada de barbacoas!",
   NOTHANKS = "¡No, gracias!",
-  THETHING = "La cosa"
+  THETHING = "La cosa",
 }
 
 let ReverseCard = new Map<string, keyof typeof Card>();
@@ -57,6 +57,7 @@ const CardsData: CardsDataType = {
 
 const GameCard: FC<CardProps> = ({ id, name }) => {
   const game = useSelector((state: RootState) => state.game);
+  const dispatch = useDispatch()
 
   const card_key = ReverseCard.get(name);
   if (card_key == null) {
@@ -65,10 +66,13 @@ const GameCard: FC<CardProps> = ({ id, name }) => {
   const card = Card[card_key];
   const cardData = CardsData[card];
 
-  function setSelection(idSelected:number){
-    store.dispatch(setSelectedCard(game.playerData.cardSelected != idSelected ? idSelected : undefined));
-    console.log(game.playerData.cardSelected + "->" + idSelected);
-}
+  function setSelection(idSelected: number) {
+    dispatch(
+      setSelectedCard(
+        game.playerData.cardSelected != idSelected ? idSelected : undefined
+      )
+    );
+  }
 
   return (
     <Box
@@ -77,11 +81,13 @@ const GameCard: FC<CardProps> = ({ id, name }) => {
       }}
       borderWidth="7px"
       borderRadius="lg"
-      backgroundColor='black'
-      minH = 'full'
+      backgroundColor="black"
+      minH="full"
+      data-testid={`GAME_CARD_${id}`}
       borderColor={game.playerData.cardSelected == id ? "green.500" : "black"}
     >
       <Image
+        data-testid={`GAME_CARD_IMG_${id}`}
         src={cardData.image}
         alt={"Card " + name}
         style={{ clipPath: "inset(2% 4% 2% 2%)" }}
