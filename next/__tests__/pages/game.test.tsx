@@ -173,6 +173,17 @@ describe("Page Game", () => {
     renderWithProviders(<Game />);
   });
 
+  it("displays a player for each player in the room, except for the local player", () => {
+    const { queryAllByTestId } = renderWithProviders(<Game />);
+    act(() => {
+      store.dispatch(setGameState(initialState))
+    })
+
+    const players = queryAllByTestId("player", {});
+    expect(players.length).toEqual(store.getState().game.players.length - 1);
+
+  })
+
   it("calls toast for each event", async () => {
 
     const newState: GameStateData = {

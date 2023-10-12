@@ -4,7 +4,7 @@ import { GamePlayer } from 'store/gameSlice'
 
 const Player = ({ player }: { player: GamePlayer }) => {
   return (<>
-    <Box key={player.name} transform="translateX(-50%) translateY(50%)">
+    <Box key={player.name} transform="translateX(-50%) translateY(50%)" data-testid={`player`}>
       <Avatar/>
       <Text textAlign="center">{player.name}</Text>
     </Box>
