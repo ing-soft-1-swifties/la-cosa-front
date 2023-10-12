@@ -45,6 +45,11 @@ export const gameSlice = createSlice({
       state.players = action.payload.players;
       state.status = action.payload.status;
     },
+    resetGameState(state) {
+      state.config = initialState.config
+      state.status = initialState.status
+      state.players = initialState.players
+    }
   },
 });
 

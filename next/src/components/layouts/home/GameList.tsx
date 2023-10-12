@@ -19,7 +19,7 @@ const GameList: FC<GameListProps> = () => {
     data: gameList,
     isError: gameListError,
     isLoading,
-  } = useGetGamesQuery(undefined, { pollingInterval: 5000 });
+  } = useGetGamesQuery(undefined, { pollingInterval: 2000 });
 
   return (
     <Box flexBasis="65%" px={16} py={10} pos="relative" data-testid="game-list">

@@ -9,8 +9,6 @@ import { useDisclosure } from "@chakra-ui/react";
 
 const Page: PageWithLayout = () => {
   const disclouseModal = useDisclosure();
-
-  const disclouse = useDisclosure();
   return (
     <Box pos="relative">
       <BgImage

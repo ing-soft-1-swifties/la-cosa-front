@@ -12,7 +12,6 @@ import { Field, Formik } from "formik";
 import router from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setGameConnectionToken } from "@/store/userSlice";
 import * as Yup from "yup";
 
 const formSchema = Yup.object({
@@ -24,7 +23,6 @@ const formSchema = Yup.object({
 });
 
 export default function FormJoinLobby() {
-  const dispatch = useDispatch();
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
 
   return (

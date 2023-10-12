@@ -20,7 +20,10 @@ import { GameState } from "@/store/gameSlice";
 import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
 import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
-import { buildErrorToastOptions, buildSucessToastOptions } from "@/src/utils/toasts";
+import {
+  buildErrorToastOptions,
+  buildSucessToastOptions,
+} from "@/src/utils/toasts";
 
 const Page: PageWithLayout = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -197,12 +200,11 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
 
 // Boton para salir del Lobby
 const LeaveLobbyButton: FC<{}> = () => {
-  const router = useRouter();
   return (
     <Button
       data-testid="lobby_leave_button"
       onClick={() => {
-        leaveLobby(router);
+        leaveLobby();
       }}
       colorScheme="red"
       size="lg"
