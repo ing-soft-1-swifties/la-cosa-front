@@ -14,12 +14,11 @@ import {
   UseDisclosureReturn,
   Box,
 } from "@chakra-ui/react";
-import { joinPlayerToGame } from "business/game/gameAPI/manager";
+import { joinPlayerToGame } from "@/src/business/game/gameAPI/manager";
 import { Field, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setGameConnectionToken } from "@/store/userSlice";
 import * as Yup from "yup";
 
 const formSchema = Yup.object({
@@ -94,15 +93,12 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                   });
                   if (response.ok) {
                     const data: { token: string } = await response.json(); //convierte los datos a json
-                    console.log("Respuesta del servidor:", data);
-                    dispatch(setGameConnectionToken(data.token));
-                    router.replace("/lobby");
+                    joinPlayerToGame(values.nombreJugador, data.token, router);
                   } else {
                     setSubmitError("Error al conectarse con el servidor.");
                   }
                 } catch (error) {
                   setSubmitError("Error al conectarse con el servidor.");
-                  console.error("Error al conectarse con el servidor.", error);
                 }
               }}
               validationSchema={formSchema}
@@ -115,7 +111,6 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                       isInvalid={
                         !!errors.nombrePartida && touched.nombrePartida
                       } //hubo error y el campo fue tocado
-                      data-testid="nombrePartida"
                     >
                       <FormLabel htmlFor="nombrePartida">
                         Nombre Partida
@@ -125,9 +120,9 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="nombrePartida"
                         type="text"
                         id="nombrePartida"
-                        data-testid="nombrePartidaInput"
+                        data-testid="modal-crear_nombrePartidaInput"
                       />
-                      <FormErrorMessage data-testid="nombrePartidaErrormsj">
+                      <FormErrorMessage>
                         {errors.nombrePartida}
                       </FormErrorMessage>
                     </FormControl>
@@ -136,7 +131,6 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                       isInvalid={
                         !!errors.nombreJugador && touched.nombreJugador
                       } //hubo error y el campo fue tocado
-                      data-testid="nombreJugador"
                     >
                       <FormLabel htmlFor="nombreJugador">
                         Nombre Jugador
@@ -146,17 +140,16 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="nombreJugador"
                         type="text"
                         id="nombreJugador"
-                        data-testid="nombreJugadorInput"
+                        data-testid="modal-crear_nombreJugadorInput"
                       />
 
-                      <FormErrorMessage data-testid="nombreJugadorErrorMessage">
+                      <FormErrorMessage>
                         {errors.nombreJugador}
                       </FormErrorMessage>
                     </FormControl>
                     {/* input de jugadores minimos  */}
                     <FormControl
                       isInvalid={!!errors.minPlayers && touched.minPlayers} //hubo error y el campo fue tocado
-                      data-testid="minPlayers"
                     >
                       <FormLabel htmlFor="minPlayers">
                         Minimo de Jugadores
@@ -166,16 +159,15 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="minPlayers"
                         type="text"
                         id="minPlayers"
-                        data-testid="minPlayersInput"
+                        data-testid="modal-crear_minPlayersInput"
                       />
-                      <FormErrorMessage data-testid="minPlayersErrorMessage">
+                      <FormErrorMessage>
                         {errors.minPlayers}
                       </FormErrorMessage>
                     </FormControl>
                     {/* input de jugadores maximos  */}
                     <FormControl
                       isInvalid={!!errors.maxPlayers && touched.maxPlayers} //hubo error y el campo fue tocado
-                      data-testid="maxPlayers"
                     >
                       <FormLabel htmlFor="maxPlayers">
                         Maximo de Jugadores
@@ -185,22 +177,24 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         name="maxPlayers"
                         type="text"
                         id="maxPlayers"
-                        data-testid="maxPlayersInput"
+                        data-testid="modal-crearmaxPlayersInput"
                       />
-                      <FormErrorMessage data-testid="maxPlayersErrorMessage">
+                      <FormErrorMessage>
                         {errors.maxPlayers}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl
-                      isInvalid={submitError != null}
-                      data-testid="submitErrorFormControl"
-                    >
-                      <FormErrorMessage data-testid="submitErrorErrorMessage">
+                    <FormControl isInvalid={submitError != null}>
+                      <FormErrorMessage>
                         {submitError}
                       </FormErrorMessage>
                     </FormControl>
                     <Flex justify="flex-end" align="center" mt="5">
-                      <Button type="submit" colorScheme="green" mr={3}>
+                      <Button
+                        type="submit"
+                        colorScheme="green"
+                        mr={3}
+                        data-testid="modal-crear_submit"
+                      >
                         Crear Partida
                       </Button>
                     </Flex>
