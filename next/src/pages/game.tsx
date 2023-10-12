@@ -4,6 +4,7 @@ import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { buildSucessToastOptions } from "@/src/utils/toasts";
 import useGameSocket from "@/src/hooks/useGameSocket";
+import GameTable from "@/src/components/Table";
 import { EventType } from "@/src/business/game/gameAPI/listener";
 
 const Page: PageWithLayout = () => {
@@ -18,11 +19,15 @@ const Page: PageWithLayout = () => {
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
     }
   });
-  return <Box pos="relative">El juego!</Box>;
+  return (
+    <Box pos="relative">
+      <GameTable />
+    </Box>
+  );
 };
 
 Page.authConfig = {
-  gameAuthProtected: true,
+  gameAuthProtected: false,
 };
 
 export default Page;
