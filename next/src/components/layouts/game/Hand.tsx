@@ -13,11 +13,11 @@ const Hand: FC<HandProps> = ({}) => {
 
   return (
     <Center h='100%' >
-      <HStack h='100%' justify='center'>
+      <HStack h='100%' data-testid={`HAND`} justify='center'>
         {cardsList?.map(({ id, name }) => {
           return (
             <Box maxW="20%" alignSelf="stretch"  h="auto" key={id}>
-              <GameCard id={id} data-testid={"Hand_card_" + id} name={name} />
+              <GameCard id={id} data-testid={`HAND_CARD_${id}`} name={name} />
             </Box>
           );
         })}
