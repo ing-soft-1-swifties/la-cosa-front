@@ -10,19 +10,7 @@ export enum EventType {
   ON_ROOM_LEFT_PLAYER = "on_room_left_player",
   ON_ROOM_START_GAME = "on_room_start_game",
   ON_ROOM_CANCELLED_GAME = "on_room_cancelled_game",
-
-  // Eventos de la partida:
-  ON_GAME_PLAYER_TURN = "on_game_player_turn",
-  ON_GAME_PLAYER_STEAL_CARD = "on_game_player_steal_card",
-  ON_GAME_PLAYER_PLAY_CARD = "on_game_player_play_card",
-  ON_GAME_PLAYER_PLAY_DEFENSE_CARD = "on_game_player_play_defense_card",
-  ON_GAME_PLAYER_DISCARD_CARD = "on_game_player_discard_card",
-  ON_GAME_BEGIN_EXCHANGE = "on_game_begin_exchange",
-  ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
-  ON_GAME_PLAYER_DEATH = "on_game_player_death",
-  ON_GAME_END = "on_game_end",
-
-  ON_GAME_INVALID_ACTION = "on_game_invalid_action",
+  ON_GAME_PLAYER_STEAL_CARD = "on_game_player_steal_card"
 }
 
 export const setupGameSocketListeners = (gameSocket: Socket) => {
@@ -40,11 +28,6 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_GAME_END, updateGameState);
 
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
-
-  // TODO! Hay que ver si esto lo dejamos o es temporal
-  gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
-
-  gameSocket.on("disconnect", onGameSocketDisconnect);
 };
 
 export type GameStateData = {
@@ -113,4 +96,16 @@ const onGameSocketDisconnect = (reason: SocketDisconnectReason) => {
   else {
     cancelGame(CancelGameReason.DISCONNECTION);
   }
+};
+
+
+type GamePlayerStealCardData = GameStateData & {};
+const onGamePlayerStealCard = (data: GamePlayerStealCardData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
+};
+
+
+type GamePlayerStealCardData = GameStateData & {};
+const onGamePlayerStealCard = (data: GamePlayerStealCardData) => {
+  store.dispatch(setGameState(calculateNewGameState(data)));
 };
