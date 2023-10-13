@@ -1,12 +1,16 @@
 import { Avatar, Box, Text } from '@chakra-ui/react'
-import React, { Component } from 'react'
-import { GamePlayer } from 'store/gameSlice'
+import React from 'react'
+import { GamePlayer } from '@/store/gameSlice'
 
-const Player = ({ player }: { player: GamePlayer }) => {
+const Player = ({ player, selected = false }: { player: GamePlayer, selected: boolean }) => {
   return (<>
-    <Box key={player.name} transform="translateX(-50%) translateY(50%)" data-testid={`player`}>
+    <Box 
+      borderWidth="7px"
+      borderRadius="lg"
+      borderColor={selected ? "green.500" : "transparent"}
+      key={player.name} transform="translateX(-50%) translateY(50%)" data-testid={`player`}>
       <Avatar/>
-      <Text textAlign="center">{player.name}</Text>
+      <Text userSelect="none" textAlign="center">{player.name}</Text>
     </Box>
   </>)
 }
