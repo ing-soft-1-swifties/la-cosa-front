@@ -1,5 +1,5 @@
 import { PageWithLayout } from "@/src/pages/_app";
-import { Box, Grid, GridItem, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, HStack, Text } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { buildSucessToastOptions } from "@/src/utils/toasts";
@@ -9,21 +9,22 @@ import { EventType } from "@/src/business/game/gameAPI/listener";
 import Hand from "@/src/components/layouts/game/Hand";
 import ActionBox from "@/components/layouts/game/ActionBox";
 import BgImage from "components/utility/BgImage";
-import ForestBGHuman from '@/public/game/froest-background-humans.jpg'
-import ForestBGInfected from '@/public/game/froest-background-infected.jpg'
+import ForestBGHuman from "@/public/game/froest-background-humans.jpg";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
   const { gameSocket } = useGameSocket();
+
   const roomStartHandler = () => {
     toast(buildSucessToastOptions({ description: "Partida iniciada" }));
-  }
+  };
   useEffect(() => {
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
     return () => {
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
-    }
+    };
   });
+
   return (
     <Box pos="relative">
       {/* Imagen de fondo del Lobby */}
@@ -34,7 +35,20 @@ const Page: PageWithLayout = () => {
           alt: "",
         }}
       />
-      <Grid
+      <Flex flexDir="column" h="100vh" overflow="hidden">
+        <Flex flex="1" justify="center" pt="32" pb="10">
+          <GameTable />
+        </Flex>
+        <Flex flexBasis="30%" align="center" justify="space-around">
+          <Box pl={3} pr={3}>
+            <Hand card_height="14rem" />
+          </Box>
+          <Box>
+            <ActionBox />
+          </Box>
+        </Flex>
+      </Flex>
+      {/* <Grid
         templateAreas={`"header header"
                   "main main"
                   "footer footer"`}
@@ -53,20 +67,15 @@ const Page: PageWithLayout = () => {
         </GridItem>
 
         <GridItem pl='2' area={'main'}>
-          <GameTable />
+          
         </GridItem>
 
         <GridItem pl='2' area={'footer'} >
-          <HStack justify='space-between' maxH="10rem" pl={3} pr={3}>
-            <Hand />
-            <ActionBox />
-          </HStack>
+          
         </GridItem>
 
-      </Grid>
+      </Grid> */}
     </Box>
-
-
   );
 };
 

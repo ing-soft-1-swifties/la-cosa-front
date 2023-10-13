@@ -1,31 +1,40 @@
-import { Box } from '@chakra-ui/react'
-import React, { FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectPlayer, unselectPlayer } from '@/store/gameSlice'
-import { RootState } from '@/store/store'
-import Player from './Player'
+import { Box, BoxProps } from "@chakra-ui/react";
+import React, { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPlayer, unselectPlayer } from "@/store/gameSlice";
+import { RootState } from "@/store/store";
+import Player from "./Player";
 
-type TableProps = {}
+type TableProps = BoxProps & {};
 
-function getTranslatesForPosition(position: number, playerAmount: number): { x: number, y: number } {
+function getTranslatesForPosition(
+  position: number,
+  playerAmount: number
+): { x: number; y: number } {
   // Obtenemos el angulo para la posicion del jugador
   let angle = position * ((2 * Math.PI) / playerAmount);
-  angle -= Math.PI / 2
+  angle -= Math.PI / 2;
 
   // Devolvemos sus coordenadas en el círculo trigonométrico
   return { x: Math.cos(angle), y: Math.sin(angle) };
 }
 
-const Table: FC<TableProps> = () => {
-  const players = useSelector((state: RootState) => state.game.players.filter(p => p.id !== state.game.playerData.playerID))
+const Table: FC<TableProps> = ({ ...boxProps }) => {
+  const players = useSelector((state: RootState) =>
+    state.game.players.filter((p) => p.id !== state.game.playerData.playerID)
+  );
   // const players = useSelector((state: RootState) => state.game.players)
-  const localPlayer = useSelector((state: RootState) => state.game.players.find(p => p.id === state.game.playerData.playerID))
-  const selectedPlayerID = useSelector((state: RootState) => state.game.playerData.playerSelected);
+  const localPlayer = useSelector((state: RootState) =>
+    state.game.players.find((p) => p.id === state.game.playerData.playerID)
+  );
+  const selectedPlayerID = useSelector(
+    (state: RootState) => state.game.playerData.playerSelected
+  );
 
   const dispatch = useDispatch();
 
   if (localPlayer == undefined) {
-    throw new Error("No player in the game has this player's id!")
+    throw new Error("No player in the game has this player's id!");
   }
 
   function onPlayerSelectedToggle(playerID: number) {
@@ -37,15 +46,8 @@ const Table: FC<TableProps> = () => {
   }
 
   return (
-    <Box
-      m="auto"
-      // width="40%"
-      p="70px"
-      pb={0}
-      // mt="10vh"
-      h= "full"
-    >
       <Box
+        w="auto"
         borderWidth="1px"
         h="100%"
         borderColor="gray"
@@ -54,9 +56,16 @@ const Table: FC<TableProps> = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        position="relative">
-        {players.map(player => {
-          const { x, y } = getTranslatesForPosition(player.position - (localPlayer.position as any), players.length + 1)
+        position="relative"
+        bg="rgba(0, 0, 0, 0.4)"
+
+        {...boxProps}
+      >
+        {players.map((player) => {
+          const { x, y } = getTranslatesForPosition(
+            player.position - (localPlayer.position as any),
+            players.length + 1
+          );
           return (
             <Box
               key={player.name}
@@ -70,13 +79,10 @@ const Table: FC<TableProps> = () => {
                 selected={player.id === selectedPlayerID}
               />
             </Box>
-          )
-        }
-        )}
-      </Box>
-
+          );
+        })}
     </Box>
-  )
-}
+  );
+};
 
 export default Table;

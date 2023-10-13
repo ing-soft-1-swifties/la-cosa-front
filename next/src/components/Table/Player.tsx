@@ -10,7 +10,7 @@ const Player = ({ player, selected = false }: { player: GamePlayer, selected: bo
       borderColor={selected ? "green.500" : "transparent"}
       key={player.name} transform="translateX(-50%) translateY(50%)" data-testid={`player`}>
       <Avatar/>
-      <Text userSelect="none" textAlign="center">{player.name}</Text>
+      <Text userSelect="none" color="white" textAlign="center">{player.name}</Text>
     </Box>
   </>)
 }

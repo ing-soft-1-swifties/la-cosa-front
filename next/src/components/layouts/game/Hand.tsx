@@ -4,24 +4,29 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import GameCard from "./GameCard";
 
-type HandProps = {};
+type HandProps = {
+  card_height: string;
+};
 
-const Hand: FC<HandProps> = ({}) => {
+const Hand: FC<HandProps> = ({ card_height }) => {
   const personalData = useSelector((state: RootState) => state.game.playerData);
   const cardsList = personalData.cards;
 
   return (
-    <Center h='100%' >
-      <HStack h='100%' justify='center'>
-        {cardsList?.map(({ id, name }) => {
-          return (
-            <Box maxW="20%" alignSelf="stretch"  h="auto" key={id}>
-              <GameCard id={id} data-testid={"Hand_card_" + id} name={name} />
-            </Box>
-          );
-        })}
-      </HStack>
-    </Center>
+    <Flex justify="center" h="100%" columnGap={10}>
+      {cardsList?.map(({ id, name }) => {
+        return (
+          <GameCard
+            alignSelf="stretch"
+            h={card_height}
+            data-testid={"Hand_card_" + id}
+            name={name}
+            key={id}
+            id={id}
+          />
+        );
+      })}
+    </Flex>
   );
 };
 

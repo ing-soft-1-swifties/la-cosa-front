@@ -1,5 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { } from "path";
+import { Box, BoxProps, Flex } from "@chakra-ui/react";
+import {} from "path";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "store/store";
@@ -8,10 +8,11 @@ import IMG_FLAMETHROWER from "@/public/cards/Lanzallamas.jpg";
 import IMG_NOBBQ from "@/public/cards/NadaDeBarbacoas.jpg";
 import IMG_NOTHANKS from "@/public/cards/NoGracias.jpg";
 import IMG_THETHING from "@/public/cards/LaCosa.jpg";
-import Image, { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
+import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
 
-type CardProps = {
+type CardProps = BoxProps & {
   id: number;
   name: string;
 };
@@ -55,9 +56,9 @@ const CardsData: CardsDataType = {
   },
 };
 
-const GameCard: FC<CardProps> = ({ id, name }) => {
+const GameCard: FC<CardProps> = ({ id, name, ...props }) => {
   const game = useSelector((state: RootState) => state.game);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const card_key = ReverseCard.get(name);
   if (card_key == null) {
@@ -79,18 +80,29 @@ const GameCard: FC<CardProps> = ({ id, name }) => {
       onClick={() => {
         setSelection(id);
       }}
-      borderWidth="7px"
+      borderWidth="4px"
       borderRadius="lg"
       backgroundColor="black"
-      minH="full"
+      h="full"
+      w="auto"
+      minW="auto"
       data-testid={`GAME_CARD_${id}`}
       borderColor={game.playerData.cardSelected == id ? "green.500" : "black"}
+      cursor="pointer"
+      {...props}
+      transform="auto"
+      _hover={{
+        scale: 1.1
+      }}
+      transitionDuration="300ms"
     >
       <Image
+        w="auto"
+        h="full"
         data-testid={`GAME_CARD_IMG_${id}`}
         src={cardData.image}
         alt={"Card " + name}
-        style={{ clipPath: "inset(2% 4% 2% 2%)" }}
+        clipPath="inset(2% 4% 2% 2%)"
       />
     </Box>
   );
