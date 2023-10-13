@@ -8,7 +8,7 @@ import GameTable from "@/src/components/Table";
 import { EventType } from "@/src/business/game/gameAPI/listener";
 import Hand from "@/src/components/layouts/game/Hand";
 import ActionBox from "@/components/layouts/game/ActionBox";
-import BgImage from "components/utility/BgImage";
+import BgImage from "@/components/utility/BgImage";
 import ForestBGHuman from "@/public/game/froest-background-humans.jpg";
 
 const Page: PageWithLayout = () => {
@@ -48,39 +48,12 @@ const Page: PageWithLayout = () => {
           </Box>
         </Flex>
       </Flex>
-      {/* <Grid
-        templateAreas={`"header header"
-                  "main main"
-                  "footer footer"`}
-        gridTemplateRows={'10vh 60vh 30vh'}
-        // gridTemplateColumns={'150px 1fr'}
-        // h='200px'
-        gap='1'
-        color='blackAlpha.700'
-        fontWeight='bold'
-      >
-
-        <GridItem pl='2' area={'header'}>
-          <Text fontSize='4xl' color='greenyellow'>
-            LA COSA
-          </Text>
-        </GridItem>
-
-        <GridItem pl='2' area={'main'}>
-          
-        </GridItem>
-
-        <GridItem pl='2' area={'footer'} >
-          
-        </GridItem>
-
-      </Grid> */}
     </Box>
   );
 };
 
 Page.authConfig = {
-  gameAuthProtected: false,
+  gameAuthProtected: true,
 };
 
 export default Page;

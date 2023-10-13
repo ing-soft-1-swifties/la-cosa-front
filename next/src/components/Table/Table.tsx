@@ -20,10 +20,14 @@ function getTranslatesForPosition(
 }
 
 const Table: FC<TableProps> = ({ ...boxProps }) => {
-  const players = useSelector((state: RootState) =>
-    state.game.players.filter((p) => p.id !== state.game.playerData.playerID)
+  const playerID = useSelector(
+    (state: RootState) => state.game.playerData.playerID
   );
-  // const players = useSelector((state: RootState) => state.game.players)
+  const players_data = useSelector((state: RootState) => state.game.players);
+  const players = players_data.filter(
+    (p) => p.id !== playerID
+  );
+
   const localPlayer = useSelector((state: RootState) =>
     state.game.players.find((p) => p.id === state.game.playerData.playerID)
   );
@@ -46,41 +50,37 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   }
 
   return (
-      <Box
-        w="auto"
-        borderWidth="1px"
-        h="100%"
-        borderColor="gray"
-        borderRadius="100%"
-        aspectRatio="1"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        position="relative"
-        bg="rgba(0, 0, 0, 0.4)"
-
-        {...boxProps}
-      >
-        {players.map((player) => {
-          const { x, y } = getTranslatesForPosition(
-            player.position - (localPlayer.position as any),
-            players.length + 1
-          );
-          return (
-            <Box
-              key={player.name}
-              position="absolute"
-              left={`calc(50% + ${x * 62}%)`}
-              bottom={`calc(50% + ${y * 62}%)`}
-              onClick={() => onPlayerSelectedToggle(player.id)}
-            >
-              <Player
-                player={player}
-                selected={player.id === selectedPlayerID}
-              />
-            </Box>
-          );
-        })}
+    <Box
+      w="auto"
+      borderWidth="1px"
+      h="100%"
+      borderColor="gray"
+      borderRadius="100%"
+      aspectRatio="1"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      position="relative"
+      bg="rgba(0, 0, 0, 0.4)"
+      {...boxProps}
+    >
+      {players.map((player) => {
+        const { x, y } = getTranslatesForPosition(
+          player.position - (localPlayer.position as any),
+          players.length + 1
+        );
+        return (
+          <Box
+            key={player.name}
+            position="absolute"
+            left={`calc(50% + ${x * 62}%)`}
+            bottom={`calc(50% + ${y * 62}%)`}
+            onClick={() => onPlayerSelectedToggle(player.id)}
+          >
+            <Player player={player} selected={player.id === selectedPlayerID} />
+          </Box>
+        );
+      })}
     </Box>
   );
 };

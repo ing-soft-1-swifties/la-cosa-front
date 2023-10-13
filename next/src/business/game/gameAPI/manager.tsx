@@ -34,7 +34,7 @@ export type PlayCardPayload = {
 export async function sendPlayerPlayCard(card: number, card_options: CardOptions) {
   const playCardPayload: PlayCardPayload = {
     card: card,
-    card_options: {},
+    card_options: card_options,
   };
   await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload);
 }

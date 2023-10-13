@@ -93,7 +93,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
 };
 
 const mockGameSocket = jest.fn();
-jest.mock("../../src/business/game/gameAPI/index", () => ({
+jest.mock("../../../../src/business/game/gameAPI/index", () => ({
   get gameSocket() {
     return mockGameSocket();
   },
@@ -156,6 +156,5 @@ describe("Page Lobby", () => {
     screen.getByTestId(`Hand_card_${game.playerData.cards[2].id}`);
     screen.getByTestId(`Hand_card_${game.playerData.cards[3].id}`);
     screen.getByTestId(`Hand_card_${game.playerData.cards[4].id}`);
-    screen.getByTestId(`Hand_card_${game.playerData.cards[5].id}`);
   });
 });

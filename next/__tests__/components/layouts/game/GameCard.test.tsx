@@ -76,24 +76,23 @@ const PlayerInGameState: PreloadedState<RootState> = {
   },
 };
 
-describe("Page Game", () => {
-
-    beforeEach(async () => {
+describe("Component Game Card", () => {
+  beforeEach(async () => {
     store.dispatch(setGameState(initialState));
   });
 
   it("renders", () => {
-    renderWithProviders(<GameCard id={0} name="" />);
+    renderWithProviders(<GameCard card_id={0} name="" />);
   });
 
   it("show card dont sheared", () => {
-    renderWithProviders(<GameCard id={0} name="" />);
+    renderWithProviders(<GameCard card_id={0} name="" />);
     screen.findByText("Carta indefinida");
   });
 
   it("has cards based on state", () => {
-    var card = PlayerInGameState.game!.playerData.cards[0];
-    renderWithProviders(<GameCard id={card.id} name={card.name} />, {
+    const card = PlayerInGameState.game!.playerData.cards[0];
+    renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
       preloadedState: PlayerInGameState,
     });
     const game = PlayerInGameState.game!;
@@ -106,14 +105,12 @@ describe("Page Game", () => {
     var card = PlayerInGameState.game!.playerData.cards[3];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard id={card.id} name={card.name} />, {
+    renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
       store,
     });
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-    act(() => {
-      screenCard.click();
-    });
+    screenCard.click();
     expect(store.getState().game.playerData.cardSelected).toBe(card.id);
   });
 
@@ -121,14 +118,12 @@ describe("Page Game", () => {
     var card = PlayerInGameState.game!.playerData.cards[0];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard id={card.id} name={card.name} />, {
+    renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
       store,
     });
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-    act(() => {
-      screenCard.click();
-    });
+    screenCard.click();
     expect(store.getState().game.playerData.cardSelected).toBe(undefined);
   });
 });

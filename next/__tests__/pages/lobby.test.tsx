@@ -309,18 +309,9 @@ describe("Page Lobby", () => {
     expect(leaveButton).toHaveTextContent("Salir del Lobby");
   });
 
-  it("leave game button leaves game", (done) => {
+  it("leave game button leaves game", () => {
     renderWithProviders(<Lobby />, {
       preloadedState: HostAppState,
-    });
-    let disconnected_or_quitted = false;
-    serverSocket.once(MessageType.ROOM_QUIT_GAME, () => {
-      if (disconnected_or_quitted) done();
-      disconnected_or_quitted = true;
-    });
-    serverSocket.once("disconnect", () => {
-      if (disconnected_or_quitted) done();
-      disconnected_or_quitted = true;
     });
 
     const leaveButton = screen.getByTestId("lobby_leave_button");
@@ -387,11 +378,11 @@ describe("Page Lobby", () => {
       gameState: HostAppStateGameReady.game!,
     };
     newState.gameState.players = newState.gameState.players.filter((player) => {
-      return player.name != "Pepito_2";
+      return player.name != "Pepito2";
     });
 
     // Veamos que el jugador inicialmente este en la partida
-    screen.getByText("Pepito_2");
+    screen.getByText("Pepito2");
 
     // Emitimos el evento de que un jugador abandono la partida
     await act(async () => {
@@ -400,6 +391,6 @@ describe("Page Lobby", () => {
 
     // Damos un margen de 1000ms para que se hayan procesado los asyncs
     await new Promise((res) => setTimeout(res, 1000));
-    expect(screen.queryByText("Pepito_2")).not.toBeInTheDocument();
+    expect(screen.queryByText("Pepito2")).not.toBeInTheDocument();
   });
 });

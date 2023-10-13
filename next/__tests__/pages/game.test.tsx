@@ -2,7 +2,12 @@ import "@testing-library/jest-dom";
 import { renderWithProviders } from "@/src/utils/test-utils";
 import { RootState, setupStore, store } from "@/store/store";
 import { PreloadedState } from "@reduxjs/toolkit";
-import { GameStatus, initialState, setGameState } from "@/store/gameSlice";
+import {
+  GameStatus,
+  PlayerRole,
+  initialState,
+  setGameState,
+} from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
@@ -114,7 +119,7 @@ jest.mock("../../src/business/game/gameAPI/index", () => ({
   },
 }));
 
-const mockedToast = jest.fn(() => {})
+const mockedToast = jest.fn(() => {});
 
 jest.mock("@chakra-ui/react", () => {
   const originalModule = jest.requireActual("@chakra-ui/react");
@@ -123,9 +128,9 @@ jest.mock("@chakra-ui/react", () => {
     ...originalModule,
 
     // funcion que no hace nada, solo queremos ver sus llamadas luego
-    useToast: () => mockedToast
-  }
-})
+    useToast: () => mockedToast,
+  };
+});
 
 describe("Page Game", () => {
   let ioserver: any;
@@ -176,16 +181,14 @@ describe("Page Game", () => {
   it("displays a player for each player in the room, except for the local player", () => {
     const { queryAllByTestId } = renderWithProviders(<Game />);
     act(() => {
-      store.dispatch(setGameState(initialState))
-    })
+      store.dispatch(setGameState(initialState));
+    });
 
     const players = queryAllByTestId("player", {});
     expect(players.length).toEqual(store.getState().game.players.length - 1);
-
-  })
+  });
 
   it("calls toast for each event", async () => {
-
     const newState: GameStateData = {
       gameState: {
         config: {
@@ -197,6 +200,13 @@ describe("Page Game", () => {
         },
         players: [],
         status: GameStatus.PLAYING,
+        playerData: {
+          cards: [],
+          cardSelected: undefined,
+          playerID: 0,
+          playerSelected: undefined,
+          role: PlayerRole.HUMAN,
+        },
       },
     };
 
@@ -204,8 +214,7 @@ describe("Page Game", () => {
       renderWithProviders(<Game />);
       serverSocket.emit(EventType.ON_ROOM_START_GAME, newState);
       await new Promise((res) => setTimeout(res, 1000));
-    })
-    expect(mockedToast.mock.calls.length).toBe(0)
-
-  })
+    });
+    expect(mockedToast.mock.calls.length).toBe(0);
+  });
 });

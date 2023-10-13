@@ -13,7 +13,7 @@ import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
 
 type CardProps = BoxProps & {
-  id: number;
+  card_id: number;
   name: string;
 };
 
@@ -56,7 +56,7 @@ const CardsData: CardsDataType = {
   },
 };
 
-const GameCard: FC<CardProps> = ({ id, name, ...props }) => {
+const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
   const game = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
 
@@ -67,18 +67,14 @@ const GameCard: FC<CardProps> = ({ id, name, ...props }) => {
   const card = Card[card_key];
   const cardData = CardsData[card];
 
-  function setSelection(idSelected: number) {
-    dispatch(
-      setSelectedCard(
-        game.playerData.cardSelected != idSelected ? idSelected : undefined
-      )
-    );
-  }
-
   return (
     <Box
       onClick={() => {
-        setSelection(id);
+        dispatch(
+          setSelectedCard(
+            game.playerData.cardSelected != id ? id : undefined
+          )
+        );
       }}
       borderWidth="4px"
       borderRadius="lg"
@@ -92,7 +88,7 @@ const GameCard: FC<CardProps> = ({ id, name, ...props }) => {
       {...props}
       transform="auto"
       _hover={{
-        scale: 1.1
+        scale: 1.1,
       }}
       transitionDuration="300ms"
     >
