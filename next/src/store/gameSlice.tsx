@@ -1,5 +1,5 @@
 import { StatHelpText } from "@chakra-ui/react";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export enum GameStatus {
   WAITING = 0,
@@ -25,6 +25,7 @@ type PlayerData = {
   cards: card[];
   cardSelected: number | undefined;
   playerID: number;
+  playerSelected: number | undefined;
 };
 
 // no se si poner en ingles estos nombres pero por ahora nos manejamos asi
@@ -67,13 +68,14 @@ export const initialState: GameState = {
     { name: "otro1", id: 124, position: 1 },
     { name: "otro2", id: 125, position: 2 },
     { name: "otro3", id: 126, position: 3 },
-    { name: "otro4", id: 126, position: 4 },
-    { name: "otro5", id: 126, position: 5 },
+    { name: "otro4", id: 127, position: 4 },
+    { name: "otro5", id: 128, position: 5 },
   ],
   playerData: {
     playerID: 123,
     cards: [],
     cardSelected: undefined,
+    playerSelected: undefined
   },
 };
 
@@ -88,13 +90,19 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
+    selectPlayer(state, action: PayloadAction<number>) {
+      state.playerData.playerSelected = action.payload;
+    },
+    unselectPlayer(state) {
+      state.playerData.playerSelected = undefined;
+    },
     setGameState(state, action: PayloadAction<BackendGameState>) {
       state.config = action.payload.config;
       state.players = action.payload.players;
       state.status = action.payload.status;
       state.playerData = action.payload.playerData;
     },
-    setSelectedCard(state, action:PayloadAction<number | undefined>){
+    setSelectedCard(state, action: PayloadAction<number | undefined>) {
       state.playerData.cardSelected = action.payload;
     },
     resetGameState(state) {
@@ -105,6 +113,6 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { setGameState, setSelectedCard } = gameSlice.actions;
+export const { setGameState, setSelectedCard, selectPlayer, unselectPlayer } = gameSlice.actions;
 
 export default gameSlice.reducer;
