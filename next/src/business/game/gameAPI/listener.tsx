@@ -2,7 +2,7 @@ import { Socket } from "socket.io-client";
 import { GameState, setGameState } from "@/store/gameSlice";
 import { store } from "@/store/store";
 import { cancelGame, CancelGameReason } from "./manager";
-import { StandaloneToast } from "pages/_app";
+import { StandaloneToast } from "@/src/pages/_app";
 import { buildErrorToastOptions } from "@/src/utils/toasts";
 
 export enum EventType {

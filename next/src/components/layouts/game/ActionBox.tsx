@@ -9,7 +9,7 @@ import {
   GiSwitchWeapon,
   GiChaliceDrops,
 } from "react-icons/gi";
-import { sendPlayerPlayCard } from "business/game/gameAPI/manager";
+import { sendPlayerPlayCard } from "@/src/business/game/gameAPI/manager";
 
 type ActionBoxProps = {};
 

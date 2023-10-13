@@ -5,7 +5,7 @@ import { RootState } from "@/src/store/store";
 import GameCard from "./GameCard";
 
 type HandProps = {
-  card_height: string;
+  card_height?: string;
 };
 
 const Hand: FC<HandProps> = ({ card_height }) => {
@@ -18,11 +18,11 @@ const Hand: FC<HandProps> = ({ card_height }) => {
         return (
           <GameCard
             alignSelf="stretch"
-            h={card_height}
+            h={card_height ?? "auto"}
             data-testid={"Hand_card_" + id}
             name={name}
             key={id}
-            id={id}
+            card_id={id}
           />
         );
       })}
