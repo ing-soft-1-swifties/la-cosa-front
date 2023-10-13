@@ -39,13 +39,15 @@ const Table: FC<TableProps> = () => {
   return (
     <Box
       m="auto"
-      width="40%"
+      // width="40%"
       p="70px"
-      mt="10vh"
+      pb={0}
+      // mt="10vh"
+      h= "full"
     >
       <Box
         borderWidth="1px"
-        width="100%"
+        h="100%"
         borderColor="gray"
         borderRadius="100%"
         aspectRatio="1"

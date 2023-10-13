@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import {} from "path";
+import { } from "path";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "store/store";

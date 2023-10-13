@@ -8,6 +8,7 @@ import {
   CardSubTypes,
   CardTypes,
   GameStatus,
+  PlayerRole,
   initialState,
   setGameState,
 } from "@/store/gameSlice";
@@ -84,6 +85,8 @@ const PlayerInGameState: PreloadedState<RootState> = {
         },
       ],
       cardSelected: 1,
+      playerID: 1,
+      role: PlayerRole.INFECTED,
     },
   },
   user: {
