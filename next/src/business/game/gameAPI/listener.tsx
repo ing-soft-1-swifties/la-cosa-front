@@ -2,19 +2,48 @@ import { Socket } from "socket.io-client";
 import { GameState, setGameState } from "@/store/gameSlice";
 import { store } from "@/store/store";
 import { cancelGame, CancelGameReason } from "./manager";
+import { StandaloneToast } from "pages/_app";
+import { buildErrorToastOptions } from "@/src/utils/toasts";
 
 export enum EventType {
   ON_ROOM_NEW_PLAYER = "on_room_new_player",
   ON_ROOM_LEFT_PLAYER = "on_room_left_player",
   ON_ROOM_START_GAME = "on_room_start_game",
   ON_ROOM_CANCELLED_GAME = "on_room_cancelled_game",
+
+  // Eventos de la partida:
+  ON_GAME_PLAYER_TURN = "on_game_player_turn",
+  ON_GAME_PLAYER_STEAL_CARD = "on_game_player_steal_card",
+  ON_GAME_PLAYER_PLAY_CARD = "on_game_player_play_card",
+  ON_GAME_PLAYER_PLAY_DEFENSE_CARD = "on_game_player_play_defense_card",
+  ON_GAME_PLAYER_DISCARD_CARD = "on_game_player_discard_card",
+  ON_GAME_BEGIN_EXCHANGE = "on_game_begin_exchange",
+  ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
+  ON_GAME_PLAYER_DEATH = "on_game_player_death",
+  ON_GAME_END = "on_game_end",
+
+  ON_GAME_INVALID_ACTION = "on_game_invalid_action",
 }
 
 export const setupGameSocketListeners = (gameSocket: Socket) => {
-  gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, onRoomNewPlayer);
-  gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, onRoomLeftPlayer);
-  gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
+  gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, updateGameState);
+  gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, updateGameState);
+  gameSocket.on(EventType.ON_ROOM_START_GAME, updateGameState);
+  gameSocket.on(EventType.ON_GAME_PLAYER_TURN, updateGameState);
+  gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, updateGameState);
+  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, updateGameState);
+  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, updateGameState);
+  gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD, updateGameState);
+  gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, updateGameState);
+  gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, updateGameState);
+  gameSocket.on(EventType.ON_GAME_PLAYER_DEATH, updateGameState);
+  gameSocket.on(EventType.ON_GAME_END, updateGameState);
+
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
+
+  // TODO! Hay que ver si esto lo dejamos o es temporal
+  gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
+
   gameSocket.on("disconnect", onGameSocketDisconnect);
 };
 
@@ -26,34 +55,34 @@ function calculateNewGameState(data: GameStateData) {
   return {
     config: data.gameState.config,
     players: data.gameState.players.map((player) => ({
+      id: player.id,
       name: player.name,
+      position: player.position,
     })),
     status: data.gameState.status,
+    playerID: data.gameState.playerID,
   };
 }
 
-type NewGameStateData = GameStateData & {};
-const onNewGameState = (data: NewGameStateData) => {
-  store.dispatch(setGameState(calculateNewGameState(data)));
-};
-
-type RoomNewPlayerData = GameStateData & {};
-const onRoomNewPlayer = (data: RoomNewPlayerData) => {
-  store.dispatch(setGameState(calculateNewGameState(data)));
-};
-
-type RoomLeftPlayerData = GameStateData & {};
-const onRoomLeftPlayer = (data: RoomLeftPlayerData) => {
-  store.dispatch(setGameState(calculateNewGameState(data)));
-};
-
-type RoomStartGameData = GameStateData & {};
-const onRoomStartGame = (data: RoomStartGameData) => {
+const updateGameState = (data: GameStateData) => {
   store.dispatch(setGameState(calculateNewGameState(data)));
 };
 
 const onRoomCancelledGame = () => {
   cancelGame(CancelGameReason.CANCELED_BY_HOST);
+};
+
+type InvalidActionData = {
+  title: string;
+  message: string;
+};
+const onGameInvalidAction = (data: InvalidActionData) => {
+  StandaloneToast(
+    buildErrorToastOptions({
+      title: data.title,
+      description: data.message,
+    })
+  );
 };
 
 enum SocketDisconnectReason {
