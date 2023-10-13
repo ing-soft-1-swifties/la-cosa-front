@@ -24,14 +24,14 @@ export function isGameHost() {
   return store.getState().game.config.host == store.getState().user.name;
 }
 
-type CardOptions = {
+export type CardOptions = {
   target?: number;
 };
-type PlayCardPayload = {
+export type PlayCardPayload = {
   card: number;
   card_options: CardOptions;
 };
-export async function sendPlayerPlayCard(card: number) {
+export async function sendPlayerPlayCard(card: number, card_options: CardOptions) {
   const playCardPayload: PlayCardPayload = {
     card: card,
     card_options: {},
