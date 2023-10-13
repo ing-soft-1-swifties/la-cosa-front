@@ -1,14 +1,16 @@
 import { StatHelpText } from "@chakra-ui/react";
-<<<<<<< HEAD
-import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
-=======
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
->>>>>>> hand y carta terminado con sus estados y redux falta test
 
 export enum GameStatus {
   WAITING = 0,
   PLAYING = 1,
   FINISHED = 2,
+}
+
+export enum PlayerRole {
+  HUMAN = 'HUMANO',
+  INFECTED = 'INFECTADO',
+  THETHING = 'LA_COSA',
 }
 
 export type GamePlayer = {
@@ -29,10 +31,8 @@ type PlayerData = {
   cards: card[];
   cardSelected: number | undefined;
   playerID: number;
-<<<<<<< HEAD
   playerSelected: number | undefined;
-=======
->>>>>>> hand y carta terminado con sus estados y redux falta test
+  role: PlayerRole;
 };
 
 // no se si poner en ingles estos nombres pero por ahora nos manejamos asi
@@ -51,11 +51,7 @@ type card = {
   id: number;
   name: string;
   type: CardTypes;
-<<<<<<< HEAD
   subType: CardSubTypes | undefined;
-=======
-  subType: CardSubTypes;
->>>>>>> hand y carta terminado con sus estados y redux falta test
 };
 
 export type GameState = {
@@ -118,6 +114,7 @@ export const initialState: GameState = {
     ],
     cardSelected: 1,
     playerSelected: undefined,
+    role: PlayerRole.HUMAN,
   },
 };
 
@@ -132,26 +129,19 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-<<<<<<< HEAD
     selectPlayer(state, action: PayloadAction<number>) {
       state.playerData.playerSelected = action.payload;
     },
     unselectPlayer(state) {
       state.playerData.playerSelected = undefined;
     },
-=======
->>>>>>> hand y carta terminado con sus estados y redux falta test
     setGameState(state, action: PayloadAction<BackendGameState>) {
       state.config = action.payload.config;
       state.players = action.payload.players;
       state.status = action.payload.status;
       state.playerData = action.payload.playerData;
     },
-<<<<<<< HEAD
     setSelectedCard(state, action: PayloadAction<number | undefined>) {
-=======
-    setSelectedCard(state, action:PayloadAction<number | undefined>){
->>>>>>> hand y carta terminado con sus estados y redux falta test
       state.playerData.cardSelected = action.payload;
     },
     resetGameState(state) {
@@ -162,10 +152,6 @@ export const gameSlice = createSlice({
   },
 });
 
-<<<<<<< HEAD
 export const { setGameState, setSelectedCard, selectPlayer, unselectPlayer } = gameSlice.actions;
-=======
-export const { setGameState, setSelectedCard } = gameSlice.actions;
->>>>>>> hand y carta terminado con sus estados y redux falta test
 
 export default gameSlice.reducer;
