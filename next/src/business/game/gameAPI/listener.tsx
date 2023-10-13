@@ -52,7 +52,7 @@ export type GameStateData = {
 };
 
 function calculateNewGameState(data: GameStateData) {
-  return {
+  const newState: any = {
     config: data.gameState.config,
     players: data.gameState.players.map((player) => ({
       id: player.id,
@@ -60,12 +60,15 @@ function calculateNewGameState(data: GameStateData) {
       position: player.position,
     })),
     status: data.gameState.status,
-    playerData: {
+  };
+  if (data.gameState.playerData != null) {
+    newState.playerData = {
       cards: data.gameState.playerData.cards,
       playerID: data.gameState.playerData.playerID,
-      cardSelected: undefined,
-    },
-  };
+      role: data.gameState.playerData.role,
+    };
+  }
+  return newState;
 }
 
 const updateGameState = (data: GameStateData) => {
