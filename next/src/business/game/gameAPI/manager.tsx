@@ -3,23 +3,83 @@ import type { NextRouter } from "next/router";
 import { store } from "@/store/store";
 import { setGameConnectionToken, setUserName } from "@/store/userSlice";
 import Router from "next/router";
-import { StandaloneToast } from "pages/_app";
+import { StandaloneToast } from "@/src/pages/_app";
 import {
   buildErrorToastOptions,
-  buildSucessToastOptions,
   buildWarningToastOptions,
-} from "utils/toasts";
+} from "@/src/utils/toasts";
 
 export enum MessageType {
   GET_GAME_STATE = "get_game_state",
   ROOM_START_GAME = "room_start_game",
   ROOM_QUIT_GAME = "room_quit_game",
+
+  GAME_PLAY_CARD = "game_play_card",
+  GAME_PLAY_DEFENSE_CARD = "game_play_defense_card",
+  GAME_DISCARD_CARD = "game_discard_card",
+  GAME_SELECT_EXCHANGE_CARD = "game_select_exchange_card",
 }
 
 export function isGameHost() {
-  console.log(store.getState().game.config.host);
-  console.log(store.getState().user.name);
   return store.getState().game.config.host == store.getState().user.name;
+}
+
+type CardOptions = {
+  target?: number;
+};
+type PlayCardPayload = {
+  card: number;
+  card_options: CardOptions;
+};
+export async function sendPlayerPlayCard(card: number) {
+  const playCardPayload: PlayCardPayload = {
+    card: card,
+    card_options: {},
+  };
+  await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload);
+}
+
+type PlayDefenseCardPayload = PlayCardPayload;
+export async function sendPlayerPlayDefenseCard(
+  target_player: number,
+  card: number
+) {
+  const playDefenseCardPayload: PlayDefenseCardPayload = {
+    card: card,
+    card_options: {
+      target: target_player,
+    },
+  };
+  await gameSocket.emitWithAck(
+    MessageType.GAME_PLAY_DEFENSE_CARD,
+    playDefenseCardPayload
+  );
+}
+
+type DiscardCardPayload = {
+  card: number;
+};
+export async function sendPlayerDiscardCard(card: number) {
+  const discardCardPayload: DiscardCardPayload = {
+    card: card,
+  };
+  await gameSocket.emitWithAck(
+    MessageType.GAME_DISCARD_CARD,
+    discardCardPayload
+  );
+}
+
+type SelectExchangeCardPayload = {
+  card: number;
+};
+export async function sendPlayerSelectExchangeCard(card: number) {
+  const selectExchangeCardPayload: SelectExchangeCardPayload = {
+    card: card,
+  };
+  await gameSocket.emitWithAck(
+    MessageType.GAME_SELECT_EXCHANGE_CARD,
+    selectExchangeCardPayload
+  );
 }
 
 export function joinPlayerToGame(
@@ -63,9 +123,9 @@ export const startGame = () => {
   return gameSocket.emitWithAck(MessageType.ROOM_START_GAME);
 };
 
-export const leaveLobby = () => {
+export const leaveLobby = async () => {
   Router.push("/");
-  gameSocket.emit(MessageType.ROOM_QUIT_GAME);
+  await gameSocket.emitWithAck(MessageType.ROOM_QUIT_GAME);
   // Damos un margen de tiempo para desconectarnos del socket.
   gameSocket.disconnect();
   store.dispatch(setUserName(undefined));
