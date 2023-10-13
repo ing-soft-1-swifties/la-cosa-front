@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import { renderWithProviders } from "@/src/utils/test-utils";
 import { RootState, setupStore, store } from "@/store/store";
 import { PreloadedState } from "@reduxjs/toolkit";
-import { GameStatus, initialState, setGameState } from "@/store/gameSlice";
+import { GameStatus, PlayerRole, initialState, setGameState } from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
 import { act } from "react-dom/test-utils";
 // import {
@@ -45,12 +45,17 @@ const HostAppState: PreloadedState<RootState> = {
     status: GameStatus.WAITING,
     players: [
       {
+        id: 1,
         name: "Pepito",
+        position: 1,
       },
     ],
     playerData: {
       cards: [],
       cardSelected: undefined,
+      playerID: 1,
+      playerSelected: 1,
+      role: PlayerRole.INFECTED,
     },
   },
   user: {
@@ -71,21 +76,32 @@ const HostAppStateGameReady: PreloadedState<RootState> = {
     status: GameStatus.WAITING,
     players: [
       {
+        id: 1,
         name: "Pepito",
+        position: 1,
       },
       {
-        name: "Pepito_2",
+        id: 2,
+        name: "Pepito2",
+        position: 2,
       },
       {
-        name: "Pepito_3",
+        id: 3,
+        name: "Pepito3",
+        position: 3,
       },
       {
-        name: "Pepito_4",
+        id: 4,
+        name: "Pepito4",
+        position: 4,
       },
     ],
     playerData: {
       cards: [],
       cardSelected: undefined,
+      playerID: 1,
+      playerSelected: 1,
+      role: PlayerRole.INFECTED,
     },
   },
   user: {
@@ -109,15 +125,22 @@ const NotHostAppState: PreloadedState<RootState> = {
     status: GameStatus.WAITING,
     players: [
       {
+        id: 1,
         name: "Pepito",
+        position: 1,
       },
       {
+        id: 2,
         name: "NotPepito",
+        position: 2,
       },
     ],
     playerData: {
       cards: [],
       cardSelected: undefined,
+      playerID: 1,
+      playerSelected: 1,
+      role: PlayerRole.INFECTED,
     },
   },
   user: {
@@ -240,6 +263,9 @@ describe("Page Lobby", () => {
           playerData: {
             cards: [],
             cardSelected: undefined,
+            playerID: 1,
+            playerSelected: 1,
+            role: PlayerRole.INFECTED,
           },
         },
       };
@@ -330,7 +356,9 @@ describe("Page Lobby", () => {
 
     newState.gameState.players = newState.gameState.players.concat([
       {
+        id: 1,
         name: "TheAmazingNewPlayer",
+        position: 1,
       },
     ]);
 

@@ -86,6 +86,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
       ],
       cardSelected: 1,
       playerID: 1,
+      playerSelected: 1,
       role: PlayerRole.INFECTED,
     },
   },
