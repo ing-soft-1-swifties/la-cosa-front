@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react'
 import React, { FC } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from 'store/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectPlayer, unselectPlayer } from '@/store/gameSlice'
+import { RootState } from '@/store/store'
 import Player from './Player'
 
 type TableProps = {}
@@ -19,9 +20,20 @@ const Table: FC<TableProps> = () => {
   const players = useSelector((state: RootState) => state.game.players.filter(p => p.id !== state.game.playerData.playerID))
   // const players = useSelector((state: RootState) => state.game.players)
   const localPlayer = useSelector((state: RootState) => state.game.players.find(p => p.id === state.game.playerData.playerID))
+  const selectedPlayerID = useSelector((state: RootState) => state.game.playerData.playerSelected);
+
+  const dispatch = useDispatch();
 
   if (localPlayer == undefined) {
     throw new Error("No player in the game has this player's id!")
+  }
+
+  function onPlayerSelectedToggle(playerID: number) {
+    if (selectedPlayerID === playerID) {
+      dispatch(unselectPlayer());
+    } else {
+      dispatch(selectPlayer(playerID));
+    }
   }
 
   return (
@@ -42,15 +54,19 @@ const Table: FC<TableProps> = () => {
         alignItems="center"
         position="relative">
         {players.map(player => {
-          const { x, y } = getTranslatesForPosition(player.position - (localPlayer.position as any), players.length +1)
+          const { x, y } = getTranslatesForPosition(player.position - (localPlayer.position as any), players.length + 1)
           return (
             <Box
               key={player.name}
               position="absolute"
               left={`calc(50% + ${x * 62}%)`}
               bottom={`calc(50% + ${y * 62}%)`}
+              onClick={() => onPlayerSelectedToggle(player.id)}
             >
-              <Player player={player} />
+              <Player
+                player={player}
+                selected={player.id === selectedPlayerID}
+              />
             </Box>
           )
         }
