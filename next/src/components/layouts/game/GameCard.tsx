@@ -1,8 +1,7 @@
-import { Box, BoxProps, Flex } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react";
 import {} from "path";
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, store } from "store/store";
+import { useDispatch } from "react-redux";
 import IMG_INFECTED from "@/public/cards/Infectado.jpg";
 import IMG_FLAMETHROWER from "@/public/cards/Lanzallamas.jpg";
 import IMG_NOBBQ from "@/public/cards/NadaDeBarbacoas.jpg";
@@ -11,6 +10,7 @@ import IMG_THETHING from "@/public/cards/LaCosa.jpg";
 import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
+import usePlayerGameState from "hooks/usePlayerGameState";
 
 type CardProps = BoxProps & {
   card_id: number;
@@ -57,7 +57,7 @@ const CardsData: CardsDataType = {
 };
 
 const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
-  const game = useSelector((state: RootState) => state.game);
+  const player = usePlayerGameState();
   const dispatch = useDispatch();
 
   const card_key = ReverseCard.get(name);
@@ -71,9 +71,7 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
     <Box
       onClick={() => {
         dispatch(
-          setSelectedCard(
-            game.playerData.cardSelected != id ? id : undefined
-          )
+          setSelectedCard(player.selections.card != id ? id : undefined)
         );
       }}
       borderWidth="4px"
@@ -83,7 +81,7 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
       w="auto"
       minW="auto"
       data-testid={`GAME_CARD_${id}`}
-      borderColor={game.playerData.cardSelected == id ? "green.500" : "black"}
+      borderColor={player.selections.card == id ? "green.500" : "black"}
       cursor="pointer"
       {...props}
       transform="auto"

@@ -1,5 +1,5 @@
 import { PageWithLayout } from "@/src/pages/_app";
-import { Box, Flex, Grid, GridItem, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { buildSucessToastOptions } from "@/src/utils/toasts";
@@ -53,7 +53,7 @@ const Page: PageWithLayout = () => {
 };
 
 Page.authConfig = {
-  gameAuthProtected: true,
+  gameAuthProtected: false,
 };
 
 export default Page;
