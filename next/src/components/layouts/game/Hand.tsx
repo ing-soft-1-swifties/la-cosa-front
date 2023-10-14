@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { FC } from "react";
 import GameCard from "./GameCard";
-import usePlayerGameState from "hooks/usePlayerGameState";
+import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 
 type HandProps = {
   card_height?: string;
