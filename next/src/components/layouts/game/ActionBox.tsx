@@ -1,8 +1,6 @@
 import { Button, Stack } from "@chakra-ui/react";
 import {} from "path";
 import { FC } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/src/store/store";
 import {
   GiBroadsword,
   GiFireShield,
@@ -10,15 +8,16 @@ import {
   GiChaliceDrops,
 } from "react-icons/gi";
 import { sendPlayerPlayCard } from "@/src/business/game/gameAPI/manager";
+import usePlayerGameState from "hooks/usePlayerGameState";
 
 type ActionBoxProps = {};
 
 const ActionBox: FC<ActionBoxProps> = ({}) => {
-  const playerData = useSelector((state: RootState) => state.game.playerData);
+  const player = usePlayerGameState();
 
   const playCard = () => {
-    var cardSelected = playerData.cardSelected;
-    var playerSelected = playerData.playerSelected;
+    const cardSelected = player.selections.card;
+    const playerSelected = player.selections.player;
 
     var cardOptions = playerSelected ? { target: playerSelected } : {};
     if (cardSelected !== undefined) {

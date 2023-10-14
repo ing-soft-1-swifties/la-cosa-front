@@ -1,5 +1,9 @@
-import { StatHelpText } from "@chakra-ui/react";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export enum PlayerTurnState {
+  PLAY_OR_DISCARD = "play_or_discard",
+  SELECT_EXCHANGE_CARD = "select_exchange_Card",
+}
 
 export enum GameStatus {
   WAITING = "LOBBY",
@@ -54,7 +58,7 @@ export enum CardSubTypes {
   OBSTACLE = "OBSTACULO",
 }
 
-type Card = {
+export type Card = {
   id: number;
   name: string;
   type: CardTypes;
