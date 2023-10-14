@@ -8,7 +8,7 @@ import {
   GiChaliceDrops,
 } from "react-icons/gi";
 import { sendPlayerPlayCard } from "@/src/business/game/gameAPI/manager";
-import usePlayerGameState from "hooks/usePlayerGameState";
+import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 
 type ActionBoxProps = {};
 

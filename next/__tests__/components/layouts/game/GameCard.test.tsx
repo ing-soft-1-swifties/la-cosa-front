@@ -10,6 +10,7 @@ import {
   PlayerRole,
   initialState,
   setGameState,
+  PlayerStatus,
 } from "@/store/gameSlice";
 import { act } from "react-dom/test-utils";
 import GameCard from "@/components/layouts/game/GameCard";
@@ -31,7 +32,15 @@ const PlayerInGameState: PreloadedState<RootState> = {
       maxPlayers: 12,
     },
     status: GameStatus.WAITING,
-    players: [],
+    players: [
+      {
+        id: 1,
+        name: "Test",
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        position: 1,
+      },
+    ],
     playerData: {
       cards: [
         {
@@ -66,6 +75,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
         },
       ],
       cardSelected: 1,
+      playerSelected: 1,
       playerID: 1,
       role: PlayerRole.INFECTED,
     },

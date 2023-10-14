@@ -9,6 +9,8 @@ import {
   CardTypes,
   GameStatus,
   initialState,
+  PlayerRole,
+  PlayerStatus,
   setGameState,
 } from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
@@ -49,7 +51,15 @@ const PlayerInGameState: PreloadedState<RootState> = {
       maxPlayers: 12,
     },
     status: GameStatus.WAITING,
-    players: [],
+    players: [
+      {
+        id: 1,
+        name: "Test",
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        position: 1,
+      },
+    ],
     playerData: {
       cards: [
         {
@@ -84,6 +94,9 @@ const PlayerInGameState: PreloadedState<RootState> = {
         },
       ],
       cardSelected: 1,
+      playerSelected: 1,
+      playerID: 1,
+      role: PlayerRole.INFECTED,
     },
   },
   user: {

@@ -10,7 +10,7 @@ import IMG_THETHING from "@/public/cards/LaCosa.jpg";
 import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
-import usePlayerGameState from "hooks/usePlayerGameState";
+import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 
 type CardProps = BoxProps & {
   card_id: number;
