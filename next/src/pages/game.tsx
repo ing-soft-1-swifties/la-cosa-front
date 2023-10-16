@@ -26,6 +26,16 @@ const Page: PageWithLayout = () => {
 
   const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect;
 
+  const gameFinishExchangeHandler = () => {
+    toast(buildSucessToastOptions({ description: "Intercambio" }));
+  };
+  useEffect(() => {
+    gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, gameFinishExchangeHandler);
+    return () => {
+      gameSocket.removeListener(EventType.ON_GAME_FINISH_EXCHANGE, gameFinishExchangeHandler);
+    };
+  });
+
   return (
     <>
       <GameEnd />
