@@ -29,7 +29,14 @@ const formSchema = Yup.object({
   minPlayers: Yup.number()
     .required("Este campo es requerido")
     .min(4, "La cantidad minima de jugadores debe ser 4")
-    .max(12, "La cantidad maxima de jugares deber ser 12"),
+    .max(12, "La cantidad maxima de jugares deber ser 12")
+    .test({
+      message:
+        "La cantidad minima de jugadores no puede ser mayor a la cantidad maxima de jugadores",
+      test: function (value) {
+        return value <= this.parent.maxPlayers;
+      },
+    }),
   nombreJugador: Yup.string()
     .required("Este campo es requerido")
     .max(50, "La cantidad maxima de caracteres es 50")
@@ -161,9 +168,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         id="minPlayers"
                         data-testid="modal-crear_minPlayersInput"
                       />
-                      <FormErrorMessage>
-                        {errors.minPlayers}
-                      </FormErrorMessage>
+                      <FormErrorMessage>{errors.minPlayers}</FormErrorMessage>
                     </FormControl>
                     {/* input de jugadores maximos  */}
                     <FormControl
@@ -179,14 +184,10 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         id="maxPlayers"
                         data-testid="modal-crearmaxPlayersInput"
                       />
-                      <FormErrorMessage>
-                        {errors.maxPlayers}
-                      </FormErrorMessage>
+                      <FormErrorMessage>{errors.maxPlayers}</FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={submitError != null}>
-                      <FormErrorMessage>
-                        {submitError}
-                      </FormErrorMessage>
+                      <FormErrorMessage>{submitError}</FormErrorMessage>
                     </FormControl>
                     <Flex justify="flex-end" align="center" mt="5">
                       <Button
