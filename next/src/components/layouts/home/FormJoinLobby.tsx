@@ -42,7 +42,7 @@ export default function FormJoinLobby() {
           fontSize="3xl"
           color="white"
         >
-          Partidas personalizadas
+          Unirse a una partida
         </Text>
 
         <Formik
