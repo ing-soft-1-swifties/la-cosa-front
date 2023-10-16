@@ -1,4 +1,4 @@
-import { gameSocket } from "@/src/business/game/gameAPI";
+// import { gameSocket } from "@/src/business/game/gameAPI";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 
@@ -7,22 +7,22 @@ type GameSocketState = {
   gameSocket: Socket;
 };
 
-const useGameSocket: () => GameSocketState = () => {
+const useGameSocket: (socket: Socket) => GameSocketState = (socket) => {
 
   const [connected, setConnected] = useState(true);
 
   function handleConnChange() {
-    setConnected(gameSocket.connected)
+    setConnected(socket.connected)
   }
 
   // Sincronizar estado de socket con estado local
   useEffect(() => {
-    gameSocket.on("connect", handleConnChange);
-    gameSocket.on("disconnect", handleConnChange);
+    socket.on("connect", handleConnChange);
+    socket.on("disconnect", handleConnChange);
 
     return () => {
-      gameSocket.removeListener("connect", handleConnChange);
-      gameSocket.removeListener("disconnect", handleConnChange);
+      socket.removeListener("connect", handleConnChange);
+      socket.removeListener("disconnect", handleConnChange);
     }
   })
 
@@ -30,7 +30,7 @@ const useGameSocket: () => GameSocketState = () => {
 
   return {
     isConnected: connected,
-    gameSocket: gameSocket,
+    gameSocket: socket,
   };
 };
 
