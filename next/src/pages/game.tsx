@@ -3,7 +3,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { buildSucessToastOptions } from "@/src/utils/toasts";
-import useGameSocket from "@/src/hooks/useGameSocket";
+import { gameSocket } from "@/src/business/game/gameAPI";
 import GameTable from "@/src/components/Table";
 import { EventType } from "@/src/business/game/gameAPI/listener";
 import Hand from "@/src/components/layouts/game/Hand";
@@ -13,28 +13,17 @@ import ForestBGHuman from "@/public/game/froest-background-humans.jpg";
 import ForestBGInfect from "@/public/game/froest-background-infected.jpg";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import GameEnd from "@/components/layouts/game/GameEnd";
-import { Card, PlayerRole } from "@/store/gameSlice";
+import { PlayerRole } from "@/store/gameSlice";
 import { Socket } from "socket.io-client";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
-  const { gameSocket } = useGameSocket();
   const role = usePlayerGameState().role;
 
   useGameNotifications(gameSocket, toast);
 
 
   const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect;
-
-  const gameFinishExchangeHandler = () => {
-    toast(buildSucessToastOptions({ description: "Intercambio" }));
-  };
-  useEffect(() => {
-    gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, gameFinishExchangeHandler);
-    return () => {
-      gameSocket.removeListener(EventType.ON_GAME_FINISH_EXCHANGE, gameFinishExchangeHandler);
-    };
-  });
 
   return (
     <>
