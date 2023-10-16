@@ -6,6 +6,7 @@ import Router from "next/router";
 import { StandaloneToast } from "@/src/pages/_app";
 import {
   buildErrorToastOptions,
+  buildSucessToastOptions,
   buildWarningToastOptions,
 } from "@/src/utils/toasts";
 
@@ -31,7 +32,10 @@ export type PlayCardPayload = {
   card: number;
   card_options: CardOptions;
 };
-export async function sendPlayerPlayCard(card: number, card_options: CardOptions) {
+export async function sendPlayerPlayCard(
+  card: number,
+  card_options: CardOptions
+) {
   const playCardPayload: PlayCardPayload = {
     card: card,
     card_options: card_options,
@@ -119,7 +123,17 @@ export function cancelGame(reason: CancelGameReason) {
   store.dispatch(setGameConnectionToken(undefined));
 }
 
-export const startGame = () => {
+export function beginGame() {
+  StandaloneToast(
+    buildSucessToastOptions({
+      title: "La partida comenzo!",
+      description: "",
+    })
+  );
+   Router.push("/game");
+}
+
+export const sendStartGame = () => {
   return gameSocket.emitWithAck(MessageType.ROOM_START_GAME);
 };
 
