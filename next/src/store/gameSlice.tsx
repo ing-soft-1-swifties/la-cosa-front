@@ -82,12 +82,12 @@ export const initialState: GameState = {
   },
   status: GameStatus.WAITING,
   players: [
-    { name: "Yo", id: 123, position: 0 },
-    { name: "otro1", id: 124, position: 1 },
-    { name: "otro2", id: 125, position: 2 },
-    { name: "otro3", id: 126, position: 3 },
-    { name: "otro4", id: 127, position: 4 },
-    { name: "otro5", id: 128, position: 5 },
+    { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE },
+    { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE },
+    { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE },
+    { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE },
+    { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE },
+    { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.ALIVE },
   ],
   playerData: {
     playerID: 123,
@@ -125,7 +125,7 @@ export const initialState: GameState = {
     ],
     cardSelected: 1,
     playerSelected: undefined,
-    role: PlayerRole.HUMAN,
+    role: PlayerRole.INFECTED,
   },
 };
 
@@ -141,10 +141,10 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     selectPlayer(state, action: PayloadAction<number>) {
-      state.playerData.playerSelected = action.payload;
+      state.playerData!.playerSelected = action.payload;
     },
     unselectPlayer(state) {
-      state.playerData.playerSelected = undefined;
+      state.playerData!.playerSelected = undefined;
     },
     setGameState(state, action: PayloadAction<BackendGameState>) {
       state.config = action.payload.config;
@@ -153,7 +153,7 @@ export const gameSlice = createSlice({
       state.playerData = action.payload.playerData;
     },
     setSelectedCard(state, action: PayloadAction<number | undefined>) {
-      state.playerData.cardSelected = action.payload;
+      state.playerData!.cardSelected = action.payload;
     },
     resetGameState(state) {
       state.config = initialState.config;

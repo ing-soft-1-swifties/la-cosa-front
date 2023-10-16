@@ -1,5 +1,5 @@
 import { Button, Stack } from "@chakra-ui/react";
-import {} from "path";
+import { } from "path";
 import { FC } from "react";
 import {
   GiBroadsword,
@@ -7,21 +7,35 @@ import {
   GiSwitchWeapon,
   GiChaliceDrops,
 } from "react-icons/gi";
-import { sendPlayerPlayCard } from "@/src/business/game/gameAPI/manager";
+import { sendPlayerDiscardCard, sendPlayerPlayCard, sendPlayerSelectExchangeCard } from "@/src/business/game/gameAPI/manager";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
+import { PlayerTurnState } from "@/store/gameSlice";
 
 type ActionBoxProps = {};
 
-const ActionBox: FC<ActionBoxProps> = ({}) => {
+const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const player = usePlayerGameState();
+  const cardSelected = player.selections.card;
+  const turn = player.turn;
 
   const playCard = () => {
-    const cardSelected = player.selections.card;
     const playerSelected = player.selections.player;
 
     var cardOptions = playerSelected ? { target: playerSelected } : {};
     if (cardSelected !== undefined) {
       sendPlayerPlayCard(cardSelected, cardOptions);
+    }
+  };
+
+  const discardCard = () => {
+    if (cardSelected !== undefined) {
+      sendPlayerDiscardCard(cardSelected);
+    }
+  };
+
+  const swapCard = () => {
+    if (cardSelected !== undefined) {
+      sendPlayerSelectExchangeCard(cardSelected);
     }
   };
 
@@ -33,12 +47,27 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
           data-testid="ACTION_BOX_PLAY_BTN"
           onClick={playCard}
           rightIcon={<GiBroadsword />}
-        >
-          Jugar
+          isDisabled={cardSelected == undefined && turn !== PlayerTurnState.PLAY_OR_DISCARD}
+        >Jugar
         </Button>
-        {/* <Button colorScheme='whiteAlpha' rightIcon={<GiChaliceDrops />}>Descartar</Button> */}
+
+        <Button
+          colorScheme='whiteAlpha'
+          data-testid="ACTION_BOX_DSC_BTN"
+          rightIcon={<GiChaliceDrops />}
+          onClick={discardCard}
+          isDisabled={cardSelected == undefined && turn !== PlayerTurnState.PLAY_OR_DISCARD}
+        >Descartar
+        </Button>
         {/* <Button colorScheme='whiteAlpha' rightIcon={<GiFireShield />}>Defenderse</Button> */}
-        {/* <Button colorScheme='whiteAlpha' rightIcon={<GiSwitchWeapon />}>Intercambiar</Button> */}
+        <Button
+          colorScheme='whiteAlpha'
+          data-testid="ACTION_BOX_SWAP_BTN"
+          rightIcon={<GiSwitchWeapon />}
+          onClick={swapCard}
+          isDisabled={cardSelected == undefined && turn !== PlayerTurnState.SELECT_EXCHANGE_CARD}
+        >Intercambiar
+        {turn}</Button>
       </Stack>
     </>
   );

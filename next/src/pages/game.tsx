@@ -10,10 +10,14 @@ import Hand from "@/src/components/layouts/game/Hand";
 import ActionBox from "@/components/layouts/game/ActionBox";
 import BgImage from "@/components/utility/BgImage";
 import ForestBGHuman from "@/public/game/froest-background-humans.jpg";
+import ForestBGInfect from "@/public/game/froest-background-infected.jpg";
+import usePlayerGameState from "@/src/hooks/usePlayerGameState";
+import { PlayerRole } from "@/store/gameSlice";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
   const { gameSocket } = useGameSocket();
+  const role = usePlayerGameState().role;
 
   const roomStartHandler = () => {
     toast(buildSucessToastOptions({ description: "Partida iniciada" }));
@@ -25,13 +29,15 @@ const Page: PageWithLayout = () => {
     };
   });
 
+  const BG_IMG = role==PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect
+
   return (
     <Box pos="relative">
       {/* Imagen de fondo del Lobby */}
       <BgImage
         w="100%"
         imageProps={{
-          src: ForestBGHuman,
+          src: BG_IMG,
           alt: "",
         }}
       />
@@ -53,7 +59,7 @@ const Page: PageWithLayout = () => {
 };
 
 Page.authConfig = {
-  gameAuthProtected: true,
+  gameAuthProtected: false,
 };
 
 export default Page;

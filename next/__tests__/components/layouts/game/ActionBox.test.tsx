@@ -9,6 +9,7 @@ import {
   CardTypes,
   GameStatus,
   PlayerRole,
+  PlayerStatus,
   initialState,
   setGameState,
 } from "@/store/gameSlice";
@@ -23,8 +24,10 @@ import { Server } from "socket.io";
 import { AddressInfo } from "node:net";
 import { setGameConnectionToken } from "@/store/userSlice";
 import {
+  DiscardCardPayload,
   MessageType,
   PlayCardPayload,
+  SelectExchangeCardPayload,
 } from "@/src/business/game/gameAPI/manager";
 import { Socket } from "socket.io-client";
 import { io as ioc } from "socket.io-client";
@@ -56,11 +59,15 @@ const InGameAppState: PreloadedState<RootState> = {
         id: 1,
         name: "Pepito",
         position: 1,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
       },
       {
         id: 2,
         name: "Juanito",
         position: 2,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
       },
     ],
     playerData: {
@@ -141,8 +148,14 @@ describe("Page Lobby", () => {
     renderWithProviders(<ActionBox />, {
       preloadedState: InGameAppState,
     });
-    const playbtn = screen.getByTestId("ACTION_BOX_PLAY_BTN");
-    expect(playbtn).toHaveTextContent("Jugar");
+    const playBTN = screen.getByTestId("ACTION_BOX_PLAY_BTN");
+    expect(playBTN).toHaveTextContent("Jugar");
+
+    const discardBTN = screen.getByTestId("ACTION_BOX_DSC_BTN");
+    expect(discardBTN).toHaveTextContent("Descartar");
+
+    const swapdBTN = screen.getByTestId("ACTION_BOX_SWAP_BTN");
+    expect(swapdBTN).toHaveTextContent("Intercambiar");
   });
 
   it("click on play", (done) => {
@@ -168,4 +181,51 @@ describe("Page Lobby", () => {
       playbtn.click();
     });
   });
+
+  it("click on discard", (done) => {
+    act(() => {
+      renderWithProviders(<ActionBox />, {
+        preloadedState: InGameAppState,
+      });
+    });
+
+    // Mockeamos el servidor para revisar que llegue el mensaje
+    serverSocket.once(MessageType.GAME_DISCARD_CARD, (data) => {
+      expect(data);
+      const discardCardPayload: DiscardCardPayload = {
+        card: 1
+      };
+      expect(data).toStrictEqual(discardCardPayload);
+      done();
+    });
+
+    const discardbtn = screen.getByTestId("ACTION_BOX_DSC_BTN");
+    act(() => {
+      discardbtn.click();
+    });
+  });
+
+
+it("click on swap", (done) => {
+  act(() => {
+    renderWithProviders(<ActionBox />, {
+      preloadedState: InGameAppState,
+    });
+  });
+
+  // Mockeamos el servidor para revisar que llegue el mensaje
+  serverSocket.once(MessageType.GAME_SELECT_EXCHANGE_CARD, (data) => {
+    expect(data);
+    const selectExchangeCardPayload: SelectExchangeCardPayload = {
+      card: 1
+    };
+    expect(data).toStrictEqual(selectExchangeCardPayload);
+    done();
+  });
+
+  const discardbtn = screen.getByTestId("ACTION_BOX_SWAP_BTN");
+  act(() => {
+    discardbtn.click();
+  });
+});
 });

@@ -1,5 +1,5 @@
-import { Box, BoxProps } from "@chakra-ui/react";
-import {} from "path";
+import { Box, BoxProps, Text } from "@chakra-ui/react";
+import { } from "path";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import IMG_INFECTED from "@/public/cards/Infectado.jpg";
@@ -61,26 +61,31 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
   const dispatch = useDispatch();
 
   const card_key = ReverseCard.get(name);
+  // var IMG_LOADED = false;
+  var cardData = undefined;
   if (card_key == null) {
-    return <>Carta indefinida</>;
+  } else { //sino se me rompe el linter
+    const card = Card[card_key];
+    cardData = CardsData[card];
+    // IMG_LOADED = true;
   }
-  const card = Card[card_key];
-  const cardData = CardsData[card];
 
   return (
     <Box
       onClick={() => {
         dispatch(
-          setSelectedCard(player.selections.card != id ? id : undefined)
+          setSelectedCard(player.selections.card !== id ? id : undefined)
         );
       }}
       borderWidth="4px"
       borderRadius="lg"
       backgroundColor="black"
+      minH='full'
       h="full"
       w="auto"
       minW="auto"
       data-testid={`GAME_CARD_${id}`}
+      bgColor='black'
       borderColor={player.selections.card == id ? "green.500" : "black"}
       cursor="pointer"
       {...props}
@@ -90,14 +95,23 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
       }}
       transitionDuration="300ms"
     >
-      <Image
-        w="auto"
-        h="full"
-        data-testid={`GAME_CARD_IMG_${id}`}
-        src={cardData.image}
-        alt={"Card " + name}
-        clipPath="inset(2% 4% 2% 2%)"
-      />
+      {cardData !== undefined ?
+        <Image
+          w="auto"
+          h="full"
+          data-testid={`GAME_CARD_IMG_${id}`}
+          src={cardData!.image}
+          alt={"Card " + name}
+          clipPath="inset(2% 4% 2% 2%)"
+        />
+        : <>
+          <Text color='white'>
+            Carta Indefinida: 
+          </Text>
+          <Text color='white'>
+            {name}
+          </Text>
+        </>}
     </Box>
   );
 };

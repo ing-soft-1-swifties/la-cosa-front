@@ -60,7 +60,7 @@ export async function sendPlayerPlayDefenseCard(
   );
 }
 
-type DiscardCardPayload = {
+export type DiscardCardPayload = {
   card: number;
 };
 export async function sendPlayerDiscardCard(card: number) {
@@ -73,7 +73,7 @@ export async function sendPlayerDiscardCard(card: number) {
   );
 }
 
-type SelectExchangeCardPayload = {
+export type SelectExchangeCardPayload = {
   card: number;
 };
 export async function sendPlayerSelectExchangeCard(card: number) {
