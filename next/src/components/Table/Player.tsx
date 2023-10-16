@@ -22,6 +22,10 @@ const Player = ({
           scale: 1.12,
         }}
         transitionDuration="300ms"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
       >
         <Avatar
           borderWidth="4px"
