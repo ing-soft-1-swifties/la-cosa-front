@@ -13,6 +13,7 @@ import ForestBGHuman from "@/public/game/froest-background-humans.jpg";
 import ForestBGInfect from "@/public/game/froest-background-infected.jpg";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { PlayerRole } from "@/store/gameSlice";
+import GameEnd from "@/components/layouts/game/GameEnd";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
@@ -29,37 +30,41 @@ const Page: PageWithLayout = () => {
     };
   });
 
-  const BG_IMG = role==PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect
+  const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect;
 
   return (
-    <Box pos="relative">
-      {/* Imagen de fondo del Lobby */}
-      <BgImage
-        w="100%"
-        imageProps={{
-          src: BG_IMG,
-          alt: "",
-        }}
-      />
-      <Flex flexDir="column" h="100vh" overflow="hidden">
-        <Flex flex="1" justify="center" pt="32" pb="10">
-          <GameTable />
+    <>
+      <GameEnd />
+      <Box pos="relative">
+        {/* Imagen de fondo del Lobby */}
+        <BgImage
+          w="100%"
+          imageProps={{
+            src: BG_IMG,
+            alt: "",
+          }}
+        />
+
+        <Flex flexDir="column" h="100vh" overflow="hidden">
+          <Flex flex="1" justify="center" pt="32" pb="10">
+            <GameTable />
+          </Flex>
+          <Flex flexBasis="30%" align="center" justify="space-around">
+            <Box pl={3} pr={3}>
+              <Hand card_height="14rem" />
+            </Box>
+            <Box>
+              <ActionBox />
+            </Box>
+          </Flex>
         </Flex>
-        <Flex flexBasis="30%" align="center" justify="space-around">
-          <Box pl={3} pr={3}>
-            <Hand card_height="14rem" />
-          </Box>
-          <Box>
-            <ActionBox />
-          </Box>
-        </Flex>
-      </Flex>
-    </Box>
+      </Box>
+    </>
   );
 };
 
 Page.authConfig = {
-  gameAuthProtected: false,
+  gameAuthProtected: true,
 };
 
 export default Page;

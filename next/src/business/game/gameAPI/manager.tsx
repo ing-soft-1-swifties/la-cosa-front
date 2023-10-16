@@ -96,6 +96,12 @@ export function joinPlayerToGame(
   router.push("/lobby");
 }
 
+export function finishGame() {
+  store.dispatch(setUserName(undefined));
+  store.dispatch(setGameConnectionToken(undefined));
+  Router.push("/");
+}
+
 export enum CancelGameReason {
   CANCELED_BY_HOST = "canceled_by_host",
   DISCONNECTION = "disconnection",
@@ -130,7 +136,7 @@ export function beginGame() {
       description: "",
     })
   );
-   Router.push("/game");
+  Router.push("/game");
 }
 
 export const sendStartGame = () => {
