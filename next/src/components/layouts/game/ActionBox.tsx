@@ -15,7 +15,7 @@ type ActionBoxProps = {};
 
 const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const player = usePlayerGameState();
-  const cardSelected = player.selections.card;
+  const cardSelected = player.selections.card?.id;
   const turn = player.turn;
 
   const playCard = () => {

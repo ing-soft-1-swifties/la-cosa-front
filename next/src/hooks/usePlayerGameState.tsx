@@ -17,7 +17,7 @@ type PlayerGameState = {
   turn: undefined | PlayerTurnState;
   cards: Card[];
   selections: {
-    card: number | undefined;
+    card: Card | undefined;
     player: number | undefined;
   };
   isHost: boolean;
@@ -50,7 +50,7 @@ const usePlayerGameState: () => PlayerGameState = () => {
     turn: undefined,
     cards: playerData.cards,
     selections: {
-      card: playerData.cardSelected,
+      card: playerData.cards.find(card => card.id == playerData.cardSelected),
       player: playerData.playerSelected,
     },
     isHost: gameState.config.host == playerPublicData.name,

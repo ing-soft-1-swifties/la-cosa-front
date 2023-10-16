@@ -1,10 +1,10 @@
-import { Box, BoxProps } from "@chakra-ui/react";
+import { Box, BoxProps, Text } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PlayerStatus, selectPlayer, unselectPlayer } from "@/store/gameSlice";
-import { RootState } from "@/store/store";
 import Player from "./Player";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
+import { RootState } from "@/store/store";
 
 type TableProps = BoxProps & {};
 
@@ -36,11 +36,26 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     throw new Error("No player in the game has this player's id!");
   }
 
+  function distancePlayer(playerSelectedPosition: number) {
+    if(Math.abs(localPlayer.position - playerSelectedPosition) > ((players_data.length+1)/2)) {
+      return(Math.floor((players_data.length+1)/2) - (playerSelectedPosition % Math.floor((players_data.length+1)/2)))
+    }else{
+      return(Math.abs(localPlayer.position - playerSelectedPosition))
+    }
+  }
+
   function onPlayerSelectedToggle(playerID: number) {
+    const playerSelected = players_data.find(p => p.id == playerID);
     if (selectedPlayerID === playerID) {
       dispatch(unselectPlayer());
-    } else {
-      dispatch(selectPlayer(playerID));
+    } else if (localPlayer.selections.card !== undefined && localPlayer.selections.card?.needTarget === true) {
+      if (localPlayer.selections.card.targetAdjacentOnly === false) {
+        dispatch(selectPlayer(playerID));
+      } else {
+        if (distancePlayer(playerSelected!.position)==1) {
+          dispatch(selectPlayer(playerID));
+        }
+      }
     }
   }
 
