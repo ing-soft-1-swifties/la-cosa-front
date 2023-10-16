@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import { GameState, setGameState } from "@/store/gameSlice";
 import { store } from "@/store/store";
-import { cancelGame, CancelGameReason } from "./manager";
+import { beginGame, cancelGame, CancelGameReason } from "./manager";
 import { StandaloneToast } from "@/src/pages/_app";
 import { buildErrorToastOptions } from "@/src/utils/toasts";
 
@@ -40,6 +40,7 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_GAME_END, updateGameState);
 
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
+  gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
 
   // TODO! Hay que ver si esto lo dejamos o es temporal
   gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
@@ -74,6 +75,10 @@ function calculateNewGameState(data: GameStateData) {
 const updateGameState = (data: GameStateData) => {
   store.dispatch(setGameState(calculateNewGameState(data)));
 };
+
+function onRoomStartGame() {
+  beginGame();
+}
 
 const onRoomCancelledGame = () => {
   cancelGame(CancelGameReason.CANCELED_BY_HOST);

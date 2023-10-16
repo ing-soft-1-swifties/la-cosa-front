@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import PlayerCard from "@/components/PlayerCard";
 import { GameState } from "@/store/gameSlice";
-import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
+import { leaveLobby, sendStartGame } from "@/src/business/game/gameAPI/manager";
 import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
 import {
@@ -147,31 +147,19 @@ type StartGameButtonProps = {
 
 const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
   const [startLoading, setStartLoading] = useState(false);
-  const router = useRouter();
   const startEnabled = canGameStart(gameState);
   const toast = useToast();
   const onInitHandle = async () => {
     setStartLoading(true);
-    startGame()
-      .then(
-        () => {
-          toast(
-            buildSucessToastOptions({
-              title: "La partida comenzo!",
-              description: "",
-            })
-          );
-          router.replace("/game");
-        },
-        (reason: any) => {
-          toast(
-            buildErrorToastOptions({
-              title: "Error iniciando partida",
-              description: `${reason}`,
-            })
-          );
-        }
-      )
+    sendStartGame()
+      .catch((reason: any) => {
+        toast(
+          buildErrorToastOptions({
+            title: "Error iniciando partida",
+            description: `${reason}`,
+          })
+        );
+      })
       .finally(() => {
         setStartLoading(false);
       });
