@@ -63,6 +63,8 @@ export type Card = {
   name: string;
   type: CardTypes;
   subType: CardSubTypes | undefined;
+  needTarget: boolean;
+  targetAdjacentOnly: boolean;
 };
 
 export type GameState = {
@@ -97,24 +99,32 @@ export const initialState: GameState = {
         name: "Lanzallamas",
         type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
+        needTarget: true,
+        targetAdjacentOnly: true,
       },
       {
         id: 2,
         name: "¡Infectado!",
         type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
+        needTarget: false,
+        targetAdjacentOnly: false,
       },
       {
         id: 3,
         name: "¡Nada de barbacoas!",
         type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
+        needTarget: true,
+        targetAdjacentOnly: false,
       },
       {
         id: 4,
         name: "¡No, gracias!",
         type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
+        needTarget: true,
+        targetAdjacentOnly: true,
       },
       // {
       //   id: 5,
@@ -154,6 +164,7 @@ export const gameSlice = createSlice({
     },
     setSelectedCard(state, action: PayloadAction<number | undefined>) {
       state.playerData!.cardSelected = action.payload;
+      state.playerData!.playerSelected = undefined;
     },
     resetGameState(state) {
       state.config = initialState.config;

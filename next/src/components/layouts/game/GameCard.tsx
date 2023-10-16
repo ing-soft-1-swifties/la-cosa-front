@@ -199,7 +199,7 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
     <Box
       onClick={() => {
         dispatch(
-          setSelectedCard(player.selections.card !== id ? id : undefined)
+          setSelectedCard(player.selections.card?.id !== id ? id : undefined)
         );
       }}
       borderWidth="4px"
@@ -211,7 +211,7 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
       minW="auto"
       data-testid={`GAME_CARD_${id}`}
       bgColor='black'
-      borderColor={player.selections.card == id ? "green.500" : "black"}
+      borderColor={player.selections.card?.id == id ? "green.500" : "black"}
       cursor="pointer"
       {...props}
       transform="auto"
