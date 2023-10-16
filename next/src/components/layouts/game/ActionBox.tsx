@@ -9,7 +9,7 @@ import {
 } from "react-icons/gi";
 import { sendPlayerDiscardCard, sendPlayerPlayCard, sendPlayerSelectExchangeCard } from "@/src/business/game/gameAPI/manager";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
-import { PlayerTurnState } from "@/store/gameSlice";
+import { PlayerStatus, PlayerTurnState } from "@/store/gameSlice";
 
 type ActionBoxProps = {};
 
@@ -38,6 +38,9 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
       sendPlayerSelectExchangeCard(cardSelected);
     }
   };
+  if (player.status == PlayerStatus.DEATH) {
+    return null;
+  }
 
   return (
     <>

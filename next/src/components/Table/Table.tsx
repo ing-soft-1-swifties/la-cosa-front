@@ -1,15 +1,16 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlayer, unselectPlayer } from "@/store/gameSlice";
+import { PlayerStatus, selectPlayer, unselectPlayer } from "@/store/gameSlice";
 import { RootState } from "@/store/store";
 import Player from "./Player";
+import usePlayerGameState from "hooks/usePlayerGameState";
 
 type TableProps = BoxProps & {};
 
 function getTranslatesForPosition(
   position: number,
-  playerAmount: number
+  playerAmount: number,
 ): { x: number; y: number } {
   // Obtenemos el angulo para la posicion del jugador
   let angle = position * ((2 * Math.PI) / playerAmount);
@@ -20,20 +21,14 @@ function getTranslatesForPosition(
 }
 
 const Table: FC<TableProps> = ({ ...boxProps }) => {
-  const playerID = useSelector(
-    (state: RootState) => state.game.playerData.playerID
-  );
+  const localPlayer = usePlayerGameState();
+  const playerID = localPlayer.id;
   const players_data = useSelector((state: RootState) => state.game.players);
   const players = players_data.filter(
-    (p) => p.id !== playerID
+    (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
   );
 
-  const localPlayer = useSelector((state: RootState) =>
-    state.game.players.find((p) => p.id === state.game.playerData.playerID)
-  );
-  const selectedPlayerID = useSelector(
-    (state: RootState) => state.game.playerData.playerSelected
-  );
+  const selectedPlayerID = localPlayer.selections.player;
 
   const dispatch = useDispatch();
 
@@ -67,7 +62,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       {players.map((player) => {
         const { x, y } = getTranslatesForPosition(
           player.position - (localPlayer.position as any),
-          players.length + 1
+          players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
         );
         return (
           <Box
