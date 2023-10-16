@@ -71,7 +71,7 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
     <Box
       onClick={() => {
         dispatch(
-          setSelectedCard(player.selections.card != id ? id : undefined)
+          setSelectedCard(player.selections.card !== id ? id : undefined)
         );
       }}
       borderWidth="4px"
