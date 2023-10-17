@@ -78,13 +78,13 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     toast(buildSucessToastOptions({ description: "Se cancelo la partida" }));
   };
   const playerStealCard = (data:any) => {
-    toast(buildSucessToastOptions({ description: `Robaste las cartas: ${data.cards.map(({name})=>`${name}, `)}` }));
+    toast(buildSucessToastOptions({ description: `Robaste las cartas: ${data.cards}` }));
   };
   const playerPlayCard = (data:any) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${data.player.name} jugo las cartas: ${data.cards.map(({name})=>`${name}, `)}` }));
+    toast(buildSucessToastOptions({ description: `El jugador ${data.player} jugo la carta: ${data.card}` }));
   };
   const playerPlayDefenseCard = (data:any) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${data.player.name} jugo la carta de defensa: ${data.cards.map(({name})=>`${name}, `)}` }));
+    toast(buildSucessToastOptions({ description: `El jugador ${data.player} jugo la carta de defensa: ${data.cards}` }));
   };
 
   useEffect(() => {
