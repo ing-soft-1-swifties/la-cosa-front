@@ -68,6 +68,7 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
   const playerTurnHandler = () => {
     toast(buildSucessToastOptions({ description: "Es el turno" }));
   };
+  
 
   useEffect(() => {
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
@@ -78,5 +79,21 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     };
   });
 }
+
+// ON_ROOM_NEW_PLAYER = "on_room_new_player",
+//   ON_ROOM_LEFT_PLAYER = "on_room_left_player",
+//   ON_ROOM_CANCELLED_GAME = "on_room_cancelled_game",
+//   ON_GAME_PLAYER_STEAL_CARD = "on_game_player_steal_card",
+//   ON_GAME_PLAYER_PLAY_CARD = "on_game_player_play_card",
+//   ON_GAME_PLAYER_PLAY_DEFENSE_CARD = "on_game_player_play_defense_card",
+
+
+
+//   ON_GAME_PLAYER_DISCARD_CARD = "on_game_player_discard_card",
+//   ON_GAME_BEGIN_EXCHANGE = "on_game_begin_exchange",
+//   ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
+//   ON_GAME_PLAYER_DEATH = "on_game_player_death",
+//   ON_GAME_END = "on_game_end",
+//   ON_GAME_INVALID_ACTION = "on_game_invalid_action",
 
 export default Page;
