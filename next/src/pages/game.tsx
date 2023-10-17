@@ -63,60 +63,33 @@ Page.authConfig = {
 
 function useGameNotifications(gameSocket: Socket, toast: any) {
   const roomStartHandler = () => {
-    toast(buildSucessToastOptions({ description: `Partida iniciada` }));
+    toast(buildSucessToastOptions({ description: "Partida iniciada" }));
   };
-  const playerTurnHandler = (player:String) => {
-    toast(buildSucessToastOptions({ description: `Es el turno de ${player}` }));
-  };
-  const playerDiscardCard = (player:String) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player} descarto` }));
-  };
-
-  //no implementado
-  const beginExchange = () => {
-    toast(buildSucessToastOptions({ description: `Comienza Intercambio` }));
-  };
-  const finishExchange = () => {
-    toast(buildSucessToastOptions({ description: `Termino el Intercambio` }));
-  };
-
-  const playerDeath = (player:any) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player} murio` }));
-  };
-  const GameEnd = () => {
-    toast(buildSucessToastOptions({ description: `Juego Terminado` }));
-  };
-  const InvalidAction = () => {
-    toast(buildSucessToastOptions({ description: `Accion Invalida` }));
+  const playerTurnHandler = () => {
+    toast(buildSucessToastOptions({ description: "Es el turno" }));
   };
   // const newPlayerRoom = () => {
-  //   toast(buildSucessToastOptions({ description: `Nuevo jugador en la partida` }));
+  //   toast(buildSucessToastOptions({ description: "Nuevo jugador en la partida" }));
   // };
   // const leftPlayerRoom = () => {
-  //   toast(buildSucessToastOptions({ description: `Un jugador abandonó la partida` }));
+  //   toast(buildSucessToastOptions({ description: "Un jugador abandonó la partida" }));
   // };
   const canceledRoom = () => {
-    toast(buildSucessToastOptions({ description: `Se cancelo la partida` }));
+    toast(buildSucessToastOptions({ description: "Se cancelo la partida" }));
   };
-  const playerStealCard = (player:String, cards: Card[]) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player} robó las cartas: ${cards.map(({name})=>`${name}, `)}` }));
+  const playerStealCard = (player:any, cards: Card[]) => {
+    toast(buildSucessToastOptions({ description: `El jugador ${player.name} robó las cartas: ${cards.map(({name})=>`${name}, `)}` }));
   };
-  const playerPlayCard = (player:String, cards: Card[]) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player} jugo las cartas: ${cards.map(({name})=>`${name}, `)}` }));
+  const playerPlayCard = (player:any, cards: Card[]) => {
+    toast(buildSucessToastOptions({ description: `El jugador ${player.name} jugo las cartas: ${cards.map(({name})=>`${name}, `)}` }));
   };
-  const playerPlayDefenseCard = (player:String, cards: Card[]) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player} jugo la carta de defensa: ${cards.map(({name})=>`${name}, `)}` }));
+  const playerPlayDefenseCard = (player:any, cards: Card[]) => {
+    toast(buildSucessToastOptions({ description: `El jugador ${player.name} jugo la carta de defensa: ${cards.map(({name})=>`${name}, `)}` }));
   };
 
   useEffect(() => {
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
     gameSocket.on(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
-    gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD,playerDiscardCard);
-    gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE,beginExchange);
-    gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE,finishExchange);
-    gameSocket.on(EventType.ON_GAME_PLAYER_DEATH ,playerDeath);
-    gameSocket.on(EventType.ON_GAME_END,GameEnd);
-    gameSocket.on(EventType.ON_GAME_INVALID_ACTION,InvalidAction);
     // gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, newPlayerRoom);
     // gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, leftPlayerRoom);
     gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, canceledRoom);
@@ -132,16 +105,19 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_STEAL_CARD, playerStealCard);
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_PLAY_CARD, playerPlayCard);
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, playerPlayDefenseCard);
-      gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
-      gameSocket.removeListener(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
-      gameSocket.removeListener(EventType.ON_GAME_PLAYER_DISCARD_CARD,playerDiscardCard);
-      gameSocket.removeListener(EventType.ON_GAME_BEGIN_EXCHANGE,beginExchange);
-      gameSocket.removeListener(EventType.ON_GAME_FINISH_EXCHANGE,finishExchange);
-      gameSocket.removeListener(EventType.ON_GAME_PLAYER_DEATH ,playerDeath);
-      gameSocket.removeListener(EventType.ON_GAME_END,GameEnd );
-      gameSocket.removeListener(EventType.ON_GAME_INVALID_ACTION,InvalidAction);
     };
   });
 }
+
+//   ON_GAME_PLAYER_PLAY_CARD = "on_game_player_play_card",
+//   ON_GAME_PLAYER_PLAY_DEFENSE_CARD = "on_game_player_play_defense_card",
+
+
+//   ON_GAME_PLAYER_DISCARD_CARD = "on_game_player_discard_card",
+//   ON_GAME_BEGIN_EXCHANGE = "on_game_begin_exchange",
+//   ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
+//   ON_GAME_PLAYER_DEATH = "on_game_player_death",
+//   ON_GAME_END = "on_game_end",
+//   ON_GAME_INVALID_ACTION = "on_game_invalid_action",
 
 export default Page;

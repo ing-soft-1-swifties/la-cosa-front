@@ -22,6 +22,7 @@ export const SiteApp: FC<SiteAppProps> = ({ children }) => {
     <>
       <Head>
         <title>La Cosa</title>
+        <link rel="shortcut icon" href="../../public/InfectedIcon.png" />
       </Head>
       <Provider store={store}>
         <ChakraProvider theme={SiteTheme}>
