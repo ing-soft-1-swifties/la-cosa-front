@@ -59,6 +59,7 @@ function calculateNewGameState(data: GameStateData) {
       id: player.id,
       name: player.name,
       position: player.position,
+      status: player.status
     })),
     status: data.gameState.status,
   };
