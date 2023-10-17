@@ -69,16 +69,49 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     toast(buildSucessToastOptions({ description: "Es el turno" }));
   };
   
+  const playerDiscardCard = () => {
+    toast(buildSucessToastOptions({ description: "Carta de Descarte" }));
+  };
+  const beginExchange = () => {
+    toast(buildSucessToastOptions({ description: "Comienza Intercambio" }));
+  };
+
+  const finishExchange = () => {
+    toast(buildSucessToastOptions({ description: "Termino el Intercambio" }));
+  };
+  const playerDeath = () => {
+    toast(buildSucessToastOptions({ description: "Murio" }));
+  };
+  const GameEnd = () => {
+    toast(buildSucessToastOptions({ description: "Juego Terminado" }));
+  };
+  const InvalidAction = () => {
+    toast(buildSucessToastOptions({ description: "Accion Invalida" }));
+  };
 
   useEffect(() => {
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
     gameSocket.on(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
+    gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD,playerDiscardCard);
+    gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE,beginExchange);
+    gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE,finishExchange);
+    gameSocket.on(EventType.ON_GAME_PLAYER_DEATH ,playerDeath);
+    gameSocket.on(EventType.ON_GAME_END,GameEnd);
+    gameSocket.on(EventType.ON_GAME_INVALID_ACTION,InvalidAction);
     return () => {
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
+      gameSocket.removeListener(EventType.ON_GAME_PLAYER_DISCARD_CARD,playerDiscardCard);
+      gameSocket.removeListener(EventType.ON_GAME_BEGIN_EXCHANGE,beginExchange);
+      gameSocket.removeListener(EventType.ON_GAME_FINISH_EXCHANGE,finishExchange);
+      gameSocket.removeListener(EventType.ON_GAME_PLAYER_DEATH ,playerDeath);
+      gameSocket.removeListener(EventType.ON_GAME_END,GameEnd );
+      gameSocket.removeListener(EventType.ON_GAME_INVALID_ACTION,InvalidAction);
     };
   });
 }
+
+
 
 // ON_ROOM_NEW_PLAYER = "on_room_new_player",
 //   ON_ROOM_LEFT_PLAYER = "on_room_left_player",
@@ -95,5 +128,7 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
 //   ON_GAME_PLAYER_DEATH = "on_game_player_death",
 //   ON_GAME_END = "on_game_end",
 //   ON_GAME_INVALID_ACTION = "on_game_invalid_action",
+
+
 
 export default Page;
