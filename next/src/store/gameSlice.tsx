@@ -87,7 +87,7 @@ export const initialState: GameState = {
     { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE },
     { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE },
     { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE },
-    { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.ALIVE },
+    { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.DEATH },
   ],
   playerData: {
     playerID: 123,
@@ -100,7 +100,7 @@ export const initialState: GameState = {
       },
       {
         id: 2,
-        name: "Infectado",
+        name: "¡Infectado!",
         type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
       },
