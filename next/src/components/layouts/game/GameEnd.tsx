@@ -83,12 +83,12 @@ const GameEnd: FC<GameEndProps> = () => {
                     fontWeight="bold"
                     mb="5"
                   >
-                    Roles Iniciales:
+                    Roles Finales:
                   </Text>
                   {theThing?.map(([name, role]) => {
                     return (
                       <Text key={name}>
-                        {name}
+                        {name}:{' '}
                         <Text as="span" color="red.500" fontWeight="bold">
                           LA COSA
                         </Text>
@@ -99,7 +99,7 @@ const GameEnd: FC<GameEndProps> = () => {
                   {infected?.map(([name, role]) => {
                     return (
                       <Text key={name}>
-                        {name}
+                        {name}:{' '}
                         <Text as="span" color="green.600" fontWeight="bold">
                           INFECTADO
                         </Text>
@@ -110,7 +110,7 @@ const GameEnd: FC<GameEndProps> = () => {
                   {humans?.map(([name, role]) => {
                     return (
                       <Text key={name}>
-                        {name}
+                        {name}:{' '}
                         <Text as="span" color="blue.600" fontWeight="bold">
                           HUMANO
                         </Text>

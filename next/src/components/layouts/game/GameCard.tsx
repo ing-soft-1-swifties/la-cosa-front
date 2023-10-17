@@ -8,7 +8,7 @@ import IMG_NOBBQ from "@/public/cards/NadaDeBarbacoas.png";
 import IMG_NOTHANKS from "@/public/cards/NoGracias.png";
 import IMG_THETHING from "@/public/cards/LaCosa.png";
 import IMG_ANALYSIS from "@/public/cards/Analisis.png";
-import IMG_IM_FINE_HERE from "@/public/card/AquiEstoyBien.png";
+import IMG_IM_FINE_HERE from "@/public/cards/AquiEstoyBien.png";
 import IMG_SCARY from "@/public/cards/Aterrador.png";
 import IMG_CHANGE_OF_LOCATION from "@/public/cards/CambioDeLugar.png"
 import IMG_QUARANTINE from "@/public/cards/Cuarentena.png"
@@ -39,18 +39,18 @@ enum Card {
   NOTHANKS = "¡No, gracias!",
   THETHING = "La cosa",
   ANALYSIS = "Analisis",
-  IM_FINE_HERE = "Aqui estoy bien",
+  IM_FINE_HERE = "Aquí estoy bien",
   SCARY = "Aterrador",
   CHANGE_OF_LOCATION = "¡Cambio de lugar!",
   QUARANTINE = "Cuarentena",
   DETERMINATION = "Determinacion",
   YOU_FAILED = "¡Fallaste!",
   AXE = "Hacha",
-  YOU_BETTER_RUN = "¡Mas Vale Que Corras!",
-  LOCKED_DOOR = "Puerta Atrancada",
-  SEDUCTION = "Seduccion",
+  YOU_BETTER_RUN = "¡Más vale que corras!",
+  LOCKED_DOOR = "Puerta atrancada",
+  SEDUCTION = "Seducción",
   SUSPICION = "Sospecha",
-  WATCH_YOUR_BACKS = "Vigila Tus Espaldas",
+  WATCH_YOUR_BACKS = "Vigila tus espaldas",
   WHISKEY = "Whisky",
 };
 
