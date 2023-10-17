@@ -34,7 +34,7 @@ type CardProps = BoxProps & {
 
 enum Card {
   FLAMETHROWER = "Lanzallamas",
-  INFECTED = "¡Infectado!",
+  INFECTED = "Infectado",
   NOBBQ = "¡Nada de barbacoas!",
   NOTHANKS = "¡No, gracias!",
   THETHING = "La cosa",
