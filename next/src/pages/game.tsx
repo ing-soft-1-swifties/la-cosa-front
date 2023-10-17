@@ -14,21 +14,15 @@ import ForestBGInfect from "@/public/game/froest-background-infected.jpg";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { PlayerRole } from "@/store/gameSlice";
 import GameEnd from "@/components/layouts/game/GameEnd";
+import { Socket } from "socket.io-client";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
   const { gameSocket } = useGameSocket();
   const role = usePlayerGameState().role;
 
-  const roomStartHandler = () => {
-    toast(buildSucessToastOptions({ description: "Partida iniciada" }));
-  };
-  useEffect(() => {
-    gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
-    return () => {
-      gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
-    };
-  });
+  useGameNotifications(gameSocket, toast);
+
 
   const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect;
 
@@ -66,5 +60,23 @@ const Page: PageWithLayout = () => {
 Page.authConfig = {
   gameAuthProtected: true,
 };
+
+function useGameNotifications(gameSocket: Socket, toast: any) {
+  const roomStartHandler = () => {
+    toast(buildSucessToastOptions({ description: "Partida iniciada" }));
+  };
+  const playerTurnHandler = () => {
+    toast(buildSucessToastOptions({ description: "Es el turno" }));
+  };
+
+  useEffect(() => {
+    gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
+    gameSocket.on(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
+    return () => {
+      gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
+      gameSocket.removeListener(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
+    };
+  });
+}
 
 export default Page;
