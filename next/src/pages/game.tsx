@@ -65,8 +65,8 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
   const roomStartHandler = () => {
     toast(buildSucessToastOptions({ description: "Partida iniciada" }));
   };
-  const playerTurnHandler = () => {
-    toast(buildSucessToastOptions({ description: "Es el turno" }));
+  const playerTurnHandler = (data:any) => {
+    toast(buildSucessToastOptions({ description: `Es el turno de ${data.player}` }));
   };
   // const newPlayerRoom = () => {
   //   toast(buildSucessToastOptions({ description: "Nuevo jugador en la partida" }));
@@ -77,14 +77,14 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
   const canceledRoom = () => {
     toast(buildSucessToastOptions({ description: "Se cancelo la partida" }));
   };
-  const playerStealCard = (player:any, cards: Card[]) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player.name} robó las cartas: ${cards.map(({name})=>`${name}, `)}` }));
+  const playerStealCard = (data:any) => {
+    toast(buildSucessToastOptions({ description: `Robaste las cartas: ${data.cards.map(({name})=>`${name}, `)}` }));
   };
-  const playerPlayCard = (player:any, cards: Card[]) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player.name} jugo las cartas: ${cards.map(({name})=>`${name}, `)}` }));
+  const playerPlayCard = (data:any) => {
+    toast(buildSucessToastOptions({ description: `El jugador ${data.player.name} jugo las cartas: ${data.cards.map(({name})=>`${name}, `)}` }));
   };
-  const playerPlayDefenseCard = (player:any, cards: Card[]) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${player.name} jugo la carta de defensa: ${cards.map(({name})=>`${name}, `)}` }));
+  const playerPlayDefenseCard = (data:any) => {
+    toast(buildSucessToastOptions({ description: `El jugador ${data.player.name} jugo la carta de defensa: ${data.cards.map(({name})=>`${name}, `)}` }));
   };
 
   useEffect(() => {
@@ -108,16 +108,5 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     };
   });
 }
-
-//   ON_GAME_PLAYER_PLAY_CARD = "on_game_player_play_card",
-//   ON_GAME_PLAYER_PLAY_DEFENSE_CARD = "on_game_player_play_defense_card",
-
-
-//   ON_GAME_PLAYER_DISCARD_CARD = "on_game_player_discard_card",
-//   ON_GAME_BEGIN_EXCHANGE = "on_game_begin_exchange",
-//   ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
-//   ON_GAME_PLAYER_DEATH = "on_game_player_death",
-//   ON_GAME_END = "on_game_end",
-//   ON_GAME_INVALID_ACTION = "on_game_invalid_action",
 
 export default Page;
