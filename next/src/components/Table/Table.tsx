@@ -37,11 +37,16 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   }
 
   function distancePlayer(playerSelectedPosition: number) {
-    if(Math.abs(localPlayer.position - playerSelectedPosition) > ((players_data.length+1)/2)) {
-      return(Math.floor((players_data.length+1)/2) - (playerSelectedPosition % Math.floor((players_data.length+1)/2)))
-    }else{
-      return(Math.abs(localPlayer.position - playerSelectedPosition))
+    if (Math.abs(localPlayer.position - playerSelectedPosition) >= ((players_data.length + 1) / 2)) {
+      return (Math.floor((players_data.length + 1) / 2) - (playerSelectedPosition % Math.floor((players_data.length + 1) / 2)))
+    } else {
+      return (Math.abs(localPlayer.position - playerSelectedPosition))
     }
+  }
+
+  function isAdgacent(playerSelectedPosition: number){
+    const rest = Math.abs(localPlayer.position - playerSelectedPosition)
+    return (rest == 1 || rest == players_data.length-1)
   }
 
   function onPlayerSelectedToggle(playerID: number) {
@@ -52,7 +57,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       if (localPlayer.selections.card.targetAdjacentOnly === false) {
         dispatch(selectPlayer(playerID));
       } else {
-        if (distancePlayer(playerSelected!.position)==1) {
+        if (isAdgacent(playerSelected!.position)) {
           dispatch(selectPlayer(playerID));
         }
       }
@@ -74,7 +79,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       bg="rgba(0, 0, 0, 0.4)"
       {...boxProps}
     >
-      {players.map((player) => {
+      {players.map((player: any) => {
         const { x, y } = getTranslatesForPosition(
           player.position - (localPlayer.position as any),
           players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
