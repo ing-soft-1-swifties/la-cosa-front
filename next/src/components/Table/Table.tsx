@@ -44,6 +44,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     }
   }
 
+  function isAdgacent(playerSelectedPosition: number){
+    const rest = Math.abs(localPlayer.position - playerSelectedPosition)
+    return (rest == 1 || rest == players_data.length-1)
+  }
+
   function onPlayerSelectedToggle(playerID: number) {
     const playerSelected = players_data.find(p => p.id == playerID);
     // Si el jugador esta selecionado, lo des-seleccionamos
@@ -80,7 +85,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       bg="rgba(0, 0, 0, 0.4)"
       {...boxProps}
     >
-      {players.map((player) => {
+      {players.map((player: any) => {
         const { x, y } = getTranslatesForPosition(
           player.position - (localPlayer.position as any),
           players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
