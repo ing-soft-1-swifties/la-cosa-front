@@ -64,14 +64,14 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
         >Descartar
         </Button>
         {/* <Button colorScheme='whiteAlpha' rightIcon={<GiFireShield />}>Defenderse</Button> */}
-        <Button
+        {/* <Button
           colorScheme='whiteAlpha'
           data-testid="ACTION_BOX_SWAP_BTN"
           rightIcon={<GiSwitchWeapon />}
           onClick={swapCard}
           isDisabled={cardSelectedID == undefined && turn !== PlayerTurnState.SELECT_EXCHANGE_CARD && cardSelected?.name == "La cosa"}
         >Intercambiar
-        {turn}</Button>
+        {turn}</Button> */}
       </Stack>
     </>
   );
