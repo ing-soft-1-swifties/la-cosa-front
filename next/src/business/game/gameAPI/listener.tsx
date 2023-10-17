@@ -26,6 +26,10 @@ export enum EventType {
 }
 
 export const setupGameSocketListeners = (gameSocket: Socket) => {
+  gameSocket.onAny((ev, ...args) => {
+    console.log(`${ev}`)
+    console.log(args)
+  })
   gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_START_GAME, updateGameState);
