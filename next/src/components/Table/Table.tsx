@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PlayerStatus, selectPlayer, unselectPlayer } from "@/store/gameSlice";
 import { RootState } from "@/store/store";
 import Player from "./Player";
-import usePlayerGameState from "hooks/usePlayerGameState";
+import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 
 type TableProps = BoxProps & {};
 
