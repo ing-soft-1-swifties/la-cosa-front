@@ -14,7 +14,7 @@ import React, { FC, useEffect, useState } from "react";
 import { EventType } from "@/src/business/game/gameAPI/listener";
 import { useRouter } from "next/router";
 import { finishGame } from "@/src/business/game/gameAPI/manager";
-import { PlayerRole } from "store/gameSlice";
+import { PlayerRole } from "@/store/gameSlice";
 
 type GameEndData = {
   winner_team: string;

@@ -7,6 +7,7 @@ import {
   PlayerRole,
   initialState,
   setGameState,
+  PlayerStatus,
 } from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
 import { createServer } from "node:http";
@@ -178,14 +179,19 @@ describe("Page Game", () => {
     renderWithProviders(<Game />);
   });
 
-  it("displays a player for each player in the room, except for the local player", () => {
+  it("displays a player for each player in the room, except for the local player and the death players", () => {
     const { queryAllByTestId } = renderWithProviders(<Game />);
     act(() => {
       store.dispatch(setGameState(initialState));
     });
 
     const players = queryAllByTestId("player", {});
-    expect(players.length).toEqual(store.getState().game.players.length - 1);
+    expect(players.length).toEqual(
+      store
+        .getState()
+        .game.players.filter((player) => player.status == PlayerStatus.ALIVE)
+        .length - 1
+    );
   });
 
   it("calls toast for each event", async () => {
