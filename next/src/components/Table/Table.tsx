@@ -37,25 +37,31 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   }
 
   function distancePlayer(playerSelectedPosition: number) {
-    if(Math.abs(localPlayer.position - playerSelectedPosition) > ((players_data.length+1)/2)) {
-      return(Math.floor((players_data.length+1)/2) - (playerSelectedPosition % Math.floor((players_data.length+1)/2)))
-    }else{
-      return(Math.abs(localPlayer.position - playerSelectedPosition))
+    if (Math.abs(localPlayer.position - playerSelectedPosition) > ((players_data.length + 1) / 2)) {
+      return (Math.floor((players_data.length + 1) / 2) - (playerSelectedPosition % Math.floor((players_data.length + 1) / 2)))
+    } else {
+      return (Math.abs(localPlayer.position - playerSelectedPosition))
     }
   }
 
   function onPlayerSelectedToggle(playerID: number) {
     const playerSelected = players_data.find(p => p.id == playerID);
+    // Si el jugador esta selecionado, lo des-seleccionamos
     if (selectedPlayerID === playerID) {
       dispatch(unselectPlayer());
-    } else if (localPlayer.selections.card !== undefined && localPlayer.selections.card?.needTarget === true) {
-      if (localPlayer.selections.card.targetAdjacentOnly === false) {
-        dispatch(selectPlayer(playerID));
-      } else {
-        if (distancePlayer(playerSelected!.position)==1) {
-          dispatch(selectPlayer(playerID));
-        }
-      }
+      return
+    }
+    // si la carta no requiere seleccionar jugagdor o no hay carta,
+    // no hacemos nada
+    if (localPlayer.selections.card === undefined || !localPlayer.selections.card?.needTarget) {
+      return;
+    }
+
+    // si es necesario una seleccion de cualquier jugador
+    if (
+      localPlayer.selections.card.targetAdjacentOnly === false
+      || distancePlayer(playerSelected!.position) == 1) {
+      dispatch(selectPlayer(playerID));
     }
   }
 
