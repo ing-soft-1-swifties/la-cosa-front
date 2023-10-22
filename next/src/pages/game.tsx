@@ -15,6 +15,7 @@ import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import GameEnd from "@/components/layouts/game/GameEnd";
 import { PlayerRole } from "@/store/gameSlice";
 import { Socket } from "socket.io-client";
+import { store } from "@/store/store";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
@@ -86,24 +87,35 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     toast(buildSucessToastOptions({ description: `El jugador ${data.player} jugo la carta de defensa: ${data.cards}` }));
   };
 
+  const beginExchange = (data: any) => {
+    const [firstPlayer, secondPlayer] = data.players;
+    if( data.players.includes(store.getState().user.name)) {
+      toast(buildSucessToastOptions({ 
+        status: "warning",
+        description: `Debes elejir una carta a intercambiar` ,
+        duration: null
+      }));
+    } else {
+      toast(buildSucessToastOptions({ description: `Habrá un intercambio entre los jugadores ${firstPlayer} y ${secondPlayer}` }));
+    }
+  }
+
   useEffect(() => {
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
     gameSocket.on(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
-    // gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, newPlayerRoom);
-    // gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, leftPlayerRoom);
     gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, canceledRoom);
     gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, playerStealCard);
     gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, playerPlayCard);
     gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, playerPlayDefenseCard);
+    gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, beginExchange);
     return () => {
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
-      // gameSocket.removeListener(EventType.ON_ROOM_NEW_PLAYER, newPlayerRoom);
-      // gameSocket.removeListener(EventType.ON_ROOM_LEFT_PLAYER, leftPlayerRoom);
       gameSocket.removeListener(EventType.ON_ROOM_CANCELLED_GAME, canceledRoom);
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_STEAL_CARD, playerStealCard);
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_PLAY_CARD, playerPlayCard);
       gameSocket.removeListener(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, playerPlayDefenseCard);
+      gameSocket.removeListener(EventType.ON_GAME_BEGIN_EXCHANGE, beginExchange);
     };
   });
 }
