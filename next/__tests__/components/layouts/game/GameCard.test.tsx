@@ -48,114 +48,152 @@ const PlayerInGameState: PreloadedState<RootState> = {
           name: "Lanzallamas",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id: 2,
           name: "¡Infectado!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: true,
+          targetAdjacentOnly: false
         },
         {
           id: 3,
           name: "¡Nada de barbacoas!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: true,
+          targetAdjacentOnly: true
         },
         {
           id: 4,
           name: "¡No, gracias!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id: 5,
           name: "La cosa",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id: 6,
           name: "Analisis",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:7,
           name:"Aqui estoy bien",
           type: CardTypes.AWAY,
           subType: CardSubTypes.DEFENSE,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:8,
           name:"Aterrador",
           type: CardTypes.AWAY,
           subType: CardSubTypes.DEFENSE,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:9,
           name: "¡Cambio de lugar!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:10,
           name:"Cuarentena",
           type: CardTypes.AWAY,
           subType: CardSubTypes.OBSTACLE,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:11,
           name:"Determinacion",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:12,
           name: "¡Fallaste!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.DEFENSE,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:13,
           name: "Hacha",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:14,
           name:"¡Mas Vale Que Corras!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:15,
           name:"Puerta Atrancada",
           type: CardTypes.AWAY,
           subType: CardSubTypes.OBSTACLE,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:16,
           name: "Seduccion",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:17,
           name:"Sospecha",
           type: CardTypes.AWAY,
-          subType: CardSubTypes.ACTION
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:18,
           name:"Vigila Tus Espaldas",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
         {
           id:19,
           name:"Whisky",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false
         },
       ],
       cardSelected: 1,
@@ -185,7 +223,7 @@ describe("Component Game Card", () => {
   });
 
   it("has cards based on state", () => {
-    const card = PlayerInGameState.game!.playerData.cards[0];
+    const card = PlayerInGameState.game!.playerData!.cards[0];
     renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
       preloadedState: PlayerInGameState,
     });
@@ -196,7 +234,7 @@ describe("Component Game Card", () => {
   });
 
   it("click on card", () => {
-    var card = PlayerInGameState.game!.playerData.cards[3];
+    var card = PlayerInGameState.game!.playerData!.cards[3];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
     renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
@@ -205,11 +243,11 @@ describe("Component Game Card", () => {
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
     screenCard.click();
-    expect(store.getState().game.playerData.cardSelected).toBe(card.id);
+    expect(store.getState().game.playerData!.cardSelected).toBe(card.id);
   });
 
   it("click on same card", () => {
-    var card = PlayerInGameState.game!.playerData.cards[0];
+    var card = PlayerInGameState.game!.playerData!.cards[0];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
     renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
@@ -218,6 +256,6 @@ describe("Component Game Card", () => {
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
     screenCard.click();
-    expect(store.getState().game.playerData.cardSelected).toBe(undefined);
+    expect(store.getState().game.playerData!.cardSelected).toBe(undefined);
   });
 });
