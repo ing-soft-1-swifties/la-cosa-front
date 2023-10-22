@@ -10,14 +10,14 @@ import SiteTheme from "@/src/theme";
 import "@/src/styles/globals.css";
 import GameAuthHandler from "@/components/GameAuthHandler";
 
-type SiteAppProps = {
+type SiteAppProps = { // Propiedades de la aplicación
   children: ReactNode;
 };
 
-const { ToastContainer, toast } = createStandaloneToast(SiteTheme);
-export const StandaloneToast = toast;
+const { ToastContainer, toast } = createStandaloneToast(SiteTheme); 
+export const StandaloneToast = toast; 
 
-export const SiteApp: FC<SiteAppProps> = ({ children }) => {
+export const SiteApp: FC<SiteAppProps> = ({ children }) => { // Componente de la aplicación
   return (
     <>
       <Head>
@@ -33,32 +33,32 @@ export const SiteApp: FC<SiteAppProps> = ({ children }) => {
   );
 };
 
-const wrapWithLayout = (Component: PageWithLayout, props: any) => {
+const wrapWithLayout = (Component: PageWithLayout, props: any) => { // Crea un layout para la página
   const getLayout =
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
   return getLayout(<Component {...props} />);
 };
 
-type PageAuthConfig = {
+type PageAuthConfig = { // Configuración de la página
   gameAuthProtected: boolean;
 };
 
-export type PageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-  authConfig?: PageAuthConfig;
+export type PageWithLayout<P = {}, IP = P> = NextPage<P, IP> & { // Página con layout
+  getLayout?: (page: ReactElement) => ReactNode; // Obtiene el layout de la página
+  authConfig?: PageAuthConfig; // Configuración de la página
 };
 
-type AppPropsWrapper = AppProps & {
-  Component: PageWithLayout;
+type AppPropsWrapper = AppProps & { 
+  Component: PageWithLayout;  
 };
 
 const DefaultPageAuthConfig: PageAuthConfig = {
   gameAuthProtected: false,
 };
 
-export default function MyApp({ Component, pageProps }: AppPropsWrapper) {
-  let Page = wrapWithLayout(Component, pageProps);
-  const auth: PageAuthConfig = Component.authConfig ?? DefaultPageAuthConfig;
+export default function MyApp({ Component, pageProps }: AppPropsWrapper) { 
+  let Page = wrapWithLayout(Component, pageProps); 
+  const auth: PageAuthConfig = Component.authConfig ?? DefaultPageAuthConfig; 
   Page = auth.gameAuthProtected ? (
     <GameAuthHandler>{Page}</GameAuthHandler>
   ) : (

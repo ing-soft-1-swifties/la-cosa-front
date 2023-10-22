@@ -2,14 +2,14 @@ import { Avatar, Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { GamePlayer } from "@/store/gameSlice";
 
-const Player = ({
+const Player = ({ // Componente del jugador
   player,
   selected = false,
 }: {
-  player: GamePlayer;
+  player: GamePlayer; // Propiedades del jugador
   selected: boolean;
 }) => {
-  return (
+  return ( //retorna un avatar con el nombre del jugador
     <>
       <Box
         key={player.name}

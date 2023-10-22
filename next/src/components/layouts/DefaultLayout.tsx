@@ -1,10 +1,10 @@
 import { ReactElement } from "react";
 
-interface IProps {
+interface IProps { 
   children: ReactElement;
 }
 
-export default function DefaultLayout({ children }: IProps) {
+export default function DefaultLayout({ children }: IProps) {  
   return (
     <div>
       {children}

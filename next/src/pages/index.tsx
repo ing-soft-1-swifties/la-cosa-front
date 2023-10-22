@@ -7,7 +7,7 @@ import FormJoinLobby from "@/components/layouts/home/FormJoinLobby";
 import NewGameModal from "@/components/modalCrearPartida";
 import { useDisclosure } from "@chakra-ui/react";
 
-const Page: PageWithLayout = () => {
+const Page: PageWithLayout = () => { // Página de inicio
   const disclouseModal = useDisclosure();
   return (
     <Box pos="relative">

@@ -21,7 +21,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
-const formSchema = Yup.object({
+const formSchema = Yup.object({ // Esquema del formulario
   maxPlayers: Yup.number()
     .required("Este campo es requerido")
     .min(4, "La cantidad minima de jugadores debe ser 4")
@@ -47,11 +47,11 @@ const formSchema = Yup.object({
     .min(3, "La cantidad minima de caracteres es 3"),
 });
 
-type NewGameModalProps = {
+type NewGameModalProps = { // Propiedades del modal de crear partida
   disclouse: UseDisclosureReturn;
 };
 
-function NewGameModal({ disclouse }: NewGameModalProps) {
+function NewGameModal({ disclouse }: NewGameModalProps) { // Componente del modal de crear partida
   const { isOpen, onClose } = disclouse; //esto abre y cierra el modal
   const router = useRouter();
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
   const initialRef = React.useRef(null); //esto es para que cuando se abra el modal, el foco vaya al primer input
   const finalRef = React.useRef(null);
 
-  const [submitError, setSubmitError] = useState<string | undefined>(undefined);
+  const [submitError, setSubmitError] = useState<string | undefined>(undefined); //estado del error
   return (
     <Box data-testid="modal-crear">
       <Modal

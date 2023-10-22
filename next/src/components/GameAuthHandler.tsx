@@ -10,7 +10,7 @@ type GameAuthHandlerProps = {
   children: ReactNode;
 };
 
-const GameAuthHandler: FC<GameAuthHandlerProps> = ({ children }) => {
+const GameAuthHandler: FC<GameAuthHandlerProps> = ({ children }) => { // Componente de la autentificación del juego
   const router = useRouter();
   const token = useSelector((state: RootState) => state.user.gameConnToken);
   const { isConnected } = useGameSocket();
@@ -23,7 +23,7 @@ const GameAuthHandler: FC<GameAuthHandlerProps> = ({ children }) => {
   // Iniciamos el Socket con la autentificacion si el socket esta desactualizado.
   if (!isSocketUpToDate()) initGameSocket();
 
-  return (
+  return ( // Retorna un portal con el estado de la conexion
     <>
       {children}
       <Portal>

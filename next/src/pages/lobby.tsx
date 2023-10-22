@@ -25,8 +25,8 @@ import {
   buildSucessToastOptions,
 } from "@/src/utils/toasts";
 
-const Page: PageWithLayout = () => {
-  const user = useSelector((state: RootState) => state.user);
+const Page: PageWithLayout = () => { // Página del lobby
+  const user = useSelector((state: RootState) => state.user); 
   const game = useSelector((state: RootState) => state.game);
   const isHost = game.config.host == user.name;
 
@@ -145,7 +145,7 @@ type StartGameButtonProps = {
   gameState: GameState;
 };
 
-const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
+const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => { // Componente del boton para iniciar la partida
   const [startLoading, setStartLoading] = useState(false);
   const startEnabled = canGameStart(gameState);
   const toast = useToast();

@@ -27,12 +27,12 @@ import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 
-type CardProps = BoxProps & {
+type CardProps = BoxProps & { // Propiedades de la carta
   card_id: number;
   name: string;
 };
 
-enum Card {
+enum Card { // Tipos de cartas
   FLAMETHROWER = "Lanzallamas",
   INFECTED = "Infectado",
   NOBBQ = "¡Nada de barbacoas!",
@@ -56,11 +56,11 @@ enum Card {
 
 
 
-let ReverseCard = new Map<string, keyof typeof Card>();
-Object.keys(Card).forEach((card) => {
-  const key = card as keyof typeof Card;
-  const cardValue: string = Card[key];
-  ReverseCard.set(cardValue, key);
+let ReverseCard = new Map<string, keyof typeof Card>(); // lo que hace es que le asigna a cada key del enum Card, el valor de la key
+Object.keys(Card).forEach((card) => { 
+  const key = card as keyof typeof Card; 
+  const cardValue: string = Card[key]; 
+  ReverseCard.set(cardValue, key); 
 });
 
 type CardsDataType = {
@@ -69,7 +69,7 @@ type CardsDataType = {
   };
 };
 
-const CardsData: CardsDataType = {
+const CardsData: CardsDataType = { // Datos de las cartas
   [Card.FLAMETHROWER]: {
     image: IMG_FLAMETHROWER,
   },
@@ -129,11 +129,11 @@ const CardsData: CardsDataType = {
   },
 };
 
-const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
-  const player = usePlayerGameState();
+const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => { // Carta del juego
+  const player = usePlayerGameState(); 
   const dispatch = useDispatch();
 
-  const card_key = ReverseCard.get(name);
+  const card_key = ReverseCard.get(name); // Obtiene la key de la carta
   // var IMG_LOADED = false;
   var cardData = undefined;
   if (card_key == null) {

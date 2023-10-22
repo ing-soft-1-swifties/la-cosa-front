@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { GameError, NotInGameError } from "@/src/utils/exceptions";
 
-type PlayerGameState = {
+type PlayerGameState = { // Estado del jugador
   id: number;
   position: number;
   status: PlayerStatus;
@@ -23,8 +23,8 @@ type PlayerGameState = {
   isHost: boolean;
 };
 
-const usePlayerGameState: () => PlayerGameState = () => {
-  const gameState = useSelector((state: RootState) => state.game);
+const usePlayerGameState: () => PlayerGameState = () => { // Hook que obtiene el estado del jugador
+  const gameState = useSelector((state: RootState) => state.game); 
   const playerData = gameState.playerData;
   if (playerData == null) {
     throw new NotInGameError(
@@ -32,17 +32,17 @@ const usePlayerGameState: () => PlayerGameState = () => {
     );
   }
 
-  const playerPublicData = gameState.players.find(
-    (player: GamePlayer) => player.id == playerData.playerID
+  const playerPublicData = gameState.players.find( // Busca el jugador en la lista de jugadores
+    (player: GamePlayer) => player.id == playerData.playerID //
   );
 
-  if (playerPublicData == null) {
+  if (playerPublicData == null) { // Si no encuentra el jugador, lanza un error
     throw new GameError(
       "Inconsistencia en el estado, ID de jugador no esta en la lista publica de jugadores."
     );
   }
 
-  const playerState: PlayerGameState = {
+  const playerState: PlayerGameState = { // Crea el estado del jugador
     id: playerData.playerID,
     position: playerPublicData.position,
     status: playerPublicData.status,

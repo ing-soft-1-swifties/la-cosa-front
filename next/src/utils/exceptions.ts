@@ -5,9 +5,9 @@ export class GameError extends Error {
   }
 }
 
-export class NotInGameError extends GameError {
-  constructor(message: string) {
-    super(message);
+export class NotInGameError extends GameError { 
+  constructor(message: string) { 
+    super(message); 
     this.name = "NotInGameError";
   }
 }

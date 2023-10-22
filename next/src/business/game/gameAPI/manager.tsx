@@ -21,95 +21,95 @@ export enum MessageType {
   GAME_SELECT_EXCHANGE_CARD = "game_select_exchange_card",
 }
 
-export function isGameHost() {
-  return store.getState().game.config.host == store.getState().user.name;
+export function isGameHost() { // Si el host de la partida es el usuario, retorna true
+  return store.getState().game.config.host == store.getState().user.name;  
 }
 
-export type CardOptions = {
-  target?: number;
+export type CardOptions = {  
+  target?: number; 
 };
-export type PlayCardPayload = {
+export type PlayCardPayload = { // 
   card: number;
   card_options: CardOptions;
 };
-export async function sendPlayerPlayCard(
+export async function sendPlayerPlayCard( // Envia al servidor el evento de que el jugador jugo una carta
   card: number,
   card_options: CardOptions
 ) {
-  const playCardPayload: PlayCardPayload = {
+  const playCardPayload: PlayCardPayload = {  // Crea un payload con los datos de la carta
     card: card,
     card_options: card_options,
   };
-  await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload);
+  await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload); // Emite el evento al servidor
 }
 
-type PlayDefenseCardPayload = PlayCardPayload;
-export async function sendPlayerPlayDefenseCard(
+type PlayDefenseCardPayload = PlayCardPayload; // Envia al servidor el evento de que el jugador jugo una carta de defensa 
+export async function sendPlayerPlayDefenseCard(  
   target_player: number,
   card: number
 ) {
-  const playDefenseCardPayload: PlayDefenseCardPayload = {
+  const playDefenseCardPayload: PlayDefenseCardPayload = {  
     card: card,
     card_options: {
       target: target_player,
     },
   };
-  await gameSocket.emitWithAck(
-    MessageType.GAME_PLAY_DEFENSE_CARD,
-    playDefenseCardPayload
+  await gameSocket.emitWithAck(  // Emite el evento al servidor
+    MessageType.GAME_PLAY_DEFENSE_CARD, 
+    playDefenseCardPayload 
   );
 }
 
-export type DiscardCardPayload = {
+export type DiscardCardPayload = { 
   card: number;
 };
-export async function sendPlayerDiscardCard(card: number) {
+export async function sendPlayerDiscardCard(card: number) {  
   const discardCardPayload: DiscardCardPayload = {
     card: card,
   };
-  await gameSocket.emitWithAck(
+  await gameSocket.emitWithAck( 
     MessageType.GAME_DISCARD_CARD,
     discardCardPayload
   );
 }
 
-export type SelectExchangeCardPayload = {
+export type SelectExchangeCardPayload = { // Envia al servidor el evento de que el jugador selecciono una carta para intercambiar
   card: number;
 };
-export async function sendPlayerSelectExchangeCard(card: number) {
-  const selectExchangeCardPayload: SelectExchangeCardPayload = {
-    card: card,
+export async function sendPlayerSelectExchangeCard(card: number) { 
+  const selectExchangeCardPayload: SelectExchangeCardPayload = { 
+    card: card, 
   };
-  await gameSocket.emitWithAck(
-    MessageType.GAME_SELECT_EXCHANGE_CARD,
+  await gameSocket.emitWithAck( 
+    MessageType.GAME_SELECT_EXCHANGE_CARD, 
     selectExchangeCardPayload
   );
 }
 
-export function joinPlayerToGame(
+export function joinPlayerToGame( // Envia al servidor el evento de que el jugador se unio a la partida
   playerName: string,
   connectionToken: string,
   router: NextRouter
 ) {
-  store.dispatch(setUserName(playerName));
-  store.dispatch(setGameConnectionToken(connectionToken));
-  router.push("/lobby");
+  store.dispatch(setUserName(playerName));  // Guarda el nombre del jugador en el store
+  store.dispatch(setGameConnectionToken(connectionToken)); // Guarda el token de conexion en el store
+  router.push("/lobby"); // Redirige al jugador al lobby
 }
 
 export function finishGame() {
   store.dispatch(setUserName(undefined));
   store.dispatch(setGameConnectionToken(undefined));
-  Router.push("/");
+  Router.push("/"); // Redirige al jugador al inicio
 }
 
-export enum CancelGameReason {
+export enum CancelGameReason { // Motivos por los que se cancela la partida
   CANCELED_BY_HOST = "canceled_by_host",
   DISCONNECTION = "disconnection",
 }
 
-export function cancelGame(reason: CancelGameReason) {
-  Router.push("/");
-  if (reason == CancelGameReason.CANCELED_BY_HOST) {
+export function cancelGame(reason: CancelGameReason) { 
+  Router.push("/"); // Redirige al jugador al inicio
+  if (reason == CancelGameReason.CANCELED_BY_HOST) { // Si la partida fue cancelada por el host, muestra un mensaje de aviso
     StandaloneToast(
       buildWarningToastOptions({
         title: "Aviso!",
@@ -117,7 +117,8 @@ export function cancelGame(reason: CancelGameReason) {
       })
     );
   }
-  if (reason == CancelGameReason.DISCONNECTION) {
+  // Si la partida fue cancelada por una desconexion, muestra un mensaje de error
+  if (reason == CancelGameReason.DISCONNECTION) { 
     StandaloneToast(
       buildErrorToastOptions({
         title: "Error de conexion",
@@ -129,22 +130,23 @@ export function cancelGame(reason: CancelGameReason) {
   store.dispatch(setGameConnectionToken(undefined));
 }
 
-export function beginGame() {
+// Inicia la partida
+export function beginGame() { 
   StandaloneToast(
     buildSucessToastOptions({
       title: "La partida comenzo!",
       description: "",
     })
   );
-  Router.push("/game");
+  Router.push("/game"); // Redirige al jugador a la partida
 }
 
 export const sendStartGame = () => {
-  return gameSocket.emitWithAck(MessageType.ROOM_START_GAME);
+  return gameSocket.emitWithAck(MessageType.ROOM_START_GAME); // Emite al servidor el evento de que la partida comenzo
 };
 
-export const leaveLobby = async () => {
-  Router.push("/");
+export const leaveLobby = async () => { // Abandona el lobby
+  Router.push("/"); // Redirige al jugador al inicio
   await gameSocket.emitWithAck(MessageType.ROOM_QUIT_GAME);
   // Damos un margen de tiempo para desconectarnos del socket.
   gameSocket.disconnect();

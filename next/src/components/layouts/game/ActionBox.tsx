@@ -13,42 +13,43 @@ import { PlayerStatus, PlayerTurnState } from "@/store/gameSlice";
 
 type ActionBoxProps = {};
 
-const ActionBox: FC<ActionBoxProps> = ({ }) => {
+const ActionBox: FC<ActionBoxProps> = ({ }) => { // Caja de acciones del jugador
+  //obtengo el estado del jugador,las cartas seleccionadas y el turno
   const player = usePlayerGameState();
-  const cardSelected = player.selections.card;
+  const cardSelected = player.selections.card;  
   const turn = player.turn;
 
-  const playCard = () => {
+  const playCard = () => { // Funcion para jugar una carta
     const playerSelected = player.selections.player;
 
-    var cardOptions = playerSelected ? { target: playerSelected } : {};
-    if (cardSelected !== undefined) {
-      sendPlayerPlayCard(cardSelected, cardOptions);
+    var cardOptions = playerSelected ? { target: playerSelected } : {}; //cardOptions es un objeto que contiene el target del jugador seleccionado
+    if (cardSelected !== undefined) { 
+      sendPlayerPlayCard(cardSelected, cardOptions); // Envia al servidor el evento de que el jugador jugo una carta
     }
   };
 
-  const discardCard = () => {
-    if (cardSelected !== undefined) {
-      sendPlayerDiscardCard(cardSelected);
+  const discardCard = () => {  // Funcion para descartar una carta
+    if (cardSelected !== undefined) { 
+      sendPlayerDiscardCard(cardSelected); 
     }
   };
 
-  const swapCard = () => {
+  const swapCard = () => { // Funcion para intercambiar una carta
     if (cardSelected !== undefined) {
       sendPlayerSelectExchangeCard(cardSelected);
     }
   };
-  if (player.status == PlayerStatus.DEATH) {
+  if (player.status == PlayerStatus.DEATH) { // Si el jugador esta muerto, retorna null
     return null;
   }
 
-  return (
+  return (// Crea un stack con las acciones del jugador
     <>
-      <Stack maxW="20vw" data-testid={`HAND`} justify="center">
+      <Stack maxW="20vw" data-testid={`HAND`} justify="center"> 
         <Button
-          colorScheme="whiteAlpha"
+          colorScheme="whiteAlpha" 
           data-testid="ACTION_BOX_PLAY_BTN"
-          onClick={playCard}
+          onClick={playCard} 
           rightIcon={<GiBroadsword />}
           isDisabled={cardSelected == undefined && turn !== PlayerTurnState.PLAY_OR_DISCARD}
         >Jugar

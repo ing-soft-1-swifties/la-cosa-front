@@ -16,31 +16,32 @@ import { useRouter } from "next/router";
 import { finishGame } from "@/src/business/game/gameAPI/manager";
 import { PlayerRole } from "@/store/gameSlice";
 
-type GameEndData = {
+type GameEndData = { 
   winner_team: string;
-  roles: [string, string][]; // name & role
+  roles: [string, string][]; // name & rol
 };
 
-type GameEndProps = {};
-const GameEnd: FC<GameEndProps> = () => {
-  const router = useRouter();
-  const [gameEndData, setGameEndData] = useState<GameEndData | undefined>(
+type GameEndProps = {}; // Propiedades del final de la partida
+const GameEnd: FC<GameEndProps> = () => { 
+  const router = useRouter(); 
+  const [gameEndData, setGameEndData] = useState<GameEndData | undefined>( 
     undefined
   );
-  const handleGameEnd = (data: GameEndData) => {
+  const handleGameEnd = (data: GameEndData) => { // Funcion que maneja el final de la partida
     setGameEndData(data);
   };
-  useEffect(() => {
-    gameSocket.on(EventType.ON_GAME_END, handleGameEnd);
+  useEffect(() => { // Crea un listener para cuando la partida finaliza
+    gameSocket.on(EventType.ON_GAME_END, handleGameEnd); 
     return () => {
       gameSocket.off(EventType.ON_GAME_END, handleGameEnd);
     };
   });
 
-  const theThing = gameEndData?.roles.filter(
+// Filtra los roles de los jugadores
+  const theThing = gameEndData?.roles.filter( 
     ([_, role]) => role == PlayerRole.THETHING
-  );
-  const infected = gameEndData?.roles.filter(
+  ); 
+  const infected = gameEndData?.roles.filter( 
     ([_, role]) => role == PlayerRole.INFECTED
   );
   const humans = gameEndData?.roles.filter(

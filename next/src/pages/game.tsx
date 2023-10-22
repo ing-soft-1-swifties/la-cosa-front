@@ -20,17 +20,17 @@ const Page: PageWithLayout = () => {
   const { gameSocket } = useGameSocket();
   const role = usePlayerGameState().role;
 
-  const roomStartHandler = () => {
+  const roomStartHandler = () => { // Crea un listener para cuando la partida inicia
     toast(buildSucessToastOptions({ description: "Partida iniciada" }));
   };
-  useEffect(() => {
+  useEffect(() => { 
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
     return () => {
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
     };
   });
 
-  const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect;
+  const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect; 
 
   return (
     <>
@@ -64,7 +64,7 @@ const Page: PageWithLayout = () => {
 };
 
 Page.authConfig = {
-  gameAuthProtected: true,
+  gameAuthProtected: true, 
 };
 
 export default Page;

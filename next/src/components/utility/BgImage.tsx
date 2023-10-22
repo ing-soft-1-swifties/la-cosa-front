@@ -8,7 +8,7 @@ type BgImageProps = BoxProps & {
 };
 
 const BgImage: FC<BgImageProps> = ({ imageProps, styles, ...props }) => {
-  return (
+  return ( // Crea una imagen de fondo
     <Box pos="absolute" h="full" zIndex={-10} {...props}>
       <Image
         style={{

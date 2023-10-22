@@ -8,7 +8,7 @@ import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 
 type TableProps = BoxProps & {};
 
-function getTranslatesForPosition(
+function getTranslatesForPosition( // Función que obtiene las coordenadas de la posición del jugador
   position: number,
   playerAmount: number,
 ): { x: number; y: number } {
@@ -20,23 +20,23 @@ function getTranslatesForPosition(
   return { x: Math.cos(angle), y: Math.sin(angle) };
 }
 
-const Table: FC<TableProps> = ({ ...boxProps }) => {
+const Table: FC<TableProps> = ({ ...boxProps }) => { // Componente de la mesa
   const localPlayer = usePlayerGameState();
   const playerID = localPlayer.id;
-  const players_data = useSelector((state: RootState) => state.game.players);
-  const players = players_data.filter(
+  const players_data = useSelector((state: RootState) => state.game.players); 
+  const players = players_data.filter( // Filtra los jugadores que no estan muertos
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
   );
 
-  const selectedPlayerID = localPlayer.selections.player;
+  const selectedPlayerID = localPlayer.selections.player; 
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
 
-  if (localPlayer == undefined) {
+  if (localPlayer == undefined) { 
     throw new Error("No player in the game has this player's id!");
   }
 
-  function onPlayerSelectedToggle(playerID: number) {
+  function onPlayerSelectedToggle(playerID: number) { // Funcion que selecciona un jugador
     if (selectedPlayerID === playerID) {
       dispatch(unselectPlayer());
     } else {
@@ -44,7 +44,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     }
   }
 
-  return (
+  return ( //retorna una caja con los jugadores
     <Box
       w="auto"
       borderWidth="1px"
@@ -64,7 +64,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
           player.position - (localPlayer.position as any),
           players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
         );
-        return (
+        return ( //retorna un jugador con su posicion
           <Box
             key={player.name}
             position="absolute"

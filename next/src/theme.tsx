@@ -1,7 +1,7 @@
 import { extendTheme } from "@chakra-ui/react";
 import { Kalam} from "next/font/google";
 
-const KalamFont = Kalam({
+const KalamFont = Kalam({ 
   weight: ["300", "400", "700"],
   subsets: [],
 });

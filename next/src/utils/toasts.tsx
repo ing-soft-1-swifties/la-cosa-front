@@ -1,7 +1,7 @@
 import { UseToastOptions } from "@chakra-ui/react";
 
-export const buildErrorToastOptions = (options: UseToastOptions) => {
-  const toastOptions: UseToastOptions = {
+export const buildErrorToastOptions = (options: UseToastOptions) => { //toast de error
+  const toastOptions: UseToastOptions = { // Opciones del toast
     title: "Error",
     status: "error",
     isClosable: true,
@@ -12,7 +12,7 @@ export const buildErrorToastOptions = (options: UseToastOptions) => {
   return toastOptions;
 };
 
-export const buildWarningToastOptions = (options: UseToastOptions) => {
+export const buildWarningToastOptions = (options: UseToastOptions) => { //toast de advertencia
   const toastOptions: UseToastOptions = {
     title: "Warning",
     status: "warning",
@@ -24,7 +24,7 @@ export const buildWarningToastOptions = (options: UseToastOptions) => {
   return toastOptions;
 };
 
-export const buildSucessToastOptions = (options: UseToastOptions) => {
+export const buildSucessToastOptions = (options: UseToastOptions) => { //toast de exito
   const toastOptions: UseToastOptions = {
     title: "Success",
     status: "success",

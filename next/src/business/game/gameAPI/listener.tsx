@@ -25,10 +25,10 @@ export enum EventType {
   ON_GAME_INVALID_ACTION = "on_game_invalid_action",
 }
 
-export const setupGameSocketListeners = (gameSocket: Socket) => {
-  gameSocket.onAny((ev, ...args) => {
-    console.log(`${ev}`)
-    console.log(args)
+export const setupGameSocketListeners = (gameSocket: Socket) => { // Crea los listeners del socket
+  gameSocket.onAny((ev, ...args) => { // Crea un listener para cualquier evento
+    console.log(`${ev}`) // Imprime el evento
+    console.log(args) 
   })
   gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, updateGameState);
@@ -49,51 +49,51 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   // TODO! Hay que ver si esto lo dejamos o es temporal
   gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
 
-  gameSocket.on("disconnect", onGameSocketDisconnect);
+  gameSocket.on("disconnect", onGameSocketDisconnect); // Crea un listener para cuando se desconecta el socket
 };
 
-export type GameStateData = {
-  gameState: GameState;
+export type GameStateData = { // Datos de la partida
+  gameState: GameState; // Estado de la partida
 };
 
-function calculateNewGameState(data: GameStateData) {
+function calculateNewGameState(data: GameStateData) { // Calcula el nuevo estado de la partida
   const newState: any = {
-    config: data.gameState.config,
-    players: data.gameState.players.map((player) => ({
+    config: data.gameState.config, 
+    players: data.gameState.players.map((player) => ({ // Crea un nuevo arreglo de jugadores
       id: player.id,
       name: player.name,
       position: player.position,
       status: player.status
     })),
-    status: data.gameState.status,
+    status: data.gameState.status, // Estado de la partida
   };
-  if (data.gameState.playerData != null) {
-    newState.playerData = {
+  if (data.gameState.playerData != null) { 
+    newState.playerData = { 
       cards: data.gameState.playerData.cards,
-      playerID: data.gameState.playerData.playerID,
-      role: data.gameState.playerData.role,
+      playerID: data.gameState.playerData.playerID, 
+      role: data.gameState.playerData.role, 
     };
   }
   return newState;
 }
 
-const updateGameState = (data: GameStateData) => {
-  store.dispatch(setGameState(calculateNewGameState(data)));
+const updateGameState = (data: GameStateData) => { 
+  store.dispatch(setGameState(calculateNewGameState(data)));  //guarda el nuevo estado de la partida
 };
 
-function onRoomStartGame() {
-  beginGame();
+function onRoomStartGame() { 
+  beginGame(); // Comienza la partida
 }
 
-const onRoomCancelledGame = () => {
-  cancelGame(CancelGameReason.CANCELED_BY_HOST);
+const onRoomCancelledGame = () => { 
+  cancelGame(CancelGameReason.CANCELED_BY_HOST); // Cancela la partida
 };
 
-type InvalidActionData = {
+type InvalidActionData = { 
   title: string;
   message: string;
 };
-const onGameInvalidAction = (data: InvalidActionData) => {
+const onGameInvalidAction = (data: InvalidActionData) => { // Si la accion es invalida, muestra un mensaje de error
   StandaloneToast(
     buildErrorToastOptions({
       title: data.title,
@@ -102,7 +102,7 @@ const onGameInvalidAction = (data: InvalidActionData) => {
   );
 };
 
-enum SocketDisconnectReason {
+enum SocketDisconnectReason { // Motivos por los que se desconecta el socket
   SERVER_IO_DISCONNECT = "io server disconnect",
   CLIENT_IO_DISCONNECT = "io client disconnect",
   SERVER_SHUTTING_DOWN = "server shutting down",
@@ -114,13 +114,13 @@ enum SocketDisconnectReason {
   FORCED_SERVER_CLOSE = "forced server close",
 }
 
-const onGameSocketDisconnect = (reason: SocketDisconnectReason) => {
+const onGameSocketDisconnect = (reason: SocketDisconnectReason) => { // Si el socket se desconecta, cancela la partida
   if (
-    reason == SocketDisconnectReason.CLIENT_IO_DISCONNECT ||
+    reason == SocketDisconnectReason.CLIENT_IO_DISCONNECT || 
     reason == SocketDisconnectReason.SERVER_IO_DISCONNECT
   )
     return;
   else {
-    cancelGame(CancelGameReason.DISCONNECTION);
+    cancelGame(CancelGameReason.DISCONNECTION); 
   }
 };

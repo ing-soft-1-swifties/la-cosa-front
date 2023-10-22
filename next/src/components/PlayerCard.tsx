@@ -8,7 +8,7 @@ type PlayerCardProps = {
 
 // Componente de una tarjeta de jugador
 const PlayerCard: FC<PlayerCardProps> = ({ name }) => {
-  return (
+  return ( 
     <Card pl={6}>
       <CardBody>
         <Flex align="center" columnGap={6}>

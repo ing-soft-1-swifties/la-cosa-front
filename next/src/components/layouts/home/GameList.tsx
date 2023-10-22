@@ -14,14 +14,14 @@ import { useGetGamesQuery } from "@/store/gameApi";
 
 type GameListProps = {};
 
-const GameList: FC<GameListProps> = () => {
+const GameList: FC<GameListProps> = () => { // Componente de la lista de partidas
   const {
     data: gameList,
     isError: gameListError,
     isLoading,
-  } = useGetGamesQuery(undefined, { pollingInterval: 2000 });
+  } = useGetGamesQuery(undefined, { pollingInterval: 2000 }); // Crea un query para obtener las partidas
 
-  return (
+  return (// Crea un flex con las partidas
     <Box flexBasis="65%" px={16} py={10} pos="relative" data-testid="game-list">
       <Heading
         as="h2"
@@ -70,15 +70,15 @@ const GameList: FC<GameListProps> = () => {
   );
 };
 
-type GameCardProps = {
+type GameCardProps = { // Propiedades de la carta del juego
   id: number;
   name: string;
   count: number;
   max: number;
 };
 
-const GameCard: FC<GameCardProps> = ({ id, name, count, max }) => {
-  return (
+const GameCard: FC<GameCardProps> = ({ id, name, count, max }) => { // Componente de la carta del juego
+  return (//retorna una carta con el nombre, el id y la cantidad de jugadores
     <Card pl={6}>
       <CardBody>
         <Flex alignItems="center">

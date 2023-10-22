@@ -13,7 +13,7 @@ export const gameApi = createApi({
     //funciones que hacen peticion http
     // builder separar mutaciones de alteraciones
     endpoints: (builder) => ({
-        getGames: builder.query<GetGamesQueryResult, undefined>({
+        getGames: builder.query<GetGamesQueryResult, undefined>({ 
             query: () => '/list',
         }),
         // al final el join lo hacemos con un simple fetch
@@ -32,7 +32,7 @@ export const gameApi = createApi({
     })
 });
 
-export type GetGamesQueryResult = {
+export type GetGamesQueryResult = { // Resultado de la query de obtener partidas
     'id': number,
     'name': string,
     'players_count': number,

@@ -22,10 +22,10 @@ const formSchema = Yup.object({
     .min(3, "La cantidad minima de caracteres es 3"),
 });
 
-export default function FormJoinLobby() {
-  const [submitError, setSubmitError] = useState<string | undefined>(undefined);
+export default function FormJoinLobby() { // Formulario para unirse a una partida
+  const [submitError, setSubmitError] = useState<string | undefined>(undefined); // Estado del error
 
-  return (
+  return ( // Retorna el formulario para unirse a una partida
     <>
       <Box
         minW="100%"
