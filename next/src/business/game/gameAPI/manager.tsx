@@ -18,7 +18,7 @@ export enum MessageType {
   GAME_PLAY_CARD = "game_play_card",
   GAME_PLAY_DEFENSE_CARD = "game_play_defense_card",
   GAME_DISCARD_CARD = "game_discard_card",
-  GAME_SELECT_EXCHANGE_CARD = "game_select_exchange_card",
+  GAME_SELECT_EXCHANGE_CARD = "game_exchange_card",
 }
 
 export function isGameHost() {
@@ -75,10 +75,24 @@ export async function sendPlayerDiscardCard(card: number) {
 
 export type SelectExchangeCardPayload = {
   card: number;
+  on_defense: boolean;
 };
+
 export async function sendPlayerSelectExchangeCard(card: number) {
   const selectExchangeCardPayload: SelectExchangeCardPayload = {
     card: card,
+    on_defense: false,
+  };
+  await gameSocket.emitWithAck(
+    MessageType.GAME_SELECT_EXCHANGE_CARD,
+    selectExchangeCardPayload
+  );
+}
+
+export async function sendPlayerSelectDefenseCard(card: number) {
+  const selectExchangeCardPayload: SelectExchangeCardPayload = {
+    card: card,
+    on_defense: true,
   };
   await gameSocket.emitWithAck(
     MessageType.GAME_SELECT_EXCHANGE_CARD,
