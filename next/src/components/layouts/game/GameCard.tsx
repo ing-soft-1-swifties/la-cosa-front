@@ -32,7 +32,7 @@ type CardProps = BoxProps & {
   name: string;
 };
 
-enum Card {
+export enum Card {
   FLAMETHROWER = "Lanzallamas",
   INFECTED = "Infectado",
   NOBBQ = "¡Nada de barbacoas!",
