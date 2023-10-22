@@ -1,4 +1,4 @@
-import { initGameSocket, isSocketUpToDate } from "@/src/business/game/gameAPI";
+import { gameSocket, initGameSocket, isSocketUpToDate } from "@/src/business/game/gameAPI";
 import { Box, Portal, Text } from "@chakra-ui/react";
 import useGameSocket from "@/src/hooks/useGameSocket";
 import { useRouter } from "next/router";
@@ -13,7 +13,7 @@ type GameAuthHandlerProps = {
 const GameAuthHandler: FC<GameAuthHandlerProps> = ({ children }) => {
   const router = useRouter();
   const token = useSelector((state: RootState) => state.user.gameConnToken);
-  const { isConnected } = useGameSocket();
+  const { isConnected } = useGameSocket(gameSocket);
 
   useEffect(() => {
     if (token == null) router.replace("/");
@@ -21,7 +21,7 @@ const GameAuthHandler: FC<GameAuthHandlerProps> = ({ children }) => {
   if (token == null) return <></>;
 
   // Iniciamos el Socket con la autentificacion si el socket esta desactualizado.
-  if (!isSocketUpToDate()) initGameSocket();
+  if (!isSocketUpToDate()) initGameSocket(undefined);
 
   return (
     <>

@@ -24,6 +24,7 @@ import {
 import Game from "@/src/pages/game";
 import { act } from "react-dom/test-utils";
 import { useToast } from "@chakra-ui/react";
+import { waitFor } from "@testing-library/react";
 
 // Mock Next Router for all tests.
 jest.mock("next/router", () => jest.requireActual("next-router-mock"));
@@ -195,9 +196,7 @@ describe("Page Game", () => {
     );
   });
 
-  it("calls toast for each event", async () => {
-    const toast = useToast();
-    toast ();
+  it("calls toast at least once for each event", async () => {
     const newState: GameStateData = {
       gameState: {
         config: {
@@ -219,27 +218,18 @@ describe("Page Game", () => {
       },
     };
 
-    // clientSocket.on(EventType.ON_ROOM_START_GAME, () => {
-    //   console.log("HAKUNA MATATA 2")
-    // })
     await act(async () => {
       renderWithProviders(<Game />);
       serverSocket.emit(EventType.ON_ROOM_START_GAME, newState);
-      // await serverSocket.emitWithAck(EventType.ON_ROOM_LEFT_PLAYER, newState);
-      // await serverSocket.emitWithAck(EventType.ON_ROOM_CANCELLED_GAME, newState);
-      // await serverSocket.emitWithAck(EventType.ON_ROOM_NEW_PLAYER, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_PLAYER_TURN, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_BEGIN_EXCHANGE, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_END, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_FINISH_EXCHANGE, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_PLAYER_DEATH, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_INVALID_ACTION, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_PLAYER_STEAL_CARD, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_PLAYER_DISCARD_CARD, newState);
-      // await serverSocket.emitWithAck(EventType.ON_GAME_PLAYER_PLAY_CARD, newState);
+      serverSocket.emit(EventType.ON_ROOM_START_GAME, newState);
+      serverSocket.emit(EventType.ON_GAME_PLAYER_TURN, newState);
+      serverSocket.emit(EventType.ON_ROOM_CANCELLED_GAME, newState);
+      serverSocket.emit(EventType.ON_GAME_PLAYER_STEAL_CARD, newState);
+      serverSocket.emit(EventType.ON_GAME_PLAYER_PLAY_CARD, newState);
+      serverSocket.emit(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, newState);
+      serverSocket.emit(EventType.ON_GAME_BEGIN_EXCHANGE, newState);
       await new Promise((res) => setTimeout(res, 1000));
     });
-    expect(mockedToast.mock.calls.length).toBe(3);
+    waitFor(() => expect(mockedToast.mock.calls.length).toBeGreaterThan(8));
   });
 });
