@@ -36,15 +36,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     throw new Error("No player in the game has this player's id!");
   }
 
-  function distancePlayer(playerSelectedPosition: number) {
-    if (Math.abs(localPlayer.position - playerSelectedPosition) > ((players_data.length + 1) / 2)) {
-      return (Math.floor((players_data.length + 1) / 2) - (playerSelectedPosition % Math.floor((players_data.length + 1) / 2)))
-    } else {
-      return (Math.abs(localPlayer.position - playerSelectedPosition))
-    }
-  }
-
-  function isAdgacent(playerSelectedPosition: number){
+  function isAdjacent(playerSelectedPosition: number){
     const rest = Math.abs(localPlayer.position - playerSelectedPosition)
     return (rest == 1 || rest == players_data.length-1)
   }
@@ -65,7 +57,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     // si es necesario una seleccion de cualquier jugador
     if (
       localPlayer.selections.card.targetAdjacentOnly === false
-      || distancePlayer(playerSelected!.position) == 1) {
+      || isAdjacent(playerSelected!.position)) {
       dispatch(selectPlayer(playerID));
     }
   }
