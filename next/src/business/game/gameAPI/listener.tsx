@@ -21,7 +21,6 @@ export enum EventType {
   ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
   ON_GAME_PLAYER_DEATH = "on_game_player_death",
   ON_GAME_END = "on_game_end",
-
   ON_GAME_INVALID_ACTION = "on_game_invalid_action",
 }
 
@@ -66,6 +65,8 @@ function calculateNewGameState(data: GameStateData) {
       status: player.status
     })),
     status: data.gameState.status,
+    player_in_turn: data.gameState.player_in_turn,
+
   };
   if (data.gameState.playerData != null) {
     newState.playerData = {
