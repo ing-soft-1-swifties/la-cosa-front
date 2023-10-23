@@ -89,15 +89,9 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
 
   const beginExchange = (data: any) => {
     const [firstPlayer, secondPlayer] = data.players;
-    if( data.players.includes(store.getState().user.name)) {
-      toast(buildSucessToastOptions({ 
-        status: "warning",
-        description: `Debes elejir una carta a intercambiar` ,
-        duration: null
-      }));
-    } else {
+    if(!data.players.includes(store.getState().user.name)) {
       toast(buildSucessToastOptions({ description: `Habrá un intercambio entre los jugadores ${firstPlayer} y ${secondPlayer}` }));
-    }
+    }   
   }
 
   useEffect(() => {
