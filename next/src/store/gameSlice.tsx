@@ -72,6 +72,7 @@ export type GameState = {
   status: GameStatus;
   players: GamePlayer[];
   playerData?: PlayerData;
+  player_in_turn: string | undefined;
 };
 
 export const initialState: GameState = {
@@ -137,6 +138,7 @@ export const initialState: GameState = {
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
   },
+  player_in_turn: undefined,
 };
 
 export type BackendGameState = {
@@ -144,6 +146,7 @@ export type BackendGameState = {
   status: GameStatus;
   players: GamePlayer[];
   playerData: PlayerData;
+  player_in_turn: string | undefined;
 };
 
 export const gameSlice = createSlice({
@@ -161,6 +164,7 @@ export const gameSlice = createSlice({
       state.players = action.payload.players;
       state.status = action.payload.status;
       state.playerData = action.payload.playerData;
+      state.player_in_turn = action.payload.player_in_turn;
     },
     setSelectedCard(state, action: PayloadAction<number | undefined>) {
       state.playerData!.cardSelected = action.payload;
