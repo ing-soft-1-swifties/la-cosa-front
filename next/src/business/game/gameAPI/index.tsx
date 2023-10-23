@@ -1,6 +1,7 @@
 import { Socket, io } from "socket.io-client";
 import { store } from "@/store/store";
 import { setupGameSocketListeners } from "./listener";
+import { SERVER_API_URL } from "config";
 
 type GameSocketAuth = {
   token: string;
@@ -19,7 +20,7 @@ export function buildSocket(connection: string) {
   setupGameSocketListeners(socket);
   return socket;
 }
-gameSocket = buildSocket("http://localhost:8000");
+gameSocket = buildSocket(`${SERVER_API_URL}`);
 
 export function initGameSocket(connSocket: Socket | undefined) {
   const socket = connSocket ?? gameSocket;
