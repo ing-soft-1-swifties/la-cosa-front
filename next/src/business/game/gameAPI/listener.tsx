@@ -62,7 +62,9 @@ function calculateNewGameState(data: GameStateData) {
       id: player.id,
       name: player.name,
       position: player.position,
-      status: player.status
+      status: player.status,
+      on_turn: player.on_turn,
+      on_exchange: player.on_exchange,
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,
