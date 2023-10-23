@@ -1,7 +1,12 @@
-import { Box, BoxProps, Text } from "@chakra-ui/react";
-import React, { FC } from "react";
+import { Box, BoxProps, Text, useDimensions } from "@chakra-ui/react";
+import React, { FC, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PlayerStatus, selectPlayer, unselectPlayer } from "@/store/gameSlice";
+import {
+  PlayerStatus,
+  selectPlayer,
+  setDiscardDeckDimensions,
+  unselectPlayer,
+} from "@/store/gameSlice";
 import Player from "./Player";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
@@ -10,7 +15,7 @@ type TableProps = BoxProps & {};
 
 function getTranslatesForPosition(
   position: number,
-  playerAmount: number,
+  playerAmount: number
 ): { x: number; y: number } {
   // Obtenemos el angulo para la posicion del jugador
   let angle = position * ((2 * Math.PI) / playerAmount);
@@ -37,31 +42,45 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   }
 
   function isAdjacent(playerSelectedPosition: number) {
-    const rest = Math.abs(localPlayer.position - playerSelectedPosition)
-    const alivePlayersAmount = players_data.filter(p => p.status == PlayerStatus.ALIVE).length
-    return (rest == 1 || rest == (alivePlayersAmount - 1));
+    const rest = Math.abs(localPlayer.position - playerSelectedPosition);
+    const alivePlayersAmount = players_data.filter(
+      (p) => p.status == PlayerStatus.ALIVE
+    ).length;
+    return rest == 1 || rest == alivePlayersAmount - 1;
   }
 
   function onPlayerSelectedToggle(playerID: number) {
-    const playerSelected = players_data.find(p => p.id == playerID);
+    const playerSelected = players_data.find((p) => p.id == playerID);
     // Si el jugador esta selecionado, lo des-seleccionamos
     if (selectedPlayerID === playerID) {
       dispatch(unselectPlayer());
-      return
+      return;
     }
     // si la carta no requiere seleccionar jugagdor o no hay carta,
     // no hacemos nada
-    if (localPlayer.selections.card === undefined || !localPlayer.selections.card?.needTarget) {
+    if (
+      localPlayer.selections.card === undefined ||
+      !localPlayer.selections.card?.needTarget
+    ) {
       return;
     }
 
     // si requiere seleccion y el jugador clickeado aplica, lo seleccionamos
     if (
-      localPlayer.selections.card.targetAdjacentOnly === false
-      || isAdjacent(playerSelected!.position)) {
+      localPlayer.selections.card.targetAdjacentOnly === false ||
+      isAdjacent(playerSelected!.position)
+    ) {
       dispatch(selectPlayer(playerID));
     }
   }
+
+  const discardCardRef = useRef(null);
+  const dimensions = useDimensions(discardCardRef, true);
+
+  useEffect(() => {
+    if (dimensions == null) return;
+    dispatch(setDiscardDeckDimensions(dimensions));
+  }, [dimensions, dispatch]);
 
   return (
     <Box
@@ -78,6 +97,9 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       bg="rgba(0, 0, 0, 0.4)"
       {...boxProps}
     >
+      {/* Discard card box */}
+      <Box ref={discardCardRef} w="20%" aspectRatio={0.717749758} />
+
       {players.map((player: any) => {
         const { x, y } = getTranslatesForPosition(
           player.position - (localPlayer.position as any),

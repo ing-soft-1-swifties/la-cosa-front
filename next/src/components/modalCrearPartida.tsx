@@ -60,9 +60,6 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
   const finalRef = React.useRef(null);
 
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
-  function joinPlayerToGame(nombreJugador: string, token: any, router: NextRouter) {
-    throw new Error("Function not implemented.");
-  }
 
   return (
     <Box data-testid="modal-crear">

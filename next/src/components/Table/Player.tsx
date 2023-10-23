@@ -13,8 +13,9 @@ const Player = ({
   player: GamePlayer;
   selected: boolean;
 }) => {
-
-  const name_turn = useSelector((state: RootState) => state.game.player_in_turn);;
+  const name_turn = useSelector(
+    (state: RootState) => state.game.player_in_turn
+  );
 
   return (
     <>
@@ -33,20 +34,20 @@ const Player = ({
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
+        position="relative"
       >
-        <Flex 
-            position="absolute"
-            bottom={70}
-            display={player.name !== name_turn? 'none':'block'}
-            >
+        {/* <Flex> */}
           <Image
+            position="absolute"
+            top="-34px"
+            display={player.name !== name_turn ? "none" : "block"}
             w="auto"
             h="30px"
             data-testid={`PLAYER_DIAMOND_IMG_`}
             src={DIAMOND_IMG}
             alt="PLAYER_DIAMOND"
           />
-        </Flex>
+        {/* </Flex> */}
         <Avatar
           borderWidth="4px"
           borderColor={selected ? "green.500" : "transparent"}
@@ -54,7 +55,8 @@ const Player = ({
         <Text
           userSelect="none"
           color={selected ? "green.500" : "white"}
-          textAlign="center">
+          textAlign="center"
+        >
           {player.name}
         </Text>
       </Flex>
