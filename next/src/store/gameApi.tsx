@@ -2,13 +2,15 @@ import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import { EndpointBuilder } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import { MaybePromise } from "@reduxjs/toolkit/dist/query/tsHelpers";
 import { BaseQueryApi, BaseQueryFn, EndpointDefinitions, createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { SERVER_API_URL } from "config";
 
 export const gameApi = createApi({
     // nombre de datos
     reducerPath: "gameApi",
     // url a la que le pediumos datos
+    
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000",
+        baseUrl: `${SERVER_API_URL}`,
     }),
     //funciones que hacen peticion http
     // builder separar mutaciones de alteraciones
