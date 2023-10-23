@@ -16,6 +16,8 @@ type PlayerGameState = {
   role: PlayerRole;
   turn: undefined | PlayerTurnState;
   cards: Card[];
+  on_turn: boolean;
+  on_exchange: boolean;
   selections: {
     card: Card | undefined;
     player: number | undefined;
@@ -45,6 +47,8 @@ const usePlayerGameState: () => PlayerGameState = () => {
   const playerState: PlayerGameState = {
     id: playerData.playerID,
     position: playerPublicData.position,
+    on_turn: playerPublicData.on_turn,
+    on_exchange: playerPublicData.on_exchange,
     status: playerPublicData.status,
     role: playerData.role,
     turn: undefined,

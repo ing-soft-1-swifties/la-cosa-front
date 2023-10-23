@@ -28,6 +28,8 @@ export type GamePlayer = {
   status: PlayerStatus;
   in_quarantine: boolean;
   position: number;
+  on_turn: boolean;
+  on_exchange: boolean;
 };
 
 type GameConfig = {
