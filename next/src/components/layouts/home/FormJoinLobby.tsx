@@ -13,6 +13,7 @@ import router from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { SERVER_API_URL } from "config";
 
 const formSchema = Yup.object({
   room_id: Yup.number().required("Este campo es requerido"),
@@ -50,7 +51,7 @@ export default function FormJoinLobby() {
           onSubmit={async (values) => {
             setSubmitError(undefined);
             try {
-              const response = await fetch("http://localhost:8000/join", {
+              const response = await fetch(`${SERVER_API_URL}/join`, {
                 method: "POST", //Envia los datos a la api
                 headers: {
                   //le dice al servidor que tipo de datos se estan enviando
@@ -67,10 +68,10 @@ export default function FormJoinLobby() {
               } else if (response.status == 400) {
                 const data = await response.json(); //obtiene el error
                 console.log(data);
-                if (data.detail === "Duplicate player name") {  
+                if (data.detail === "Duplicate player name") {
                   // El nombre de jugador está duplicado
                   setSubmitError("El nombre de jugador ya está en uso.");
-                } 
+                }
               } else {
                 setSubmitError("Error al conectarse con el servidor.");
               }

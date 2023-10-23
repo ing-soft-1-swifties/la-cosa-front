@@ -20,6 +20,7 @@ import { NextRouter, useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { SERVER_API_URL } from "config";
 
 const formSchema = Yup.object({
   maxPlayers: Yup.number()
@@ -85,7 +86,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                 console.log(values); //valores del formulario
                 setSubmitError(undefined);
                 try {
-                  const response = await fetch("http://localhost:8000/create", {
+                  const response = await fetch(`${SERVER_API_URL}/create`, {
                     method: "POST", //Envia los datos a la api
                     headers: {
                       //le dice al servidor que tipo de datos se estan enviando
