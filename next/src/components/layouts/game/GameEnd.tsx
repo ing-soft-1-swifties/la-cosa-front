@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { finishGame } from "@/src/business/game/gameAPI/manager";
 import { PlayerRole } from "@/store/gameSlice";
 
+// Datos del final de la partida
 type GameEndData = { 
   winner_team: string;
   roles: [string, string][]; // name & rol
@@ -27,8 +28,10 @@ const GameEnd: FC<GameEndProps> = () => {
   const [gameEndData, setGameEndData] = useState<GameEndData | undefined>( 
     undefined
   );
-  const handleGameEnd = (data: GameEndData) => { // Funcion que maneja el final de la partida
-    setGameEndData(data);
+  // Funcion que maneja el final de la partida
+  const handleGameEnd = (data: GameEndData) => { 
+    // Setea los datos del final de la partida
+    setGameEndData(data); 
   };
   useEffect(() => { // Crea un listener para cuando la partida finaliza
     gameSocket.on(EventType.ON_GAME_END, handleGameEnd); 
@@ -49,7 +52,7 @@ const GameEnd: FC<GameEndProps> = () => {
   );
 
   if (gameEndData) {
-    return (
+    return ( // Crea un modal con los datos del final de la partida
       <Box data-testid="gameend">
         <Modal isOpen={true} onClose={() => {}} size="2xl">
           <ModalOverlay />

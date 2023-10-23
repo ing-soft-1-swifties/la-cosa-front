@@ -16,16 +16,20 @@ import { PlayerRole } from "@/store/gameSlice";
 import GameEnd from "@/components/layouts/game/GameEnd";
 
 const Page: PageWithLayout = () => {
+  // Obtiene el toast, el socket de la partida del hook y el rol del jugador
   const toast = useToast();
   const { gameSocket } = useGameSocket();
   const role = usePlayerGameState().role;
 
-  const roomStartHandler = () => { // Crea un listener para cuando la partida inicia
+  const roomStartHandler = () => { 
+    // Crea un toast para cuando la partida inicia
     toast(buildSucessToastOptions({ description: "Partida iniciada" }));
   };
   useEffect(() => { 
+    // Crea un listener para cuando la partida inicia
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
     return () => {
+      // Elimina el listener cuando el componente se desmonta
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
     };
   });

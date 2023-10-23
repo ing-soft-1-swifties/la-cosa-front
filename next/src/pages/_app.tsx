@@ -49,16 +49,21 @@ export type PageWithLayout<P = {}, IP = P> = NextPage<P, IP> & { // Página con 
 };
 
 type AppPropsWrapper = AppProps & { 
+  // Propiedades de la aplicación
   Component: PageWithLayout;  
 };
 
 const DefaultPageAuthConfig: PageAuthConfig = {
+  // Configuración por defecto de la página
   gameAuthProtected: false,
 };
 
 export default function MyApp({ Component, pageProps }: AppPropsWrapper) { 
+  // Componente de la aplicación
   let Page = wrapWithLayout(Component, pageProps); 
+  // Obtiene la configuración de la página
   const auth: PageAuthConfig = Component.authConfig ?? DefaultPageAuthConfig; 
+  // Si la página esta protegida, la envuelve en el componente de autentificación del juego
   Page = auth.gameAuthProtected ? (
     <GameAuthHandler>{Page}</GameAuthHandler>
   ) : (

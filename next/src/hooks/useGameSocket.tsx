@@ -8,14 +8,14 @@ type GameSocketState = { // Estado del socket del juego
 };
 
 const useGameSocket: () => GameSocketState = () => { // Hook del socket del juego
-
+  // Obtiene el estado de conexion del socket
   const [connected, setConnected] = useState(true); 
 
   function handleConnChange() { // Cambia el estado de conexion del socket
     setConnected(gameSocket.connected)
   }
 
-  // Sincronizar estado de socket con estado local
+  // Sincroniza estado de socket con estado local
   useEffect(() => {
     gameSocket.on("connect", handleConnChange);
     gameSocket.on("disconnect", handleConnChange);

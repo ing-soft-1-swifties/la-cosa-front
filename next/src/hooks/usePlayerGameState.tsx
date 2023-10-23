@@ -22,17 +22,19 @@ type PlayerGameState = { // Estado del jugador
   };
   isHost: boolean;
 };
-
-const usePlayerGameState: () => PlayerGameState = () => { // Hook que obtiene el estado del jugador
+// Hook que obtiene el estado del jugador
+const usePlayerGameState: () => PlayerGameState = () => { 
+  // Obtiene el estado de la partida y el estado del jugador
   const gameState = useSelector((state: RootState) => state.game); 
   const playerData = gameState.playerData;
+  // Si el jugador es null, lanza un error
   if (playerData == null) {
     throw new NotInGameError(
       "No se puede obtener el estado del jugador porque el juego no esta activo."
     );
   }
-
-  const playerPublicData = gameState.players.find( // Busca el jugador en la lista de jugadores
+  // Obtiene los datos publicos del jugador
+  const playerPublicData = gameState.players.find( 
     (player: GamePlayer) => player.id == playerData.playerID //
   );
 

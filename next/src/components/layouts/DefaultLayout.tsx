@@ -1,11 +1,11 @@
 import { ReactElement } from "react";
 
-interface IProps { 
+interface IProps {  // Propiedades del layout
   children: ReactElement;
 }
 
 export default function DefaultLayout({ children }: IProps) {  
-  return (
+  return ( // Crea un div con los hijos
     <div>
       {children}
     </div>

@@ -146,26 +146,28 @@ type StartGameButtonProps = {
 };
 
 const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => { // Componente del boton para iniciar la partida
+  // Obtiene el estado del juego y el loading
   const [startLoading, setStartLoading] = useState(false);
   const startEnabled = canGameStart(gameState);
   const toast = useToast();
   const onInitHandle = async () => {
+    // Inicia la partida y muestra un toast
     setStartLoading(true);
     sendStartGame()
       .catch((reason: any) => {
-        toast(
+        toast( // Muestra un toast con el error
           buildErrorToastOptions({
             title: "Error iniciando partida",
             description: `${reason}`,
           })
         );
       })
-      .finally(() => {
+      .finally(() => { // Finaliza el loading
         setStartLoading(false);
       });
   };
 
-  return (
+  return ( // Crea el boton para iniciar la partida
     <Tooltip
       label="No se cumplen los requisitos para iniciar el juego."
       display={startEnabled ? "none" : "auto"}

@@ -11,11 +11,14 @@ type GameAuthHandlerProps = {
 };
 
 const GameAuthHandler: FC<GameAuthHandlerProps> = ({ children }) => { // Componente de la autentificación del juego
-  const router = useRouter();
+  // Obtiene el router
+  const router = useRouter(); 
+  // Obtiene el token de conexion del usuario
   const token = useSelector((state: RootState) => state.user.gameConnToken);
+  // Obtiene el estado de la conexion del socket
   const { isConnected } = useGameSocket();
 
-  useEffect(() => {
+  useEffect(() => { // Si el token de conexion es null, redirige al usuario a la pagina de inicio
     if (token == null) router.replace("/");
   }, [token, router]);
   if (token == null) return <></>;

@@ -5,7 +5,7 @@ import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { PlayerStatus } from "@/store/gameSlice";
 
 type HandProps = { // Propiedades de la mano
-  card_height?: string;
+  card_height?: string; 
 };
 
 const Hand: FC<HandProps> = ({ card_height }) => { // Componente de la mano

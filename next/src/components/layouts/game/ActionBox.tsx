@@ -23,23 +23,26 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => { // Caja de acciones del jugador
     const playerSelected = player.selections.player;
 
     var cardOptions = playerSelected ? { target: playerSelected } : {}; //cardOptions es un objeto que contiene el target del jugador seleccionado
-    if (cardSelected !== undefined) { 
-      sendPlayerPlayCard(cardSelected, cardOptions); // Envia al servidor el evento de que el jugador jugo una carta
+    if (cardSelected !== undefined) { // Si la carta seleccionada no es undefined, envia al servidor el evento de que el jugador jugo una carta
+      sendPlayerPlayCard(cardSelected, cardOptions); 
     }
   };
 
-  const discardCard = () => {  // Funcion para descartar una carta
-    if (cardSelected !== undefined) { 
+  const discardCard = () => {  
+    if (cardSelected !== undefined) {
+      // Envia al servidor el evento de que el jugador descarto una carta 
       sendPlayerDiscardCard(cardSelected); 
     }
   };
 
-  const swapCard = () => { // Funcion para intercambiar una carta
+  const swapCard = () => { 
     if (cardSelected !== undefined) {
-      sendPlayerSelectExchangeCard(cardSelected);
+      // Envia al servidor el evento de que el jugador selecciono una carta para intercambiar
+      sendPlayerSelectExchangeCard(cardSelected); 
     }
   };
-  if (player.status == PlayerStatus.DEATH) { // Si el jugador esta muerto, retorna null
+  // Si el jugador esta muerto, retorna null
+  if (player.status == PlayerStatus.DEATH) { 
     return null;
   }
 

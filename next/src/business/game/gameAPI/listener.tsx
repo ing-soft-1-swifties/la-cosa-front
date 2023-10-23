@@ -28,9 +28,10 @@ export enum EventType {
 export const setupGameSocketListeners = (gameSocket: Socket) => { // Crea los listeners del socket
   gameSocket.onAny((ev, ...args) => { // Crea un listener para cualquier evento
     console.log(`${ev}`) // Imprime el evento
-    console.log(args) 
+    console.log(args) // Imprime los argumentos
   })
-  gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, updateGameState);
+  //se crean los listeners para cada evento
+  gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, updateGameState); 
   gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_START_GAME, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_TURN, updateGameState);
@@ -48,26 +49,29 @@ export const setupGameSocketListeners = (gameSocket: Socket) => { // Crea los li
 
   // TODO! Hay que ver si esto lo dejamos o es temporal
   gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
-
-  gameSocket.on("disconnect", onGameSocketDisconnect); // Crea un listener para cuando se desconecta el socket
+  // Crea un listener para cuando se desconecta el socket
+  gameSocket.on("disconnect", onGameSocketDisconnect); 
 };
 
 export type GameStateData = { // Datos de la partida
   gameState: GameState; // Estado de la partida
 };
 
-function calculateNewGameState(data: GameStateData) { // Calcula el nuevo estado de la partida
+function calculateNewGameState(data: GameStateData) { 
   const newState: any = {
-    config: data.gameState.config, 
-    players: data.gameState.players.map((player) => ({ // Crea un nuevo arreglo de jugadores
+    config: data.gameState.config, // Configuracion de la partida
+    // Crea un nuevo arreglo de jugadores con los datos de los jugadores de la partida
+    players: data.gameState.players.map((player) => ({ 
       id: player.id,
       name: player.name,
       position: player.position,
       status: player.status
     })),
-    status: data.gameState.status, // Estado de la partida
+    // Estado de la partida
+    status: data.gameState.status, 
   };
-  if (data.gameState.playerData != null) { 
+  // Si el jugador no es null, crea un nuevo arreglo de cartas con las cartas del jugador
+  if (data.gameState.playerData != null) {  
     newState.playerData = { 
       cards: data.gameState.playerData.cards,
       playerID: data.gameState.playerData.playerID, 
@@ -78,22 +82,28 @@ function calculateNewGameState(data: GameStateData) { // Calcula el nuevo estado
 }
 
 const updateGameState = (data: GameStateData) => { 
-  store.dispatch(setGameState(calculateNewGameState(data)));  //guarda el nuevo estado de la partida
+   //guarda el nuevo estado de la partida
+  store.dispatch(setGameState(calculateNewGameState(data))); 
 };
 
 function onRoomStartGame() { 
-  beginGame(); // Comienza la partida
+  // Comienza la partida
+  beginGame(); 
 }
 
 const onRoomCancelledGame = () => { 
-  cancelGame(CancelGameReason.CANCELED_BY_HOST); // Cancela la partida
+  // Cancela la partida por el host
+  cancelGame(CancelGameReason.CANCELED_BY_HOST); 
 };
 
 type InvalidActionData = { 
+  // Datos de la accion invalida
   title: string;
   message: string;
 };
-const onGameInvalidAction = (data: InvalidActionData) => { // Si la accion es invalida, muestra un mensaje de error
+
+//// Si la accion es invalida, muestra un mensaje de error
+const onGameInvalidAction = (data: InvalidActionData) => { 
   StandaloneToast(
     buildErrorToastOptions({
       title: data.title,

@@ -48,22 +48,22 @@ export async function sendPlayerPlayDefenseCard(
   target_player: number,
   card: number
 ) {
-  const playDefenseCardPayload: PlayDefenseCardPayload = {  
+  const playDefenseCardPayload: PlayDefenseCardPayload = {  // Crea un payload con los datos de la carta
     card: card,
     card_options: {
       target: target_player,
     },
   };
-  await gameSocket.emitWithAck(  // Emite el evento al servidor
+  await gameSocket.emitWithAck(  // Emite el evento al servidor con el payload creado anteriormente
     MessageType.GAME_PLAY_DEFENSE_CARD, 
     playDefenseCardPayload 
   );
 }
 
-export type DiscardCardPayload = { 
+export type DiscardCardPayload = {  // Envia al servidor el evento de que el jugador descarto una carta
   card: number;
 };
-export async function sendPlayerDiscardCard(card: number) {  
+export async function sendPlayerDiscardCard(card: number) { //  
   const discardCardPayload: DiscardCardPayload = {
     card: card,
   };

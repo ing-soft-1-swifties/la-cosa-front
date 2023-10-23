@@ -23,10 +23,10 @@ gameSocket = buildSocket("http://localhost:8000"); //le pasamos la url del servi
 
 export function initGameSocket(connSocket: Socket | undefined) {  // Inicializa el socket de la partida
   const socket = connSocket ?? gameSocket;  // Si el socket de conexion es undefined, usa el socket de la partida
-  const connectionToken = store.getState().user.gameConnToken;  
-  if (connectionToken == null) return;
+  const connectionToken = store.getState().user.gameConnToken;  // Obtiene el token de conexion del usuario
+  if (connectionToken == null) return; // Si el token de conexion es null, retorna 
   if (!socket.disconnected) socket.disconnect(); 
-  socket.auth = {
+  socket.auth = { // Le asigna al socket el token de conexion del usuario
     token: connectionToken, 
   };
   socket.connect();
