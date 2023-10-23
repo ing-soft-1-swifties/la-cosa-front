@@ -64,7 +64,7 @@ const Page: PageWithLayout = () => {
 };
 
 Page.authConfig = {
-  gameAuthProtected: false,
+  gameAuthProtected: true,
 };
 
 export default Page;
