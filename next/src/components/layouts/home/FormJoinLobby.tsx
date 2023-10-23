@@ -66,6 +66,13 @@ export default function FormJoinLobby() {
               if (response.ok) {
                 const data: { token: string } = await response.json(); //convierte los datos a json
                 joinPlayerToGame(values.name, data.token, router);
+              } else if (response.status == 400) {
+                const data = await response.json(); //obtiene el error
+                console.log(data);
+                if (data.detail === "Duplicate player name") {  
+                  // El nombre de jugador está duplicado
+                  setSubmitError("El nombre de jugador ya está en uso.");
+                } 
               } else {
                 setSubmitError("Error al conectarse con el servidor.");
               }
