@@ -1,5 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { FC } from "react";
+import { Flex } from "@chakra-ui/react";
+import { FC, useMemo } from "react";
 import GameCard from "./GameCard";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { PlayerStatus } from "@/store/gameSlice";
@@ -11,6 +11,7 @@ type HandProps = {
 
 const Hand: FC<HandProps> = ({ card_height }) => {
   const player = usePlayerGameState();
+  const sortedCards = useMemo(() => [...player.cards].sort((c1, c2) => c1.id - c2.id), [player.cards])
 
   if (player.status == PlayerStatus.DEATH) {
     return null;
@@ -18,7 +19,7 @@ const Hand: FC<HandProps> = ({ card_height }) => {
 
   return (
     <Flex justify="center" h="100%" columnGap={10}>
-      {player.cards.map(({ id, name }) => {
+      {sortedCards.map(({ id, name }) => {
         return (
           <FramerMotionBox
             key={id}
