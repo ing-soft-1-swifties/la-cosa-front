@@ -102,10 +102,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                       is_private: false,
                     }),
                   });
-                  //el nombre de la partida esta en uso
-                  if (response.status === 400) {
-                    setSubmitError("El nombre de la partida ya está en uso.");
-                  } else if (response.ok) {
+                  if (response.ok) {
                     const data = await response.json();
                     joinPlayerToGame(values.nombreJugador, data.token, router);
                   } else {
