@@ -92,7 +92,14 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
           data-testid="ACTION_BOX_SWAP_BTN"
           rightIcon={<GiSwitchWeapon />}
           onClick={swapCard}
-          isDisabled={cardSelectedID == undefined || cardSelected?.name == Card.THETHING || (cardSelected?.name == Card.INFECTED && player.role == PlayerRole.INFECTED)}
+          isDisabled={
+            cardSelectedID == undefined || 
+            cardSelected?.name == Card.THETHING || 
+            (cardSelected?.name == Card.INFECTED && player.role == PlayerRole.HUMAN)
+            // TODO: la condicion de abajo esta incompleta. 
+            // tambien le falta que sea la unica carta de infectado en la mano
+            // || (cardSelected?.name == Card.INFECTED && player.role == PlayerRole.INFECTED) 
+          }
         >Intercambiar
           {turn}</Button>
       </Stack>
