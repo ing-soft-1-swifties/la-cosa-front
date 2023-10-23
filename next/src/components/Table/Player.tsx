@@ -42,7 +42,7 @@ const Player = ({
           position="absolute"
           top='-40px'
           display={player.on_turn ? "block" : "none"}
-          zIndex={2}
+          zIndex={10}
 
           key="diamondTurn"
           animate={{ y: [10,0,10] }}
@@ -55,9 +55,7 @@ const Player = ({
           }}
         >
           <Image
-            position="absolute"
-            top="-34px"
-            display={player.name !== name_turn ? "none" : "block"}
+            
             w="auto"
             h="30px"
             data-testid={`PLAYER_DIAMOND_IMG_`}
