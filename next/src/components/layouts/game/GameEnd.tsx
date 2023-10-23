@@ -16,14 +16,13 @@ import { useRouter } from "next/router";
 import { finishGame } from "@/src/business/game/gameAPI/manager";
 import { PlayerRole } from "@/store/gameSlice";
 
-type GameEndData = {
+export type GameEndData = {
   winner_team: string;
   roles: [string, string][]; // name & role
 };
 
 type GameEndProps = {};
 const GameEnd: FC<GameEndProps> = () => {
-  const router = useRouter();
   const [gameEndData, setGameEndData] = useState<GameEndData | undefined>(
     undefined
   );
@@ -37,9 +36,22 @@ const GameEnd: FC<GameEndProps> = () => {
     };
   });
 
+  let winner_team;
+  switch (gameEndData?.winner_team) {
+    case "LA_COSA":
+      winner_team = "LA COSA";
+      break;
+    case "HUMANOS":
+      winner_team = "HUMANOS";
+      break;
+    default:
+      winner_team = gameEndData?.winner_team;
+      break;
+  }
+
   const theThing = gameEndData?.roles.filter(
     ([_, role]) => role == PlayerRole.THETHING
-  );
+  )?.[0];
   const infected = gameEndData?.roles.filter(
     ([_, role]) => role == PlayerRole.INFECTED
   );
@@ -75,7 +87,7 @@ const GameEnd: FC<GameEndProps> = () => {
                     Ganador:
                   </Text>
                   <Text fontSize="xl" textAlign="center" mb="8">
-                    {gameEndData.winner_team}
+                    {winner_team}
                   </Text>
                   <Text
                     fontSize="xl"
@@ -85,21 +97,18 @@ const GameEnd: FC<GameEndProps> = () => {
                   >
                     Roles Finales:
                   </Text>
-                  {theThing?.map(([name, role]) => {
-                    return (
-                      <Text key={name}>
-                        {name}:{' '}
-                        <Text as="span" color="red.500" fontWeight="bold">
-                          LA COSA
-                        </Text>
+                  {theThing && (
+                    <Text>
+                      {theThing[0]}:{" "}
+                      <Text as="span" color="red.500" fontWeight="bold">
+                        LA COSA
                       </Text>
-                    );
-                  })}
-
+                    </Text>
+                  )}
                   {infected?.map(([name, role]) => {
                     return (
                       <Text key={name}>
-                        {name}:{' '}
+                        {name}:{" "}
                         <Text as="span" color="green.600" fontWeight="bold">
                           INFECTADO
                         </Text>
@@ -110,7 +119,7 @@ const GameEnd: FC<GameEndProps> = () => {
                   {humans?.map(([name, role]) => {
                     return (
                       <Text key={name}>
-                        {name}:{' '}
+                        {name}:{" "}
                         <Text as="span" color="blue.600" fontWeight="bold">
                           HUMANO
                         </Text>
