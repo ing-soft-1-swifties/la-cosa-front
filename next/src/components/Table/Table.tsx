@@ -36,9 +36,10 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     throw new Error("No player in the game has this player's id!");
   }
 
-  function isAdjacent(playerSelectedPosition: number){
+  function isAdjacent(playerSelectedPosition: number) {
     const rest = Math.abs(localPlayer.position - playerSelectedPosition)
-    return (rest == 1 || rest == players_data.length-1)
+    const alivePlayersAmount = players_data.filter(p => p.status == PlayerStatus.ALIVE).length
+    return (rest == 1 || rest == (alivePlayersAmount - 1));
   }
 
   function onPlayerSelectedToggle(playerID: number) {
@@ -54,7 +55,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       return;
     }
 
-    // si es necesario una seleccion de cualquier jugador
+    // si requiere seleccion y el jugador clickeado aplica, lo seleccionamos
     if (
       localPlayer.selections.card.targetAdjacentOnly === false
       || isAdjacent(playerSelected!.position)) {
