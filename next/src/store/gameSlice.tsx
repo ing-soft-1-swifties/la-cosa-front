@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { BoxModel } from "@chakra-ui/utils";
+
 
 export enum PlayerTurnState {
   PLAY_OR_DISCARD = "play_or_discard",
@@ -75,6 +77,7 @@ export type GameState = {
   players: GamePlayer[];
   playerData?: PlayerData;
   player_in_turn: string | undefined;
+  discardDeckDimensions: BoxModel | null;
 };
 
 export const initialState: GameState = {
@@ -87,12 +90,48 @@ export const initialState: GameState = {
   },
   status: GameStatus.WAITING,
   players: [
-    { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE },
-    { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE },
-    { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE },
-    { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE },
-    { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE },
-    { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.DEATH },
+    {
+      name: "Yo",
+      id: 123,
+      position: 0,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+    },
+    {
+      name: "otro1",
+      id: 124,
+      position: 1,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+    },
+    {
+      name: "otro2",
+      id: 125,
+      position: 2,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+    },
+    {
+      name: "otro3",
+      id: 126,
+      position: 3,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+    },
+    {
+      name: "otro4",
+      id: 127,
+      position: 4,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+    },
+    {
+      name: "otro5",
+      id: 128,
+      position: 5,
+      in_quarantine: false,
+      status: PlayerStatus.DEATH,
+    },
   ],
   playerData: {
     playerID: 123,
@@ -107,7 +146,7 @@ export const initialState: GameState = {
       },
       {
         id: 2,
-        name: "¡Infectado!",
+        name: "Infectado",
         type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
         needTarget: false,
@@ -141,6 +180,7 @@ export const initialState: GameState = {
     role: PlayerRole.INFECTED,
   },
   player_in_turn: undefined,
+  discardDeckDimensions: null
 };
 
 export type BackendGameState = {
@@ -177,10 +217,13 @@ export const gameSlice = createSlice({
       state.status = initialState.status;
       state.players = initialState.players;
     },
+    setDiscardDeckDimensions(state, action: PayloadAction<BoxModel>) {
+      state.discardDeckDimensions = action.payload;
+    },
   },
 });
 
-export const { setGameState, setSelectedCard, selectPlayer, unselectPlayer } =
+export const { setGameState, setSelectedCard, selectPlayer, unselectPlayer, setDiscardDeckDimensions   } =
   gameSlice.actions;
 
 export default gameSlice.reducer;
