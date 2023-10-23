@@ -89,49 +89,14 @@ export const initialState: GameState = {
     maxPlayers: 12,
   },
   status: GameStatus.WAITING,
+  player_in_turn: 'otro2',
   players: [
-    {
-      name: "Yo",
-      id: 123,
-      position: 0,
-      in_quarantine: false,
-      status: PlayerStatus.ALIVE,
-    },
-    {
-      name: "otro1",
-      id: 124,
-      position: 1,
-      in_quarantine: false,
-      status: PlayerStatus.ALIVE,
-    },
-    {
-      name: "otro2",
-      id: 125,
-      position: 2,
-      in_quarantine: false,
-      status: PlayerStatus.ALIVE,
-    },
-    {
-      name: "otro3",
-      id: 126,
-      position: 3,
-      in_quarantine: false,
-      status: PlayerStatus.ALIVE,
-    },
-    {
-      name: "otro4",
-      id: 127,
-      position: 4,
-      in_quarantine: false,
-      status: PlayerStatus.ALIVE,
-    },
-    {
-      name: "otro5",
-      id: 128,
-      position: 5,
-      in_quarantine: false,
-      status: PlayerStatus.DEATH,
-    },
+    { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false},
+    { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: true, on_exchange: false },
+    { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
+    { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
+    { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
+    { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.DEATH, on_turn: false, on_exchange: false },
   ],
   playerData: {
     playerID: 123,
@@ -179,7 +144,6 @@ export const initialState: GameState = {
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
   },
-  player_in_turn: undefined,
   discardDeckDimensions: null
 };
 
