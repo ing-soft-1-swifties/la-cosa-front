@@ -70,7 +70,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
         },
         {
           id: 2,
-          name: "¡Infectado!",
+          name: "Infectado",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
         },

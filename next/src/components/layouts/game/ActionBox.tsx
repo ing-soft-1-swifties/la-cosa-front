@@ -66,7 +66,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
 
   return (
     <Box mx="5">
-      <Popover isOpen placement="top">
+      <Popover isOpen placement="top" autoFocus={false} >
         <PopoverContent 
           bg="rgba(0, 0, 0, 0.4)" 
           color="white" 
