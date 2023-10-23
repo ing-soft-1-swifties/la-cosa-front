@@ -1,10 +1,12 @@
-import { Avatar, Box as Flex, Text } from "@chakra-ui/react";
+import { Avatar, Box, Box as Flex, Text, keyframes } from "@chakra-ui/react";
 import React from "react";
 import { GamePlayer } from "@/store/gameSlice";
 import Image from "@/components/utility/Image";
 import DIAMOND_IMG from "@/public/game/diamond.png";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
+import { motion } from "framer-motion";
+import { FramerMotionBox } from "utils/animations";
 
 const Player = ({
   player,
@@ -36,7 +38,22 @@ const Player = ({
         alignItems="center"
         position="relative"
       >
-        {/* <Flex> */}
+        <FramerMotionBox
+          position="absolute"
+          top='-40px'
+          display={player.on_turn ? "block" : "none"}
+          zIndex={2}
+
+          key="diamondTurn"
+          animate={{ y: [10,0,10] }}
+          initial={{ y: 0 }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+          }}
+        >
           <Image
             position="absolute"
             top="-34px"
@@ -47,10 +64,11 @@ const Player = ({
             src={DIAMOND_IMG}
             alt="PLAYER_DIAMOND"
           />
-        {/* </Flex> */}
+        </FramerMotionBox>
         <Avatar
           borderWidth="4px"
           borderColor={selected ? "green.500" : "transparent"}
+          name={player.name}
         />
         <Text
           userSelect="none"
