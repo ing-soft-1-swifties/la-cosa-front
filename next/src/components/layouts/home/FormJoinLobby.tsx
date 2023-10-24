@@ -30,10 +30,12 @@ export default function FormJoinLobby() {
     <>
       <Box
         minW="100%"
-        border="4px"
-        borderColor="white"
-        borderRadius="2xl"
-        p={4}
+        // border="4px"
+        // borderColor="white"
+        // borderRadius="2xl"
+        pt={4}
+        pb={6}
+        px={8}
         data-testid="form-join-lobby"
       >
         <Text
