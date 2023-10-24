@@ -1,5 +1,5 @@
 import { PageWithLayout } from "@/src/pages/_app";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { buildSucessToastOptions } from "@/src/utils/toasts";
@@ -19,10 +19,10 @@ import { store } from "@/store/store";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
-  const role = usePlayerGameState().role;
+  const player = usePlayerGameState();
+  const role = player.role;
 
   useGameNotifications(gameSocket, toast);
-
 
   const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect;
 
@@ -52,21 +52,45 @@ const Page: PageWithLayout = () => {
             </Box>
           </Flex>
         </Flex>
+        <Box pos="absolute" right="0" top="0">
+          <Text
+            color="white"
+            bg={player.on_turn ? "green" : "yellow.600"}
+            borderBottomLeftRadius="20px"
+            px="16"
+            py="3"
+            textTransform="uppercase"
+            fontWeight="bold"
+            fontSize="0.98rem"
+          >
+            {player.on_turn ? "Es tu Turno" : "Esperando a otros jugadores..."}
+          </Text>
+        </Box>
       </Box>
     </>
   );
 };
 
 Page.authConfig = {
-  gameAuthProtected: false,
+  gameAuthProtected: true,
 };
 
 function useGameNotifications(gameSocket: Socket, toast: any) {
   const roomStartHandler = () => {
-    toast(buildSucessToastOptions({ description: "Partida iniciada" }));
+    toast(
+      buildSucessToastOptions({
+        title: "Aviso",
+        description: "Partida iniciada",
+      })
+    );
   };
-  const playerTurnHandler = (data:any) => {
-    toast(buildSucessToastOptions({ description: `Es el turno de ${data.player}` }));
+  const playerTurnHandler = (data: any) => {
+    toast(
+      buildSucessToastOptions({
+        title: "Aviso",
+        description: `Es el turno de ${data.player}`,
+      })
+    );
   };
   // const newPlayerRoom = () => {
   //   toast(buildSucessToastOptions({ description: "Nuevo jugador en la partida" }));
@@ -75,24 +99,52 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
   //   toast(buildSucessToastOptions({ description: "Un jugador abandonó la partida" }));
   // };
   const canceledRoom = () => {
-    toast(buildSucessToastOptions({ description: "Se cancelo la partida" }));
+    toast(
+      buildSucessToastOptions({
+        title: "Aviso",
+        description: "Se cancelo la partida",
+      })
+    );
   };
-  const playerStealCard = (data:any) => {
-    toast(buildSucessToastOptions({ description: `Robaste las cartas: ${data.cards.reduce((ac:string, card:any) => ac + `${card.name} `, '')}` }));
+  const playerStealCard = (data: any) => {
+    toast(
+      buildSucessToastOptions({
+        title: "Aviso",
+        description: `Robaste las cartas: ${data.cards.reduce(
+          (ac: string, card: any) => ac + `${card.name} `,
+          ""
+        )}`,
+      })
+    );
   };
-  const playerPlayCard = (data:any) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${data.player} jugo la carta: ${data.card.name}` }));
+  const playerPlayCard = (data: any) => {
+    toast(
+      buildSucessToastOptions({
+        title: "Aviso",
+        description: `El jugador ${data.player} jugo la carta: ${data.card.name}`,
+      })
+    );
   };
-  const playerPlayDefenseCard = (data:any) => {
-    toast(buildSucessToastOptions({ description: `El jugador ${data.player} jugo la carta de defensa: ${data.card.name}` }));
+  const playerPlayDefenseCard = (data: any) => {
+    toast(
+      buildSucessToastOptions({
+        title: "Aviso",
+        description: `El jugador ${data.player} jugo la carta de defensa: ${data.card.name}`,
+      })
+    );
   };
 
   const beginExchange = (data: any) => {
     const [firstPlayer, secondPlayer] = data.players;
-    if(!data.players.includes(store.getState().user.name)) {
-      toast(buildSucessToastOptions({ description: `Habrá un intercambio entre los jugadores ${firstPlayer} y ${secondPlayer}` }));
-    }   
-  }
+    if (!data.players.includes(store.getState().user.name)) {
+      toast(
+        buildSucessToastOptions({
+          title: "Aviso",
+          description: `Habrá un intercambio entre los jugadores ${firstPlayer} y ${secondPlayer}`,
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
@@ -100,16 +152,34 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, canceledRoom);
     gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, playerStealCard);
     gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, playerPlayCard);
-    gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, playerPlayDefenseCard);
+    gameSocket.on(
+      EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD,
+      playerPlayDefenseCard
+    );
     gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, beginExchange);
     return () => {
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
-      gameSocket.removeListener(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
+      gameSocket.removeListener(
+        EventType.ON_GAME_PLAYER_TURN,
+        playerTurnHandler
+      );
       gameSocket.removeListener(EventType.ON_ROOM_CANCELLED_GAME, canceledRoom);
-      gameSocket.removeListener(EventType.ON_GAME_PLAYER_STEAL_CARD, playerStealCard);
-      gameSocket.removeListener(EventType.ON_GAME_PLAYER_PLAY_CARD, playerPlayCard);
-      gameSocket.removeListener(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, playerPlayDefenseCard);
-      gameSocket.removeListener(EventType.ON_GAME_BEGIN_EXCHANGE, beginExchange);
+      gameSocket.removeListener(
+        EventType.ON_GAME_PLAYER_STEAL_CARD,
+        playerStealCard
+      );
+      gameSocket.removeListener(
+        EventType.ON_GAME_PLAYER_PLAY_CARD,
+        playerPlayCard
+      );
+      gameSocket.removeListener(
+        EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD,
+        playerPlayDefenseCard
+      );
+      gameSocket.removeListener(
+        EventType.ON_GAME_BEGIN_EXCHANGE,
+        beginExchange
+      );
     };
   });
 }
