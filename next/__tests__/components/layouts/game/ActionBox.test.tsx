@@ -44,6 +44,165 @@ jest.mock("next/router", () => jest.requireActual("next-router-mock"));
 
 const TEST_CONNECTION_TOKEN = "SuperSecretToken";
 
+const notTurnExchangeState: PreloadedState<RootState> = {
+  game: {
+    config: {
+      id: 1,
+      name: "La partida",
+      host: "Pepito",
+      minPlayers: 4,
+      maxPlayers: 12,
+    },
+    status: GameStatus.PLAYING,
+    players: [
+      {
+        id: 1,
+        name: "Pepito",
+        position: 1,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: true
+      },
+      {
+        id: 2,
+        name: "Juanito",
+        position: 2,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false
+      },
+    ],
+    playerData: {
+      cards: [
+        {
+          id: 1,
+          name: "Lanzallamas",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: true,
+          targetAdjacentOnly: true
+        },
+      ],
+      cardSelected: 1,
+      playerID: 1,
+      playerSelected: 2,
+      role: PlayerRole.INFECTED,
+    },
+  },
+  user: {
+    gameConnToken: TEST_CONNECTION_TOKEN,
+    name: "Pepito",
+  },
+};
+
+const onTurnExchangeState: PreloadedState<RootState> = {
+  game: {
+    config: {
+      id: 1,
+      name: "La partida",
+      host: "Pepito",
+      minPlayers: 4,
+      maxPlayers: 12,
+    },
+    status: GameStatus.PLAYING,
+    players: [
+      {
+        id: 1,
+        name: "Pepito",
+        position: 1,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: true,
+        on_exchange: true
+      },
+      {
+        id: 2,
+        name: "Juanito",
+        position: 2,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false
+      },
+    ],
+    playerData: {
+      cards: [
+        {
+          id: 1,
+          name: "Lanzallamas",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: true,
+          targetAdjacentOnly: true
+        },
+      ],
+      cardSelected: 1,
+      playerID: 1,
+      playerSelected: 2,
+      role: PlayerRole.INFECTED,
+    },
+  },
+  user: {
+    gameConnToken: TEST_CONNECTION_TOKEN,
+    name: "Pepito",
+  },
+};
+
+const onTurnState: PreloadedState<RootState> = {
+  game: {
+    config: {
+      id: 1,
+      name: "La partida",
+      host: "Pepito",
+      minPlayers: 4,
+      maxPlayers: 12,
+    },
+    status: GameStatus.PLAYING,
+    players: [
+      {
+        id: 1,
+        name: "Pepito",
+        position: 1,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: true,
+        on_exchange: false
+      },
+      {
+        id: 2,
+        name: "Juanito",
+        position: 2,
+        in_quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false
+      },
+    ],
+    playerData: {
+      cards: [
+        {
+          id: 1,
+          name: "Lanzallamas",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: true,
+          targetAdjacentOnly: true
+        },
+      ],
+      cardSelected: 1,
+      playerID: 1,
+      playerSelected: 2,
+      role: PlayerRole.INFECTED,
+    },
+  },
+  user: {
+    gameConnToken: TEST_CONNECTION_TOKEN,
+    name: "Pepito",
+  },
+};
+
 const InGameAppState: PreloadedState<RootState> = {
   game: {
     config: {
@@ -144,15 +303,33 @@ describe("Page Lobby", () => {
     renderWithProviders(<ActionBox />);
   });
 
-  it("has text based on state", () => {
+  it("renders play and discard buttons when on turn", () => {
     renderWithProviders(<ActionBox />, {
-      preloadedState: InGameAppState,
+      preloadedState: onTurnState,
     });
     const playBTN = screen.getByTestId("ACTION_BOX_PLAY_BTN");
     expect(playBTN).toHaveTextContent("Jugar");
 
     const discardBTN = screen.getByTestId("ACTION_BOX_DSC_BTN");
     expect(discardBTN).toHaveTextContent("Descartar");
+  });
+
+  it("renders exchange and defend buttons when offered an exchange", () => {
+    renderWithProviders(<ActionBox />, {
+      preloadedState: notTurnExchangeState,
+    });
+
+    const swapdBTN = screen.getByTestId("ACTION_BOX_SWAP_BTN");
+    expect(swapdBTN).toHaveTextContent("Intercambiar");
+
+    const defenseBTN = screen.getByTestId("ACTION_BOX_DEFENSE_BTN");
+    expect(defenseBTN).toHaveTextContent("Defenderse");
+  });
+  
+  it("renders exchange button when offering an exchange", () => {
+    renderWithProviders(<ActionBox />, {
+      preloadedState: onTurnExchangeState,
+    });
 
     const swapdBTN = screen.getByTestId("ACTION_BOX_SWAP_BTN");
     expect(swapdBTN).toHaveTextContent("Intercambiar");
@@ -161,7 +338,7 @@ describe("Page Lobby", () => {
   it("click on play", (done) => {
     act(() => {
       renderWithProviders(<ActionBox />, {
-        preloadedState: InGameAppState,
+        preloadedState: onTurnState,
       });
     });
 
@@ -185,7 +362,7 @@ describe("Page Lobby", () => {
   it("click on discard", (done) => {
     act(() => {
       renderWithProviders(<ActionBox />, {
-        preloadedState: InGameAppState,
+        preloadedState: onTurnState,
       });
     });
 
@@ -206,26 +383,27 @@ describe("Page Lobby", () => {
   });
 
 
-it("click on swap", (done) => {
-  act(() => {
-    renderWithProviders(<ActionBox />, {
-      preloadedState: InGameAppState,
+  it("click on swap", (done) => {
+    act(() => {
+      renderWithProviders(<ActionBox />, {
+        preloadedState: onTurnExchangeState,
+      });
+    });
+
+    // Mockeamos el servidor para revisar que llegue el mensaje
+    serverSocket.once(MessageType.GAME_SELECT_EXCHANGE_CARD, (data) => {
+      expect(data);
+      const selectExchangeCardPayload: SelectExchangeCardPayload = {
+        on_defense: false,
+        card: 1
+      };
+      expect(data).toStrictEqual(selectExchangeCardPayload);
+      done();
+    });
+
+    const discardbtn = screen.getByTestId("ACTION_BOX_SWAP_BTN");
+    act(() => {
+      discardbtn.click();
     });
   });
-
-  // Mockeamos el servidor para revisar que llegue el mensaje
-  serverSocket.once(MessageType.GAME_SELECT_EXCHANGE_CARD, (data) => {
-    expect(data);
-    const selectExchangeCardPayload: SelectExchangeCardPayload = {
-      card: 1
-    };
-    expect(data).toStrictEqual(selectExchangeCardPayload);
-    done();
-  });
-
-  const discardbtn = screen.getByTestId("ACTION_BOX_SWAP_BTN");
-  act(() => {
-    discardbtn.click();
-  });
-});
 });
