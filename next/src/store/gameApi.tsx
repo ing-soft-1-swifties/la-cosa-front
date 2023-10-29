@@ -2,7 +2,7 @@ import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import { EndpointBuilder } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import { MaybePromise } from "@reduxjs/toolkit/dist/query/tsHelpers";
 import { BaseQueryApi, BaseQueryFn, EndpointDefinitions, createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { SERVER_API_URL } from "config";
+import { SERVER_API_URL } from "../config";
 
 export const gameApi = createApi({
     // nombre de datos

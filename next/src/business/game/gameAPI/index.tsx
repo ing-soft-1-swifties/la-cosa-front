@@ -1,7 +1,7 @@
 import { Socket, io } from "socket.io-client";
 import { store } from "@/store/store";
 import { setupGameSocketListeners } from "./listener";
-import { SERVER_API_URL } from "config";
+import { SERVER_API_URL } from "../../../config";
 
 type GameSocketAuth = {
   token: string;
