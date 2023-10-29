@@ -20,7 +20,7 @@ import { NextRouter, useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import { SERVER_API_URL } from "config";
+import { SERVER_API_URL } from "@/src/config";
 
 const formSchema = Yup.object({
   maxPlayers: Yup.number()

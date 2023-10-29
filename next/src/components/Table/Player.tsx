@@ -6,7 +6,7 @@ import DIAMOND_IMG from "@/public/game/diamond.png";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { motion } from "framer-motion";
-import { FramerMotionBox } from "utils/animations";
+import { FramerMotionBox } from "@/src/utils/animations";
 
 const Player = ({
   player,
