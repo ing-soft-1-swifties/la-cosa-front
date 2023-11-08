@@ -144,10 +144,12 @@ describe("Component Game End", () => {
         ["DADA", "HUMANO"],
       ],
     };
-    serverSocket.emit(EventType.ON_GAME_END, data);
-    await new Promise((res) => setTimeout(res, 500));
+    await act(async () => {
+      serverSocket.emit(EventType.ON_GAME_END, data);
+      await new Promise((res) => setTimeout(res, 500));
 
-    // Renderizo los resultados de la partida
+      // Renderizo los resultados de la partida
+    });
     screen.getByText("Pepito:");
     const query = screen.getAllByText("LA COSA");
     expect(query).toHaveLength(2);
@@ -174,8 +176,10 @@ describe("Component Game End", () => {
         ["DADA", "HUMANO"],
       ],
     };
-    serverSocket.emit(EventType.ON_GAME_END, data);
-    await new Promise((res) => setTimeout(res, 500));
+    await act(async () => {
+      serverSocket.emit(EventType.ON_GAME_END, data);
+      await new Promise((res) => setTimeout(res, 500));
+    });
 
     const button = screen.getByText("Volver al Menu Principal");
     act(() => {

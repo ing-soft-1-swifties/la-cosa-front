@@ -4,6 +4,7 @@ import { store } from "@/store/store";
 import { beginGame, cancelGame, CancelGameReason } from "./manager";
 import { StandaloneToast } from "@/src/pages/_app";
 import { buildErrorToastOptions } from "@/src/utils/toasts";
+import { setupChatListeners } from "../chat";
 
 export enum EventType {
   ON_ROOM_NEW_PLAYER = "on_room_new_player",
@@ -47,6 +48,8 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
 
   // TODO! Hay que ver si esto lo dejamos o es temporal
   gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
+
+  setupChatListeners(gameSocket)
 
   gameSocket.on("disconnect", onGameSocketDisconnect);
 };
