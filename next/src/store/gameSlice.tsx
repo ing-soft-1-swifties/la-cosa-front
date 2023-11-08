@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BoxModel } from "@chakra-ui/utils";
 
-
 export enum PlayerTurnState {
   PLAY_OR_DISCARD = "play_or_discard",
   SELECT_EXCHANGE_CARD = "select_exchange_Card",
@@ -78,6 +77,20 @@ export type GameState = {
   playerData?: PlayerData;
   player_in_turn: string | undefined;
   discardDeckDimensions: BoxModel | null;
+  chat: {
+    messages: ChatMessage[];
+  };
+};
+
+export enum ChatMessageType {
+  PLAYER_MESSAGE = "player_message",
+  GAME_MESSAGE = "game_message",
+}
+
+export type ChatMessage = {
+  type: ChatMessageType;
+  player_id?: number;
+  message: string;
 };
 
 export const initialState: GameState = {
@@ -89,14 +102,62 @@ export const initialState: GameState = {
     maxPlayers: 12,
   },
   status: GameStatus.WAITING,
-  player_in_turn: 'otro2',
+  player_in_turn: "otro2",
   players: [
-    { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: true, on_exchange: false},
-    { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-    { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-    { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-    { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-    { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.DEATH, on_turn: false, on_exchange: false },
+    {
+      name: "Yo",
+      id: 123,
+      position: 0,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+      on_turn: false,
+      on_exchange: false,
+    },
+    {
+      name: "otro1",
+      id: 124,
+      position: 1,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+      on_turn: true,
+      on_exchange: false,
+    },
+    {
+      name: "otro2",
+      id: 125,
+      position: 2,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+      on_turn: false,
+      on_exchange: false,
+    },
+    {
+      name: "otro3",
+      id: 126,
+      position: 3,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+      on_turn: false,
+      on_exchange: false,
+    },
+    {
+      name: "otro4",
+      id: 127,
+      position: 4,
+      in_quarantine: false,
+      status: PlayerStatus.ALIVE,
+      on_turn: false,
+      on_exchange: false,
+    },
+    {
+      name: "otro5",
+      id: 128,
+      position: 5,
+      in_quarantine: false,
+      status: PlayerStatus.DEATH,
+      on_turn: false,
+      on_exchange: false,
+    },
   ],
   playerData: {
     playerID: 123,
@@ -144,7 +205,10 @@ export const initialState: GameState = {
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
   },
-  discardDeckDimensions: null
+  discardDeckDimensions: null,
+  chat: {
+    messages: [],
+  },
 };
 
 export type BackendGameState = {
@@ -184,10 +248,19 @@ export const gameSlice = createSlice({
     setDiscardDeckDimensions(state, action: PayloadAction<BoxModel>) {
       state.discardDeckDimensions = action.payload;
     },
+    addChatMessage(state, action: PayloadAction<ChatMessage>) {
+      state.chat.messages = state.chat.messages.concat(action.payload);
+    },
   },
 });
 
-export const { setGameState, setSelectedCard, selectPlayer, unselectPlayer, setDiscardDeckDimensions   } =
-  gameSlice.actions;
+export const {
+  setGameState,
+  setSelectedCard,
+  selectPlayer,
+  unselectPlayer,
+  setDiscardDeckDimensions,
+  addChatMessage,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;
