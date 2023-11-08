@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { store } from "@/store/store";
-import { setGameState } from "@/store/gameSlice";
+import { ChatMessage, ChatMessageType, resetGameState, setGameState } from "@/store/gameSlice";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import { AddressInfo } from "node:net";
@@ -9,9 +9,18 @@ import { Socket } from "socket.io-client";
 import { io as ioc } from "socket.io-client";
 import { setupGameSocketListeners } from "@/src/business/game/gameAPI/listener";
 import {
+  PLAYER_IN_GAME_DATA_MOCK_1,
+  PLAYER_IN_GAME_DATA_MOCK_2,
   PLAYER_IN_GAME_STATE_MOCK_1,
   TEST_CONNECTION_TOKEN,
 } from "../../constants";
+import {
+  ChatAPIEventType,
+  ChatAPIMessageType,
+  OnPlayerNewMessagePayload,
+  SendPlayerMessagePayload,
+  sendPlayerMessage,
+} from "@/src/business/game/chat";
 
 // Mock Game Socket
 const mockGameSocket = jest.fn();
@@ -56,6 +65,7 @@ describe("Business Game Chat", () => {
     }
 
     // Reseteamos el estado inicial
+    store.dispatch(resetGameState())
     store.dispatch(setGameState(PLAYER_IN_GAME_STATE_MOCK_1.game!));
   });
 
@@ -65,7 +75,57 @@ describe("Business Game Chat", () => {
     clientSocket.disconnect();
   });
 
-  it("WIP", () => {
-    // WIP
+  it("recieves messages", (done) => {
+    const MESSAGE = "Some hardcoded message";
+
+    const payload: OnPlayerNewMessagePayload = {
+      player_id: PLAYER_IN_GAME_DATA_MOCK_2.id,
+      message: MESSAGE,
+    };
+    serverSocket.emit(ChatAPIEventType.ON_PLAYER_NEW_MESSAGE, payload);
+
+    const EXPECTED_MESSAGE: ChatMessage = {
+      type: ChatMessageType.PLAYER_MESSAGE,
+      player_id: payload.player_id,
+      message: payload.message,
+    };
+    clientSocket.once(ChatAPIEventType.ON_PLAYER_NEW_MESSAGE, () => {
+      expect(store.getState().game.chat.messages).toEqual([EXPECTED_MESSAGE]);
+      done();
+    });
+  });
+
+  it("send and recieve message back", (done) => {
+    const MESSAGE = "Some hardcoded message to send";
+    const PLAYER_ID = PLAYER_IN_GAME_DATA_MOCK_1.id;
+
+    // Recibimos el mensaje del cliente y lo reenviamos
+    serverSocket.once(
+      ChatAPIMessageType.SEND_PLAYER_MESSAGE,
+      (payload: SendPlayerMessagePayload) => {
+        // Enviamos el mensaje al jugador de vuelta (de acuerdo a la especificacion)
+        const messagePayload = {
+          player_id: PLAYER_ID,
+          message: payload.message,
+        };
+        serverSocket.emit(
+          ChatAPIEventType.ON_PLAYER_NEW_MESSAGE,
+          messagePayload
+        );
+      }
+    );
+
+    // Send player message to server
+    sendPlayerMessage(MESSAGE);
+
+    const EXPECTED_MESSAGE: ChatMessage = {
+      type: ChatMessageType.PLAYER_MESSAGE,
+      player_id: PLAYER_IN_GAME_DATA_MOCK_1.id,
+      message: MESSAGE,
+    };
+    clientSocket.once(ChatAPIEventType.ON_PLAYER_NEW_MESSAGE, () => {
+      expect(store.getState().game.chat.messages).toEqual([EXPECTED_MESSAGE]);
+      done();
+    });
   });
 });
