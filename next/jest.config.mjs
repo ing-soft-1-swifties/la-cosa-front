@@ -18,6 +18,7 @@ const config = {
       lines: 60,
     },
   },
+  modulePathIgnorePatterns: ["__tests__/constants.tsx", "__tests__/setups.tsx"]
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

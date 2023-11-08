@@ -215,7 +215,7 @@ export type BackendGameState = {
   config: GameConfig;
   status: GameStatus;
   players: GamePlayer[];
-  playerData: PlayerData;
+  playerData?: PlayerData;
   player_in_turn: string | undefined;
 };
 
