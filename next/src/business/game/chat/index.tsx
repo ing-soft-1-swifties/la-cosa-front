@@ -1,7 +1,11 @@
 import { Socket } from "socket.io-client";
 import { gameSocket } from "../gameAPI";
 import { store } from "@/store/store";
-import { ChatMessage, ChatMessageType, addChatMessage } from "@/store/gameSlice";
+import {
+  ChatMessage,
+  ChatMessageType,
+  addChatMessage,
+} from "@/store/gameSlice";
 
 export enum ChatAPIEventType {
   ON_PLAYER_NEW_MESSAGE = "on_player_new_message",
@@ -13,8 +17,11 @@ export enum ChatAPIMessageType {
   SEND_PLAYER_MESSAGE = "send_player_message",
 }
 
+export type SendPlayerMessagePayload = {
+  message: string;
+};
 export function sendPlayerMessage(message: string) {
-  const payload = {
+  const payload: SendPlayerMessagePayload = {
     message: message,
   };
   gameSocket.emit(ChatAPIMessageType.SEND_PLAYER_MESSAGE, payload);
@@ -26,7 +33,7 @@ export function setupChatListeners(gameSocket: Socket) {
   //   gameSocket.on(ChatAPIEventType.ON_GAME_SYSTEM_NEW_MESSAGE, onGameSystemNewMessage);
 }
 
-type OnPlayerNewMessagePayload = {
+export type OnPlayerNewMessagePayload = {
   player_id: number;
   message: string;
 };

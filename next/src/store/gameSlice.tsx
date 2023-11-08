@@ -244,6 +244,7 @@ export const gameSlice = createSlice({
       state.config = initialState.config;
       state.status = initialState.status;
       state.players = initialState.players;
+      state.chat = initialState.chat;
     },
     setDiscardDeckDimensions(state, action: PayloadAction<BoxModel>) {
       state.discardDeckDimensions = action.payload;
@@ -261,6 +262,7 @@ export const {
   unselectPlayer,
   setDiscardDeckDimensions,
   addChatMessage,
+  resetGameState,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
