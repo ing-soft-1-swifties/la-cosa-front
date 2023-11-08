@@ -7,12 +7,13 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
+import { joinPlayerToGame } from "@/src/business/game/gameAPI/manager";
 import { Field, Formik } from "formik";
-import router, { Router } from "next/router";
+import router from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setGameConnectionToken } from "store/userSlice";
 import * as Yup from "yup";
+import { SERVER_API_URL } from "@/src/config";
 
 const formSchema = Yup.object({
   room_id: Yup.number().required("Este campo es requerido"),
@@ -23,39 +24,36 @@ const formSchema = Yup.object({
 });
 
 export default function FormJoinLobby() {
-  const dispatch = useDispatch();
-  const initialRef = React.useRef(null); //esto es para que cuando se abra el modal, el foco vaya al primer input
-  const finalRef = React.useRef(null);
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
 
   return (
     <>
       <Box
         minW="100%"
-        border="4px"
-        borderColor="white"
-        borderRadius="2xl"
-        p={4}
+        // border="4px"
+        // borderColor="white"
+        // borderRadius="2xl"
+        pt={4}
+        pb={6}
+        px={8}
         data-testid="form-join-lobby"
       >
         <Text
           textAlign="center"
-          data-testid=" titulo"
+          data-testid="form-join-lobby_titulo"
           pb={4}
           fontSize="3xl"
           color="white"
         >
-          {" "}
-          Partidas personalizadas
+          Unirse a una partida
         </Text>
 
         <Formik
           initialValues={{ room_id: "", name: "" }}
           onSubmit={async (values) => {
-            console.log(values); //valores del formulario
             setSubmitError(undefined);
             try {
-              const response = await fetch("http://localhost:8000/join", {
+              const response = await fetch(`${SERVER_API_URL}/join`, {
                 method: "POST", //Envia los datos a la api
                 headers: {
                   //le dice al servidor que tipo de datos se estan enviando
@@ -68,10 +66,14 @@ export default function FormJoinLobby() {
               });
               if (response.ok) {
                 const data: { token: string } = await response.json(); //convierte los datos a json
-                console.log("Respuesta del servidor:", data);
-                dispatch(setGameConnectionToken(data.token));
-                console.log(data.token);
-                router.replace("/lobby");
+                joinPlayerToGame(values.name, data.token, router);
+              } else if (response.status == 400) {
+                const data = await response.json(); //obtiene el error
+                console.log(data);
+                if (data.detail === "Duplicate player name") {
+                  // El nombre de jugador está duplicado
+                  setSubmitError("El nombre de jugador ya está en uso.");
+                }
               } else {
                 setSubmitError("Error al conectarse con el servidor.");
               }
@@ -90,7 +92,7 @@ export default function FormJoinLobby() {
                   isInvalid={!!errors.name && touched.name} //hubo error y el campo fue tocado
                 >
                   <FormLabel htmlFor="name" color="white">
-                    Nombre{" "}
+                    Nombre
                   </FormLabel>
                   <Field
                     color="white"
@@ -106,8 +108,7 @@ export default function FormJoinLobby() {
                   isInvalid={!!errors.room_id && touched.room_id} //hubo error y el campo fue tocado
                 >
                   <FormLabel htmlFor="room_id" pt={4} color="white">
-                    {" "}
-                    ID de partida{" "}
+                    ID de partida
                   </FormLabel>
                   <Field
                     color="white"

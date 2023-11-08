@@ -1,17 +1,14 @@
 import { PageWithLayout } from "@/src/pages/_app";
-import { Box, Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 import GreenForestBack from "@/public/home/GreenForestWall.jpg";
-import GameList from "components/layouts/home/GameList";
-import BgImage from "components/utility/BgImage";
-import FormJoinLobby from "components/layouts/home/FormJoinLobby";
-import NewGameModal from "components/modalCrearPartida";
+import GameList from "@/components/layouts/home/GameList";
+import BgImage from "@/components/utility/BgImage";
+import FormJoinLobby from "@/components/layouts/home/FormJoinLobby";
+import NewGameModal from "@/components/modalCrearPartida";
 import { useDisclosure } from "@chakra-ui/react";
 
 const Page: PageWithLayout = () => {
   const disclouseModal = useDisclosure();
-
-  const disclouse = useDisclosure();
   return (
     <Box pos="relative">
       <BgImage
@@ -30,7 +27,7 @@ const Page: PageWithLayout = () => {
               fontWeight="bold"
               textAlign="center"
               color="white"
-              data-testid="titulo"
+              data-testid="home_titulo"
             >
               LA COSA
             </Heading>

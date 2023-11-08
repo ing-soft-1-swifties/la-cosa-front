@@ -1,7 +1,7 @@
 import type { FC, ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import Head from "next/head";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
 import { Provider } from "react-redux";
@@ -14,14 +14,21 @@ type SiteAppProps = {
   children: ReactNode;
 };
 
+const { ToastContainer, toast } = createStandaloneToast(SiteTheme);
+export const StandaloneToast = toast;
+
 export const SiteApp: FC<SiteAppProps> = ({ children }) => {
   return (
     <>
       <Head>
         <title>La Cosa</title>
+        <link rel="shortcut icon" href="../../public/InfectedIcon.png" />
       </Head>
       <Provider store={store}>
-        <ChakraProvider theme={SiteTheme}>{children}</ChakraProvider>
+        <ChakraProvider theme={SiteTheme}>
+          {children}
+          <ToastContainer />
+        </ChakraProvider>
       </Provider>
     </>
   );

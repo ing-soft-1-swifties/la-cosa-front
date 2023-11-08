@@ -7,6 +7,7 @@ import {
   Heading,
   Text,
   Tooltip,
+  useToast,
 } from "@chakra-ui/react";
 import { FC, useState } from "react";
 
@@ -16,10 +17,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import PlayerCard from "@/components/PlayerCard";
 import { GameState } from "@/store/gameSlice";
-import { leaveLobby, startGame } from "@/src/business/game/gameAPI/manager";
+import { leaveLobby, sendStartGame } from "@/src/business/game/gameAPI/manager";
 import { canGameStart } from "@/src/business/game/";
 import { useRouter } from "next/router";
-import useGameSocket from "@/src/hooks/useGameSocket";
+import {
+  buildErrorToastOptions,
+  buildSucessToastOptions,
+} from "@/src/utils/toasts";
 
 const Page: PageWithLayout = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -111,6 +115,19 @@ const Page: PageWithLayout = () => {
                 <Text color="white" fontWeight="bold" fontSize="lg" mb={10}>
                   Jugadores: {game.players.length}
                 </Text>
+                {!isHost && (
+                  <Text
+                    color="white"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    mb={10}
+                    textDecor="underline"
+                    textUnderlineOffset="4px"
+                    textDecorationStyle="double"
+                  >
+                    Esperando a que el host inicie la partida
+                  </Text>
+                )}
                 {isHost && <StartGameButton gameState={game} />}
                 <LeaveLobbyButton />
               </Flex>
@@ -130,26 +147,20 @@ type StartGameButtonProps = {
 
 const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
   const [startLoading, setStartLoading] = useState(false);
-  const router = useRouter();
   const startEnabled = canGameStart(gameState);
-
+  const toast = useToast();
   const onInitHandle = async () => {
     setStartLoading(true);
-    console.log("BEFORE START");
-    startGame()
-      .then(
-        (res) => {
-          console.log("THEN");
-          router.replace("/game");
-        },
-        (reason: any) => {
-          console.log("FUCK");
-          console.log(reason);
-          // TODO! Handle rejection of startGame
-        }
-      )
+    sendStartGame()
+      .catch((reason: any) => {
+        toast(
+          buildErrorToastOptions({
+            title: "Error iniciando partida",
+            description: `${reason}`,
+          })
+        );
+      })
       .finally(() => {
-        console.log("FINALLY");
         setStartLoading(false);
       });
   };
@@ -158,9 +169,10 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
     <Tooltip
       label="No se cumplen los requisitos para iniciar el juego."
       display={startEnabled ? "none" : "auto"}
+      data-testid="lobby_start_button_tooltip"
     >
       <Button
-        data-testid="start-button"
+        data-testid="lobby_start_button"
         isDisabled={!startEnabled}
         isLoading={startLoading}
         onClick={onInitHandle}
@@ -176,15 +188,12 @@ const StartGameButton: FC<StartGameButtonProps> = ({ gameState }) => {
 
 // Boton para salir del Lobby
 const LeaveLobbyButton: FC<{}> = () => {
-  const router = useRouter();
-  const onLeaveHandle = () => {
-    leaveLobby();
-    router.replace("/");
-  };
   return (
     <Button
-      data-testid="leave-button"
-      onClick={onLeaveHandle}
+      data-testid="lobby_leave_button"
+      onClick={() => {
+        leaveLobby();
+      }}
       colorScheme="red"
       size="lg"
     >

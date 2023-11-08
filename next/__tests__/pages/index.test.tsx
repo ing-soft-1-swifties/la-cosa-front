@@ -11,19 +11,20 @@ import { act } from "react-dom/test-utils";
 // Mock Next Router for all tests.
 jest.mock("next/router", () => jest.requireActual("next-router-mock"));
 
-describe("Page HOME", () => {
-  it("has things", () => {
+describe("Page index", () => {
+  it("has things", async () => {
     // Base Lobby Router
     mockRouter.push("/");
-    renderWithProviders(<Home />, {});
+    await act(async () => {
+      renderWithProviders(<Home />, {});
+    });
 
     // Todo el form que luego sera testeado en si
-    const titulo = screen.getByTestId("titulo");
+    const titulo = screen.getByTestId("home_titulo");
     expect(titulo).toHaveTextContent("LA COSA");
 
     // Todo el form que luego sera testeado en si
-    const startButton = screen.getByTestId("form-join-lobby");
-    expect(startButton);
+    screen.getByTestId("form-join-lobby");
 
     // Boton de Crear partida
     const createButton = screen.getByTestId("create-game-btn");
@@ -31,7 +32,16 @@ describe("Page HOME", () => {
     act(() => {
       createButton.click();
     });
-    const modaleCreate = screen.getByTestId("modal-crear");
-    expect(mockRouter.pathname);
+    screen.getByTestId("modal-crear");
+    expect(mockRouter.pathname).toBe("/");
+  });
+
+  it("renders games list", async () => {
+    await act(async () => {
+      renderWithProviders(<Home />, {});
+    });
+
+    // Test que apareza la lista de juegos. Luego se testea el component por su cuenta
+    screen.getByTestId("game-list");
   });
 });
