@@ -1,6 +1,11 @@
 import "@testing-library/jest-dom";
 import { store } from "@/store/store";
-import { ChatMessage, ChatMessageType, resetGameState, setGameState } from "@/store/gameSlice";
+import {
+  ChatMessage,
+  ChatMessageType,
+  resetGameState,
+  setGameState,
+} from "@/store/gameSlice";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import { AddressInfo } from "node:net";
@@ -65,7 +70,7 @@ describe("Business Game Chat", () => {
     }
 
     // Reseteamos el estado inicial
-    store.dispatch(resetGameState())
+    store.dispatch(resetGameState());
     store.dispatch(setGameState(PLAYER_IN_GAME_STATE_MOCK_1.game!));
   });
 
@@ -79,14 +84,14 @@ describe("Business Game Chat", () => {
     const MESSAGE = "Some hardcoded message";
 
     const payload: OnPlayerNewMessagePayload = {
-      player_id: PLAYER_IN_GAME_DATA_MOCK_2.id,
+      player_name: PLAYER_IN_GAME_DATA_MOCK_2.name,
       message: MESSAGE,
     };
     serverSocket.emit(ChatAPIEventType.ON_PLAYER_NEW_MESSAGE, payload);
 
     const EXPECTED_MESSAGE: ChatMessage = {
       type: ChatMessageType.PLAYER_MESSAGE,
-      player_id: payload.player_id,
+      player_name: payload.player_name,
       message: payload.message,
     };
     clientSocket.once(ChatAPIEventType.ON_PLAYER_NEW_MESSAGE, () => {
@@ -97,7 +102,7 @@ describe("Business Game Chat", () => {
 
   it("send and recieve message back", (done) => {
     const MESSAGE = "Some hardcoded message to send";
-    const PLAYER_ID = PLAYER_IN_GAME_DATA_MOCK_1.id;
+    const PLAYER_NAME = PLAYER_IN_GAME_DATA_MOCK_1.name;
 
     // Recibimos el mensaje del cliente y lo reenviamos
     serverSocket.once(
@@ -105,7 +110,7 @@ describe("Business Game Chat", () => {
       (payload: SendPlayerMessagePayload) => {
         // Enviamos el mensaje al jugador de vuelta (de acuerdo a la especificacion)
         const messagePayload = {
-          player_id: PLAYER_ID,
+          player_name: PLAYER_NAME,
           message: payload.message,
         };
         serverSocket.emit(
@@ -120,7 +125,7 @@ describe("Business Game Chat", () => {
 
     const EXPECTED_MESSAGE: ChatMessage = {
       type: ChatMessageType.PLAYER_MESSAGE,
-      player_id: PLAYER_IN_GAME_DATA_MOCK_1.id,
+      player_name: PLAYER_IN_GAME_DATA_MOCK_1.name,
       message: MESSAGE,
     };
     clientSocket.once(ChatAPIEventType.ON_PLAYER_NEW_MESSAGE, () => {

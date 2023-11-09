@@ -16,6 +16,7 @@ import GameEnd from "@/components/layouts/game/GameEnd";
 import { PlayerRole } from "@/store/gameSlice";
 import { Socket } from "socket.io-client";
 import { store } from "@/store/store";
+import ChatBox from "@/components/layouts/game/ChatBox";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
@@ -38,6 +39,8 @@ const Page: PageWithLayout = () => {
             alt: "",
           }}
         />
+
+        <ChatBox />
 
         <Flex flexDir="column" h="100vh" overflow="hidden">
           <Flex flex="1" justify="center" pt="32" pb="10">

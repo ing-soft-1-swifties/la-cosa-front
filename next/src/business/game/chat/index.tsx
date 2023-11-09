@@ -34,13 +34,13 @@ export function setupChatListeners(gameSocket: Socket) {
 }
 
 export type OnPlayerNewMessagePayload = {
-  player_id: number;
+  player_name: string;
   message: string;
 };
 function onPlayerNewMessage(payload: OnPlayerNewMessagePayload) {
   const chatMessage: ChatMessage = {
     type: ChatMessageType.PLAYER_MESSAGE,
-    player_id: payload.player_id,
+    player_name: payload.player_name,
     message: payload.message,
   };
   store.dispatch(addChatMessage(chatMessage));

@@ -89,7 +89,7 @@ export enum ChatMessageType {
 
 export type ChatMessage = {
   type: ChatMessageType;
-  player_id?: number;
+  player_name?: string;
   message: string;
 };
 
