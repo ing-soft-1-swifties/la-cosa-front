@@ -1,0 +1,3 @@
+.base-scrollbar {
+  @apply scrollbar-thin scrollbar-thumb-[#CCC] scrollbar-track-[#202020] scrollbar-thumb-rounded-full scrollbar-track-rounded-full;
+}
