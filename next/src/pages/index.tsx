@@ -6,6 +6,7 @@ import BgImage from "@/components/utility/BgImage";
 import FormJoinLobby from "@/components/layouts/home/FormJoinLobby";
 import NewGameModal from "@/components/modalCrearPartida";
 import { useDisclosure } from "@chakra-ui/react";
+import RULES from '@/public/index/rulesGame.pdf';
 
 const Page: PageWithLayout = () => {
   const disclouseModal = useDisclosure();
@@ -62,6 +63,14 @@ const Page: PageWithLayout = () => {
                     onClick={disclouseModal.onOpen}
                   >
                     Crear Partida
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    colorScheme="blue"
+                    onClick={() => window.open("_next/static/public/index/rulesGame.pdf")}
+                  >
+                    Reglas
                   </Button>
                 </Box>
               </Flex>
