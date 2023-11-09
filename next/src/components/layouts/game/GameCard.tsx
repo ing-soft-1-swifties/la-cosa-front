@@ -109,44 +109,44 @@ const CardsData: CardsDataType = {
   [Card.ANALYSIS]: {
     image: IMG_ANALYSIS,
   },
-  [Card.IM_FINE_HERE]:{
+  [Card.IM_FINE_HERE]: {
     image: IMG_IM_FINE_HERE,
   },
-  [Card.SCARY]:{
-    image:IMG_SCARY ,
+  [Card.SCARY]: {
+    image: IMG_SCARY,
   },
-  [Card.CHANGE_OF_LOCATION]:{
-    image:IMG_CHANGE_OF_LOCATION ,
+  [Card.CHANGE_OF_LOCATION]: {
+    image: IMG_CHANGE_OF_LOCATION,
   },
-  [Card.QUARANTINE]:{
+  [Card.QUARANTINE]: {
     image: IMG_QUARANTINE,
   },
-  [Card.DETERMINATION]:{
-    image:IMG_DETERMINATION ,
+  [Card.DETERMINATION]: {
+    image: IMG_DETERMINATION,
   },
-  [Card.YOU_FAILED]:{
-    image:IMG_YOU_FAILED,
+  [Card.YOU_FAILED]: {
+    image: IMG_YOU_FAILED,
   },
-  [Card.AXE]:{
-    image:IMG_AXE,
+  [Card.AXE]: {
+    image: IMG_AXE,
   },
-  [Card.YOU_BETTER_RUN]:{
-    image:IMG_YOU_BETTER_RUN ,
+  [Card.YOU_BETTER_RUN]: {
+    image: IMG_YOU_BETTER_RUN,
   },
-  [Card.LOCKED_DOOR]:{
-    image:IMG_LOCKED_DOOR ,
+  [Card.LOCKED_DOOR]: {
+    image: IMG_LOCKED_DOOR,
   },
-  [Card.SEDUCTION]:{
-    image:IMG_SEDUCTION ,
+  [Card.SEDUCTION]: {
+    image: IMG_SEDUCTION,
   },
-  [Card.SUSPICION]:{
-    image:IMG_SUSPICION ,
+  [Card.SUSPICION]: {
+    image: IMG_SUSPICION,
   },
-  [Card.WATCH_YOUR_BACKS]:{
-    image:IMG_WATCH_YOUR_BACKS,
+  [Card.WATCH_YOUR_BACKS]: {
+    image: IMG_WATCH_YOUR_BACKS,
   },
-  [Card.WHISKEY]:{
-    image:IMG_WHISKEY,
+  [Card.WHISKEY]: {
+    image: IMG_WHISKEY,
   },
   [Card.UPS]:{
     image:IMG_UPS,
@@ -229,14 +229,19 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
           alt={"Card " + name}
           clipPath="inset(2% 4% 2% 2%)"
         />
-        : <>
+        
+
+
+        :
+        <>
           <Text color='white'>
-            Carta Indefinida: 
+            Carta Indefinida:
           </Text>
           <Text color='white'>
             {name}
           </Text>
-        </>}
+        </>
+      }
     </Box>
   );
 };
