@@ -8,16 +8,18 @@ import {
   ListItem,
   OrderedList,
 } from "@chakra-ui/react";
-import { FC, useMemo, useRef } from "react";
+import { FC, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { ChatMessageType, addChatMessage } from "@/store/gameSlice";
-import { RootState, store } from "@/store/store";
+import { ChatMessageType } from "@/store/gameSlice";
+import { RootState } from "@/store/store";
+import { sendPlayerMessage } from "@/src/business/game/chat";
 
 type ChatBoxProps = {};
 const ChatBox: FC<ChatBoxProps> = () => {
   const { isOpen, onClose, onOpen } = useDisclosure({
     defaultIsOpen: true,
   });
+  const [onChatTab, setOnChatTab] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const allMessages = useSelector(
@@ -30,6 +32,12 @@ const ChatBox: FC<ChatBoxProps> = () => {
     );
   }, [allMessages]);
 
+  const logMessages = useMemo(() => {
+    return allMessages.filter(
+      (chatMessage) => chatMessage.type == ChatMessageType.GAME_MESSAGE
+    );
+  }, [allMessages]);
+
   const handleChatMessageSubmit = () => {
     const element = inputRef.current;
     if (element == null) return;
@@ -38,14 +46,7 @@ const ChatBox: FC<ChatBoxProps> = () => {
     if (chatBoxRef.current != null)
       chatBoxRef.current!.scrollTop = chatBoxRef.current!.scrollHeight;
     if (message == null || message == "" || message.trim() == "") return;
-    // sendPlayerMessage(message);
-    store.dispatch(
-      addChatMessage({
-        type: ChatMessageType.PLAYER_MESSAGE,
-        player_name: "Spername",
-        message: message,
-      })
-    );
+    sendPlayerMessage(message);
   };
 
   return (
@@ -95,6 +96,46 @@ const ChatBox: FC<ChatBoxProps> = () => {
         >
           Cerrar Chat
         </Button>
+        <Flex align="flex-end" justify="flex-end" mr="6">
+          <Button
+            onClick={() => {
+              setOnChatTab(true);
+            }}
+            bg={
+              onChatTab ? "rgba(100, 100, 100, 0.6)" : "rgba(50, 50, 50, 0.6)"
+            }
+            _hover={{
+              bg: "rgba(150, 150, 150, 0.6)",
+            }}
+            borderRadius="none"
+            size="sm"
+            borderTopLeftRadius="lg"
+            color="white"
+            fontWeight="500"
+            px={6}
+          >
+            Chat
+          </Button>
+          <Button
+            onClick={() => {
+              setOnChatTab(false);
+            }}
+            bg={
+              onChatTab ? "rgba(50, 50, 50, 0.6)" : "rgba(100, 100, 100, 0.6)"
+            }
+            _hover={{
+              bg: "rgba(150, 150, 150, 0.6)",
+            }}
+            borderRadius="none"
+            size="sm"
+            borderTopRightRadius="lg"
+            color="white"
+            fontWeight="500"
+            px={6}
+          >
+            Logs
+          </Button>
+        </Flex>
         <Box h="30vh" borderRightRadius="2xl" bg="rgba(100, 100, 100, 0.6)">
           <Flex flexDir="column" h="full">
             <Box
@@ -111,16 +152,27 @@ const ChatBox: FC<ChatBoxProps> = () => {
               mr={4}
             >
               <OrderedList maxW="100%" listStyleType="none" m="0">
-                {chatMessages.map((chatMessage, index) => {
-                  return (
-                    <ListItem key={index} color="rgba(200, 200, 200)">
-                      <Text as="span" color="white" fontWeight="500" mr="1">
-                        {chatMessage.player_name}:
-                      </Text>
-                      {chatMessage.message}
-                    </ListItem>
-                  );
-                })}
+                {onChatTab
+                  ? chatMessages.map((chatMessage, index) => {
+                      return (
+                        <ListItem key={index} color="rgba(200, 200, 200)">
+                          <ChatMessageLine
+                            sender={chatMessage.player_name ?? "Error"}
+                            message={chatMessage.message}
+                          />
+                        </ListItem>
+                      );
+                    })
+                  : logMessages.map((chatMessage, index) => {
+                      return (
+                        <ListItem key={index} color="rgba(200, 200, 200)">
+                          <ChatMessageLine
+                            sender="Juego"
+                            message={chatMessage.message}
+                          />
+                        </ListItem>
+                      );
+                    })}
               </OrderedList>
             </Box>
             <form
@@ -147,6 +199,30 @@ const ChatBox: FC<ChatBoxProps> = () => {
           </Flex>
         </Box>
       </Box>
+    </>
+  );
+};
+
+type ChatMessageLineProps = {
+  sender?: string;
+  message: string;
+};
+const ChatMessageLine: FC<ChatMessageLineProps> = ({ sender, message }) => {
+  return (
+    <>
+      {sender && (
+        <Text
+          as="span"
+          color="white"
+          fontWeight="500"
+          mr="1"
+          textDecor="underline"
+          textUnderlineOffset="2px"
+        >
+          {sender}:
+        </Text>
+      )}
+      {message}
     </>
   );
 };
