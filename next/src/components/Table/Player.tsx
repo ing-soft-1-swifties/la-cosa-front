@@ -7,6 +7,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { motion } from "framer-motion";
 import { FramerMotionBox } from "@/src/utils/animations";
+import ICON_PLAYER_1 from "@/public/game/IconPlayer1.png"
+import MASK_ICON1 from '@/public/game/ToxicMask.png'
+import MASK_ICON from '@/public/game/ToxicMask.webp'
+import DANGER_ICON from '@/public/game/DangerCuarentine.webp'
 
 const Player = ({
   player,
@@ -45,7 +49,7 @@ const Player = ({
           zIndex={10}
 
           key="diamondTurn"
-          animate={{ y: [10,0,10] }}
+          animate={{ y: [10, 0, 10] }}
           initial={{ y: 0 }}
           transition={{
             duration: 2,
@@ -55,19 +59,45 @@ const Player = ({
           }}
         >
           <Image
-            
             w="auto"
             h="30px"
             data-testid={`PLAYER_DIAMOND_IMG_`}
+            // src={DIAMOND_IMG}
             src={DIAMOND_IMG}
             alt="PLAYER_DIAMOND"
           />
         </FramerMotionBox>
         <Avatar
-          borderWidth="4px"
+          borderWidth="3px"
+          size='lg'
           borderColor={selected ? "green.500" : "transparent"}
+          src={ICON_PLAYER_1.src}
           name={player.name}
         />
+
+        <Image
+          position="absolute"
+          zIndex={10}
+          w="700px"
+          h="auto"
+          bottom='25px'
+          src={MASK_ICON}
+          alt="MASK_ICON"
+          display={player.on_turn ? "block" : "none"}
+        />
+
+        <Image
+          position="absolute"
+          zIndex={10}
+          w="35px"
+          h="auto"
+          left='35px'
+          bottom='60px'
+          src={DANGER_ICON}
+          alt="DANGER_ICON"
+          display={player.on_turn ? "block" : "none"}
+        />
+
         <Text
           userSelect="none"
           color={selected ? "green.500" : "white"}

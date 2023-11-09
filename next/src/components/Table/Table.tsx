@@ -10,6 +10,7 @@ import {
 import Player from "./Player";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
+import DOOR_ROTTEN from '@/public/game/DoorRotten.png'
 
 type TableProps = BoxProps & {};
 

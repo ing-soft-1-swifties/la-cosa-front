@@ -1,5 +1,5 @@
 import { Box, BoxProps } from "@chakra-ui/react";
-import Image, { ImageProps } from "next/image";
+import Image, { ImageProps } from "next/image"; 
 import { CSSProperties, FC } from "react";
 
 type BgImageProps = BoxProps & {
