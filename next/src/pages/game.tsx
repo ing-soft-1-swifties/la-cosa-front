@@ -52,7 +52,7 @@ const Page: PageWithLayout = () => {
             </Box>
           </Flex>
         </Flex>
-        <Box pos="absolute" right="0" top="0">
+        {/* <Box pos="absolute" right="0" top="0">
           <Text
             color="white"
             bg={player.on_turn ? "green" : "yellow.600"}
@@ -65,14 +65,14 @@ const Page: PageWithLayout = () => {
           >
             {player.on_turn ? "Es tu Turno" : "Esperando a otros jugadores..."}
           </Text>
-        </Box>
+        </Box> */}
       </Box>
     </>
   );
 };
 
 Page.authConfig = {
-  gameAuthProtected: false,
+  gameAuthProtected: true,
 };
 
 function useGameNotifications(gameSocket: Socket, toast: any) {

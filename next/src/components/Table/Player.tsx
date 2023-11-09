@@ -90,7 +90,7 @@ const Player = ({
         <Image
           position="absolute"
           zIndex={10}
-          w="700px"
+          w="70px"
           h="auto"
           bottom='25px'
           src={MASK_ICON}
@@ -100,10 +100,10 @@ const Player = ({
 
         <Image
           position="absolute"
-          zIndex={10}
+          zIndex={100}
           w="35px"
           h="auto"
-          left='35px'
+          left='calc(50% + 10px)'
           bottom='60px'
           src={DANGER_ICON}
           alt="DANGER_ICON"
