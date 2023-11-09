@@ -75,7 +75,7 @@ const Page: PageWithLayout = () => {
 };
 
 Page.authConfig = {
-  gameAuthProtected: false,
+  gameAuthProtected: true,
 };
 
 function useGameNotifications(gameSocket: Socket, toast: any) {
