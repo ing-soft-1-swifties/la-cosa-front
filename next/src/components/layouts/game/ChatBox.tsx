@@ -154,39 +154,41 @@ const ChatBox: FC<ChatBoxProps> = () => {
                       })}
                 </OrderedList>
               </Box>
-              <form
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  handleChatMessageSubmit();
-                }}
-                action="/"
-              >
-                <Flex
-                  pb="2"
-                  px="4"
-                  align="center"
-                  justify="center"
-                  columnGap="4"
+              {onChatTab && (
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleChatMessageSubmit();
+                  }}
+                  action="/"
                 >
-                  <Input
-                    ref={inputRef}
-                    flex="1"
-                    height="2rem"
-                    flexBasis="2rem"
-                    type="text"
-                    color="white"
-                    data-testid="chatbox_input"
-                  />
-                  <Button
-                    type="submit"
-                    size="sm"
-                    bg="white"
-                    data-testid="chatbox_send_message_button"
+                  <Flex
+                    pb="2"
+                    px="4"
+                    align="center"
+                    justify="center"
+                    columnGap="4"
                   >
-                    Enviar
-                  </Button>
-                </Flex>
-              </form>
+                    <Input
+                      ref={inputRef}
+                      flex="1"
+                      height="2rem"
+                      flexBasis="2rem"
+                      type="text"
+                      color="white"
+                      data-testid="chatbox_input"
+                    />
+                    <Button
+                      type="submit"
+                      size="sm"
+                      bg="white"
+                      data-testid="chatbox_send_message_button"
+                    >
+                      Enviar
+                    </Button>
+                  </Flex>
+                </form>
+              )}
             </Flex>
           </Box>
         </Box>
