@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BoxModel } from "@chakra-ui/utils";
+import { G } from "msw/lib/glossary-de6278a9";
+import GameCard from "components/layouts/game/GameCard";
+import { GameStateData } from "business/game/gameAPI/listener";
 
 export enum PlayerTurnState {
   PLAY_OR_DISCARD = "play_or_discard",
@@ -87,6 +90,7 @@ export type GameState = {
         card_name: string;
       }
     | undefined;
+  cardsToShow: Card[] | undefined;
 };
 
 export enum ChatMessageType {
@@ -98,6 +102,18 @@ export type ChatMessage = {
   type: ChatMessageType;
   player_name?: string;
   message: string;
+};
+
+export type OnPlayedCardData = {
+  gameState: GameStateData;
+  card_id: number;
+  card_name: string;
+  card_options: any;
+  player_name: string;
+  effects: {
+    player: string;
+    cards: Card[];
+  };
 };
 
 export const initialState: GameState = {
@@ -217,6 +233,40 @@ export const initialState: GameState = {
     messages: [],
   },
   lastPlayedCard: undefined,
+  cardsToShow: [
+    {
+      id: 1,
+      name: "Lanzallamas",
+      type: CardTypes.AWAY,
+      subType: CardSubTypes.ACTION,
+      needTarget: true,
+      targetAdjacentOnly: true,
+    },
+    {
+      id: 2,
+      name: "Infectado",
+      type: CardTypes.AWAY,
+      subType: CardSubTypes.ACTION,
+      needTarget: false,
+      targetAdjacentOnly: false,
+    },
+    {
+      id: 3,
+      name: "¡Nada de barbacoas!",
+      type: CardTypes.AWAY,
+      subType: CardSubTypes.ACTION,
+      needTarget: true,
+      targetAdjacentOnly: false,
+    },
+    {
+      id: 4,
+      name: "¡No, gracias!",
+      type: CardTypes.AWAY,
+      subType: CardSubTypes.ACTION,
+      needTarget: true,
+      targetAdjacentOnly: true,
+    },
+  ],
 };
 
 export type BackendGameState = {
@@ -266,6 +316,9 @@ export const gameSlice = createSlice({
     ) {
       state.lastPlayedCard = action.payload;
     },
+    setCardsToShow(state, action: PayloadAction<Card[] | undefined>) {
+      state.cardsToShow = action.payload;
+    },
   },
 });
 
@@ -278,6 +331,7 @@ export const {
   addChatMessage,
   resetGameState,
   setLastPlayedCard,
+  setCardsToShow,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

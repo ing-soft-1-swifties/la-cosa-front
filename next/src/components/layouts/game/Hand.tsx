@@ -14,20 +14,20 @@ type HandProps = {
 };
 
 const Hand: FC<HandProps> = ({ card_height }) => {
-  const player = usePlayerGameState();
-  const sortedCards = useMemo(
+  const player = usePlayerGameState(); // uso el hook para obtener el estado del jugador
+  const sortedCards = useMemo( // ordeno las cartas del jugador
     () => [...player.cards].sort((c1, c2) => c1.id - c2.id),
     [player.cards]
   );
 
-  if (player.status == PlayerStatus.DEATH) return null;
+  if (player.status == PlayerStatus.DEATH) return null; // si el jugador esta muerto no muestro la mano
 
   return (
-    <Flex justify="center" h="100%" columnGap={10}>
-      <AnimatePresence mode="popLayout">
-        {sortedCards.map(({ id, name }) => {
+    <Flex justify="center" h="100%" columnGap={10}> //
+      <AnimatePresence mode="popLayout"> // animacion de entrada y salida de las cartas
+        {sortedCards.map(({ id, name }) => { // mapeo las cartas del jugador
           return (
-            <AnimatedGameCard key={id} {...{ id, name, height: card_height }} />
+            <AnimatedGameCard key={id} {...{ id, name, height: card_height }} /> // muestro la carta
           );
         })}
       </AnimatePresence>

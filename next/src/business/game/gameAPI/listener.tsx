@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { GameState, setGameState, setLastPlayedCard } from "@/store/gameSlice";
+import { GameState, setGameState, setLastPlayedCard, OnPlayedCardData } from "@/store/gameSlice";
 import { store } from "@/store/store";
 import { beginGame, cancelGame, CancelGameReason } from "./manager";
 import { StandaloneToast } from "@/src/pages/_app";
@@ -35,13 +35,13 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_ROOM_START_GAME, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_TURN, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, updateGameState);
-  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, updateGameState);
+  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, listenerOnPlayedCard);
   gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD, updateGameState);
   gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_DEATH, updateGameState);
-  // gameSocket.on(EventType.ON_GAME_END, updateGameState);
+ gameSocket.on(EventType.ON_GAME_END, updateGameState);
 
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
   gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
@@ -92,6 +92,17 @@ function onGameDiscardCard() {
 export type GameStateData = {
   gameState: GameState;
 };
+
+
+function listenerOnPlayedCard(data: OnPlayedCardData){
+  updateGameState(data.gameState);
+  setCardShow(data.effects.cards);
+
+  //  temporizador de 5 segundos
+  setTimeout(() => {
+    setCardShow([]); //no es undi
+  }, 5000); 
+}
 
 function calculateNewGameState(data: GameStateData) {
   const newState: any = {
@@ -164,3 +175,7 @@ const onGameSocketDisconnect = (reason: SocketDisconnectReason) => {
     cancelGame(CancelGameReason.DISCONNECTION);
   }
 };
+function setCardShow(cards: import("@/store/gameSlice").Card[]) {
+  throw new Error("Function not implemented.");
+}
+
