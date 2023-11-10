@@ -34,7 +34,6 @@ const Hand: FC<HandProps> = ({ card_height }) => {
     </Flex>
   );
 };
-
 type AnimatedGameCardProps = {
   id: number;
   name: string;

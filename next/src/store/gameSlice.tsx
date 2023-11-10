@@ -91,8 +91,8 @@ export const initialState: GameState = {
   status: GameStatus.WAITING,
   player_in_turn: 'otro2',
   players: [
-    { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false},
-    { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: true, on_exchange: false },
+    { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: true, on_exchange: false},
+    { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
     { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
     { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
     { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
@@ -129,9 +129,9 @@ export const initialState: GameState = {
         id: 4,
         name: "¡No, gracias!",
         type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: true,
-        targetAdjacentOnly: true,
+        subType: CardSubTypes.DEFENSE,
+        needTarget: false,
+        targetAdjacentOnly: false,
       },
       // {
       //   id: 5,
