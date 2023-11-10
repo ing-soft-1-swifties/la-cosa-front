@@ -19,7 +19,8 @@ type ModalShowCardProps = {}
 const ModalShowCards: FC<ModalShowCardProps> = () => {
   const gameState = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch()
-  const cardsToShow = gameState.cardsToShow;
+  const cardsToShow = gameState.dataCardPlayed.cardsToShow;
+  const player = gameState.dataCardPlayed.player;
 
 
   const sortedCards = useMemo(
@@ -45,7 +46,7 @@ const ModalShowCards: FC<ModalShowCardProps> = () => {
         <ModalContent maxW="800px" maxH="600px" bg="rgba(0, 0, 0, 0.8)" >
           <ModalCloseButton color="white" />
           <ModalBody>
-          <Heading textAlign='center' mb = "15" color="white">El jugador mostro su carta</Heading> {/* Title */}
+          <Heading textAlign='center' mb = "15" color="white">El jugador {player} te mostro sus carta</Heading> {/* Title */}
             <SimpleGrid columns={4} spacing={4}>  
 
               {sortedCards.map(({ id, name }) => (

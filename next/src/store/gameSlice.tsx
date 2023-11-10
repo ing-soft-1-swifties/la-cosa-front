@@ -90,7 +90,12 @@ export type GameState = {
         card_name: string;
       }
     | undefined;
+  dataCardPlayed: DataCardPlayed;
+};
+
+export type DataCardPlayed = {
   cardsToShow: Card[] | undefined;
+  player: string | undefined;
 };
 
 export enum ChatMessageType {
@@ -112,7 +117,7 @@ export type OnPlayedCardData = {
   player_name: string;
   effects: {
     player: string;
-    cards: Card[];
+    cardsToShow: Card[];
   };
 };
 
@@ -233,40 +238,43 @@ export const initialState: GameState = {
     messages: [],
   },
   lastPlayedCard: undefined,
-  cardsToShow: [
-    {
-      id: 1,
-      name: "Lanzallamas",
-      type: CardTypes.AWAY,
-      subType: CardSubTypes.ACTION,
-      needTarget: true,
-      targetAdjacentOnly: true,
-    },
-    {
-      id: 2,
-      name: "Infectado",
-      type: CardTypes.AWAY,
-      subType: CardSubTypes.ACTION,
-      needTarget: false,
-      targetAdjacentOnly: false,
-    },
-    {
-      id: 3,
-      name: "¡Nada de barbacoas!",
-      type: CardTypes.AWAY,
-      subType: CardSubTypes.ACTION,
-      needTarget: true,
-      targetAdjacentOnly: false,
-    },
-    {
-      id: 4,
-      name: "¡No, gracias!",
-      type: CardTypes.AWAY,
-      subType: CardSubTypes.ACTION,
-      needTarget: true,
-      targetAdjacentOnly: true,
-    },
-  ],
+  dataCardPlayed: {
+    player: "pepe",
+    cardsToShow: [
+      {
+        id: 1,
+        name: "Lanzallamas",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+        needTarget: true,
+        targetAdjacentOnly: true,
+      },
+      {
+        id: 2,
+        name: "Infectado",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+        needTarget: false,
+        targetAdjacentOnly: false,
+      },
+      {
+        id: 3,
+        name: "¡Nada de barbacoas!",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+        needTarget: true,
+        targetAdjacentOnly: false,
+      },
+      {
+        id: 4,
+        name: "¡No, gracias!",
+        type: CardTypes.AWAY,
+        subType: CardSubTypes.ACTION,
+        needTarget: true,
+        targetAdjacentOnly: true,
+      },
+    ],
+  },
 };
 
 export type BackendGameState = {
@@ -316,8 +324,9 @@ export const gameSlice = createSlice({
     ) {
       state.lastPlayedCard = action.payload;
     },
-    setCardsToShow(state, action: PayloadAction<Card[] | undefined>) {
-      state.cardsToShow = action.payload;
+    setCardsToShow(state, action: PayloadAction<DataCardPlayed>) {
+      state.dataCardPlayed.cardsToShow = action.payload.cardsToShow;
+      state.dataCardPlayed.player = action.payload.player;
     },
   },
 });

@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { GameState, setGameState, setLastPlayedCard, OnPlayedCardData } from "@/store/gameSlice";
+import { GameState, setGameState, setLastPlayedCard, setCardsToShow, OnPlayedCardData } from "@/store/gameSlice";
 import { store } from "@/store/store";
 import { beginGame, cancelGame, CancelGameReason } from "./manager";
 import { StandaloneToast } from "@/src/pages/_app";
@@ -96,11 +96,11 @@ export type GameStateData = {
 
 function listenerOnPlayedCard(data: OnPlayedCardData){
   updateGameState(data.gameState);
-  setCardShow(data.effects.cards);
+  setCardsToShow(data.effects);
 
   //  temporizador de 5 segundos
   setTimeout(() => {
-    setCardShow([]); //no es undi
+    setCardsToShow({cardsToShow:[],player:""}); //no es undi
   }, 5000); 
 }
 
@@ -175,7 +175,4 @@ const onGameSocketDisconnect = (reason: SocketDisconnectReason) => {
     cancelGame(CancelGameReason.DISCONNECTION);
   }
 };
-function setCardShow(cards: import("@/store/gameSlice").Card[]) {
-  throw new Error("Function not implemented.");
-}
 
