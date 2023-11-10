@@ -1,5 +1,5 @@
 import { Box, BoxProps, Text } from "@chakra-ui/react";
-import { } from "path";
+import {} from "path";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import IMG_INFECTED from "@/public/cards/Infectado.png";
@@ -10,9 +10,9 @@ import IMG_THETHING from "@/public/cards/LaCosa.png";
 import IMG_ANALYSIS from "@/public/cards/Analisis.png";
 import IMG_IM_FINE_HERE from "@/public/cards/AquiEstoyBien.png";
 import IMG_SCARY from "@/public/cards/Aterrador.png";
-import IMG_CHANGE_OF_LOCATION from "@/public/cards/CambioDeLugar.png"
-import IMG_QUARANTINE from "@/public/cards/Cuarentena.png"
-import IMG_DETERMINATION from "@/public/cards/Determinacion.png"
+import IMG_CHANGE_OF_LOCATION from "@/public/cards/CambioDeLugar.png";
+import IMG_QUARANTINE from "@/public/cards/Cuarentena.png";
+import IMG_DETERMINATION from "@/public/cards/Determinacion.png";
 import IMG_YOU_FAILED from "@/public/cards/Fallaste.png";
 import IMG_AXE from "@/public/cards/Hacha.png";
 import IMG_YOU_BETTER_RUN from "@/public/cards/MasValeQueCorras.png";
@@ -27,18 +27,13 @@ import IMG_HERE_IS_THE_PARY from "@/public/cards/EsAquiEsLaFiesta.png";
 import IMG_WE_CANT_NOT_BE_FRIENDS from "@/public/cards/NoPodemosSerAmigos.png";
 import IMG_FORGETFUL from "@/public/cards/Olvidadizo.png";
 import IMG_LET_IT_STAY_BETWEEN_US from "@/public/cards/QueQuedeEntreNosotros.png";
-import IMG_REVELATIONS from  "@/public/cards/Revelaciones.png";
+import IMG_REVELATIONS from "@/public/cards/Revelaciones.png";
 import IMG_THREE_FOUR from "@/public/cards/TresCuatro.png";
 import IMG_ONE_TWO from "@/public/cards/UnoDos.png";
 import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
-
-type CardProps = BoxProps & {
-  card_id: number;
-  name: string;
-};
 
 export enum Card {
   FLAMETHROWER = "Lanzallamas",
@@ -60,22 +55,16 @@ export enum Card {
   SUSPICION = "Sospecha",
   WATCH_YOUR_BACKS = "Vigila tus espaldas",
   WHISKEY = "Whisky",
-  UPS ="¡Ups!",
-  BLIND_DATE ="Cita a Ciegas",
+  UPS = "¡Ups!",
+  BLIND_DATE = "Cita a Ciegas",
   HERE_IS_THE_PARY = "Es Aqui La Fiesta",
   WE_CANT_NOT_BE_FRIENDS = "No Podemos Ser Amigos",
   FORGETFUL = "Olvidadizo",
   LET_IT_STAY_BETWEEN_US = "Que Quede Entre Nosotros",
-  REVELATIONS ="Revelaciones",
-  THREE_FOUR ="Tres Cuatro",
+  REVELATIONS = "Revelaciones",
+  THREE_FOUR = "Tres Cuatro",
   ONE_TWO = "Uno Dos",
-
-
-
-
-};
-
-
+}
 
 let ReverseCard = new Map<string, keyof typeof Card>();
 Object.keys(Card).forEach((card) => {
@@ -148,40 +137,47 @@ const CardsData: CardsDataType = {
   [Card.WHISKEY]: {
     image: IMG_WHISKEY,
   },
-  [Card.UPS]:{
-    image:IMG_UPS,
+  [Card.UPS]: {
+    image: IMG_UPS,
   },
-  [Card.BLIND_DATE]:{
-    image:IMG_BLIND_DATE,
+  [Card.BLIND_DATE]: {
+    image: IMG_BLIND_DATE,
   },
-  [Card.HERE_IS_THE_PARY]:{
-    image:IMG_HERE_IS_THE_PARY,
+  [Card.HERE_IS_THE_PARY]: {
+    image: IMG_HERE_IS_THE_PARY,
   },
-  [Card.WE_CANT_NOT_BE_FRIENDS]:{
-    image:IMG_WE_CANT_NOT_BE_FRIENDS,
+  [Card.WE_CANT_NOT_BE_FRIENDS]: {
+    image: IMG_WE_CANT_NOT_BE_FRIENDS,
   },
-  [Card.FORGETFUL]:{
-    image:IMG_FORGETFUL,
+  [Card.FORGETFUL]: {
+    image: IMG_FORGETFUL,
   },
-  [Card.LET_IT_STAY_BETWEEN_US]:{
-    image:IMG_LET_IT_STAY_BETWEEN_US,
+  [Card.LET_IT_STAY_BETWEEN_US]: {
+    image: IMG_LET_IT_STAY_BETWEEN_US,
   },
-  [Card.REVELATIONS]:{
-    image:IMG_REVELATIONS,
+  [Card.REVELATIONS]: {
+    image: IMG_REVELATIONS,
   },
-  [Card.THREE_FOUR]:{
-    image:IMG_THREE_FOUR,
+  [Card.THREE_FOUR]: {
+    image: IMG_THREE_FOUR,
   },
-  [Card.ONE_TWO]:{
-    image:IMG_ONE_TWO,
+  [Card.ONE_TWO]: {
+    image: IMG_ONE_TWO,
   },
-
-
 };
 
+type CardProps = BoxProps & {
+  card_id: number;
+  name: string;
+  shouldSelect?: boolean;
+};
 
-
-const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
+const GameCard: FC<CardProps> = ({
+  card_id: id,
+  name,
+  shouldSelect = false,
+  ...props
+}) => {
   const player = usePlayerGameState();
   const dispatch = useDispatch();
 
@@ -189,7 +185,8 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
   // var IMG_LOADED = false;
   var cardData = undefined;
   if (card_key == null) {
-  } else { //sino se me rompe el linter
+  } else {
+    //sino se me rompe el linter
     const card = Card[card_key];
     cardData = CardsData[card];
     // IMG_LOADED = true;
@@ -198,19 +195,20 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
   return (
     <Box
       onClick={() => {
-        dispatch(
-          setSelectedCard(player.selections.card?.id !== id ? id : undefined)
-        );
+        if (shouldSelect)
+          dispatch(
+            setSelectedCard(player.selections.card?.id !== id ? id : undefined)
+          );
       }}
       borderWidth="4px"
       borderRadius="lg"
       backgroundColor="black"
-      minH='full'
+      minH="full"
       h="full"
       w="auto"
       minW="auto"
       data-testid={`GAME_CARD_${id}`}
-      bgColor='black'
+      bgColor="black"
       borderColor={player.selections.card?.id == id ? "green.500" : "black"}
       cursor="pointer"
       {...props}
@@ -220,7 +218,7 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
       }}
       transitionDuration="300ms"
     >
-      {cardData !== undefined ?
+      {cardData !== undefined ? (
         <Image
           w="auto"
           h="full"
@@ -229,16 +227,12 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
           alt={"Card " + name}
           clipPath="inset(2% 4% 2% 2%)"
         />
-        :
+      ) : (
         <>
-          <Text color='white'>
-            Carta Indefinida:
-          </Text>
-          <Text color='white'>
-            {name}
-          </Text>
+          <Text color="white">Carta Indefinida:</Text>
+          <Text color="white">{name}</Text>
         </>
-      }
+      )}
     </Box>
   );
 };
