@@ -95,9 +95,9 @@ export type GameState = {
 };
 
 export type DataCardPlayed = {
-  cardsToShow: Card[] | undefined;
   player: string | undefined;
   title: string | undefined
+  cardsToShow: Card[] | undefined;
 };
 
 export enum ChatMessageType {
