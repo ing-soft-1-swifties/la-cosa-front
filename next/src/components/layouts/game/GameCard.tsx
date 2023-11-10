@@ -21,7 +21,15 @@ import IMG_SEDUCTION from "@/public/cards/Seduccion.png";
 import IMG_SUSPICION from "@/public/cards/Sospecha.png";
 import IMG_WATCH_YOUR_BACKS from "@/public/cards/VigilaTusEspaldas.png";
 import IMG_WHISKEY from "@/public/cards/Whisky.png";
-
+import IMG_UPS from "@/public/cards/¡Ups!.png";
+import IMG_BLIND_DATE from "@/public/cards/CitaCiegas.png";
+import IMG_HERE_IS_THE_PARY from "@/public/cards/EsAquiEsLaFiesta?.png";
+import IMG_WE_CANT_NOT_BE_FRIENDS from "@/public/cards/NoPodemosSerAmigos.png";
+import IMG_FORGETFUL from "@/public/cards/Olvidadizo.png";
+import IMG_LET_IT_STAY_BETWEEN_US from "@/public/cards/QueQuedeEntreNosotros.png";
+import IMG_REVELATIONS from  "@/public/cards/Revelaciones.png";
+import IMG_THREE_FOUR from "@/public/cards/TresCuatro.png";
+import IMG_ONE_TWO from "@/public/cards/UnoDos.png";
 import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
@@ -52,6 +60,19 @@ enum Card {
   SUSPICION = "Sospecha",
   WATCH_YOUR_BACKS = "Vigila tus espaldas",
   WHISKEY = "Whisky",
+  UPS ="¡Ups!",
+  BLIND_DATE ="Cita a Ciegas",
+  HERE_IS_THE_PARY = "Es Aqui La Fiesta",
+  WE_CANT_NOT_BE_FRIENDS = "No Podemos Ser Amigos",
+  FORGETFUL = "Olvidadizo",
+  LET_IT_STAY_BETWEEN_US = "Que Quede Entre Nosotros",
+  REVELATIONS ="Revelaciones",
+  THREE_FOUR ="Tres Cuatro",
+  ONE_TWO = "Uno Dos",
+
+
+
+
 };
 
 
@@ -127,7 +148,38 @@ const CardsData: CardsDataType = {
   [Card.WHISKEY]:{
     image:IMG_WHISKEY,
   },
+  [Card.UPS]:{
+    image:IMG_UPS,
+  },
+  [Card.BLIND_DATE]:{
+    image:IMG_BLIND_DATE,
+  },
+  [Card.HERE_IS_THE_PARY]:{
+    image:IMG_HERE_IS_THE_PARY,
+  },
+  [Card.WE_CANT_NOT_BE_FRIENDS]:{
+    image:IMG_WE_CANT_NOT_BE_FRIENDS,
+  },
+  [Card.FORGETFUL]:{
+    image:IMG_FORGETFUL,
+  },
+  [Card.LET_IT_STAY_BETWEEN_US]:{
+    image:IMG_LET_IT_STAY_BETWEEN_US,
+  },
+  [Card.REVELATIONS]:{
+    image:IMG_REVELATIONS,
+  },
+  [Card.THREE_FOUR]:{
+    image:IMG_THREE_FOUR,
+  },
+  [Card.ONE_TWO]:{
+    image:IMG_ONE_TWO,
+  },
+
+
 };
+
+
 
 const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
   const player = usePlayerGameState();
