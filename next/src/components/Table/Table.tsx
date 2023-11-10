@@ -11,7 +11,7 @@ import Player from "./Player";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
 import DOOR_ROTTEN from "@/public/game/DoorRotten.png";
-import GameCard from "@/components/layouts/game/GameCard";
+import GameCard, { Card } from "@/components/layouts/game/GameCard";
 
 type TableProps = BoxProps & {};
 
@@ -138,7 +138,6 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
-  if (lastPlayedCard == null) return <></>;
   return (
     <Flex
       flexDir="column"
@@ -148,19 +147,25 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
       translateY="0px"
     >
       <Box h="11rem" mb="4" w="max-content">
-        <GameCard
-          card_id={lastPlayedCard.card_id}
-          name={lastPlayedCard.card_name}
-          shouldSelect={false}
-        />
+        {lastPlayedCard == null ? (
+          <GameCard card_id={0} name={Card.AWAY_BACK} shouldSelect={false} />
+        ) : (
+          <GameCard
+            card_id={lastPlayedCard.card_id}
+            name={lastPlayedCard.card_name}
+            shouldSelect={false}
+          />
+        )}
       </Box>
-      <Text color="white" fontWeight="bold" textAlign="center">
-        Ultima Carta Jugada Por:
-        <br />
-        <Text as="span" textDecor="underline" textUnderlineOffset="2px">
-          {lastPlayedCard.player_name}
+      {lastPlayedCard != null && (
+        <Text color="white" fontWeight="bold" textAlign="center">
+          Ultima Carta Jugada Por:
+          <br />
+          <Text as="span" textDecor="underline" textUnderlineOffset="2px">
+            {lastPlayedCard.player_name}
+          </Text>
         </Text>
-      </Text>
+      )}
     </Flex>
   );
 };
