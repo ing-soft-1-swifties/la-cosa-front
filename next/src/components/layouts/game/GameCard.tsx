@@ -21,7 +21,7 @@ import IMG_SEDUCTION from "@/public/cards/Seduccion.png";
 import IMG_SUSPICION from "@/public/cards/Sospecha.png";
 import IMG_WATCH_YOUR_BACKS from "@/public/cards/VigilaTusEspaldas.png";
 import IMG_WHISKEY from "@/public/cards/Whisky.png";
-import IMG_UPS from "@/public/cards/¡Ups!.png";
+import IMG_UPS from "@/public/cards/Ups.png";
 import IMG_BLIND_DATE from "@/public/cards/CitaCiegas.png";
 import IMG_HERE_IS_THE_PARY from "@/public/cards/EsAquiEsLaFiesta?.png";
 import IMG_WE_CANT_NOT_BE_FRIENDS from "@/public/cards/NoPodemosSerAmigos.png";
