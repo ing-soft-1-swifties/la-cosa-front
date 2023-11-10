@@ -18,6 +18,7 @@ import { Socket } from "socket.io-client";
 import { store } from "@/store/store";
 import ChatBox from "@/components/layouts/game/ChatBox";
 import { useDispatch } from "react-redux";
+import ModalShowCards from "@/components/layouts/game/ModalShowCards";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
@@ -31,6 +32,7 @@ const Page: PageWithLayout = () => {
   return (
     <>
       <GameEnd />
+      <ModalShowCards/>
       <Box pos="relative">
         {/* Imagen de fondo del Lobby */}
         <BgImage

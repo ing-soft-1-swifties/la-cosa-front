@@ -7,6 +7,7 @@ import {
     ModalBody,
     ModalFooter,
     Button,
+    Heading,
   } from "@chakra-ui/react";
   import { FC, useMemo } from "react";
   import GameCard from "@/components/layouts/game/GameCard";
@@ -41,10 +42,12 @@ const ModalShowCards: FC<ModalShowCardProps> = () => {
         motionPreset="slideInBottom"
       >
         <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
+        <ModalContent maxW="800px" maxH="600px" bg="rgba(0, 0, 0, 0.8)" >
+          <ModalCloseButton color="white" />
           <ModalBody>
+          <Heading textAlign='center' mb = "15" color="white">EL JUGADOR MOSTRO SU CARTA</Heading> {/* Title */}
             <SimpleGrid columns={4} spacing={4}>  
+
               {sortedCards.map(({ id, name }) => (
               <GameCard
               alignSelf="stretch"
@@ -56,9 +59,7 @@ const ModalShowCards: FC<ModalShowCardProps> = () => {
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onModalClose}>
-              Close
-            </Button>
+           
           </ModalFooter>
         </ModalContent>
       </Modal>
