@@ -49,7 +49,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
           id: 2,
@@ -57,7 +57,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
           id: 3,
@@ -65,7 +65,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: true
+          targetAdjacentOnly: true,
         },
         {
           id: 4,
@@ -73,7 +73,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
           id: 5,
@@ -81,7 +81,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
           id: 6,
@@ -89,111 +89,111 @@ const PlayerInGameState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:7,
-          name:"Aqui estoy bien",
+          id: 7,
+          name: "Aqui estoy bien",
           type: CardTypes.AWAY,
           subType: CardSubTypes.DEFENSE,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:8,
-          name:"Aterrador",
+          id: 8,
+          name: "Aterrador",
           type: CardTypes.AWAY,
           subType: CardSubTypes.DEFENSE,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:9,
+          id: 9,
           name: "¡Cambio de lugar!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:10,
-          name:"Cuarentena",
+          id: 10,
+          name: "Cuarentena",
           type: CardTypes.AWAY,
           subType: CardSubTypes.OBSTACLE,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:11,
-          name:"Determinacion",
+          id: 11,
+          name: "Determinacion",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:12,
+          id: 12,
           name: "¡Fallaste!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.DEFENSE,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:13,
+          id: 13,
           name: "Hacha",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:14,
-          name:"¡Mas Vale Que Corras!",
+          id: 14,
+          name: "¡Mas Vale Que Corras!",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:15,
-          name:"Puerta Atrancada",
+          id: 15,
+          name: "Puerta Atrancada",
           type: CardTypes.AWAY,
           subType: CardSubTypes.OBSTACLE,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:16,
+          id: 16,
           name: "Seduccion",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:17,
-          name:"Sospecha",
+          id: 17,
+          name: "Sospecha",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:18,
-          name:"Vigila Tus Espaldas",
+          id: 18,
+          name: "Vigila Tus Espaldas",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
         {
-          id:19,
-          name:"Whisky",
+          id: 19,
+          name: "Whisky",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: false,
-          targetAdjacentOnly: false
+          targetAdjacentOnly: false,
         },
       ],
       cardSelected: 1,
@@ -237,12 +237,14 @@ describe("Component Game Card", () => {
     var card = PlayerInGameState.game!.playerData!.cards[3];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
+    renderWithProviders(<GameCard card_id={card.id} name={card.name} shouldSelect={true}/>, {
       store,
     });
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-    screenCard.click();
+    act(() => {
+      screenCard.click();
+    });
     expect(store.getState().game.playerData!.cardSelected).toBe(card.id);
   });
 
@@ -250,7 +252,7 @@ describe("Component Game Card", () => {
     var card = PlayerInGameState.game!.playerData!.cards[0];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
+    renderWithProviders(<GameCard card_id={card.id} name={card.name} shouldSelect={true} />, {
       store,
     });
 
@@ -263,7 +265,7 @@ describe("Component Game Card", () => {
     var card = PlayerInGameState.game!.playerData!.cards[3];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
+    renderWithProviders(<GameCard card_id={card.id} name={card.name} shouldSelect={true}/>, {
       store,
     });
 
