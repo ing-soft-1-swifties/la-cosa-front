@@ -144,6 +144,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
+      on_defense: true,
     },
     {
       name: "otro1",
@@ -153,6 +154,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: true,
       on_exchange: false,
+      on_defense: true,
     },
     {
       name: "otro2",
@@ -162,6 +164,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
+      on_defense: true,
     },
     {
       name: "otro3",
@@ -171,6 +174,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
+      on_defense: true,
     },
     {
       name: "otro4",
@@ -180,6 +184,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
+      on_defense: true,
     },
     {
       name: "otro5",
@@ -189,6 +194,7 @@ export const initialState: GameState = {
       status: PlayerStatus.DEATH,
       on_turn: false,
       on_exchange: false,
+      on_defense: true,
     },
   ],
   playerData: {

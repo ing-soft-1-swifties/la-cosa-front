@@ -36,7 +36,7 @@ import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 
-export enum Card {
+export enum CardTypes {
   FLAMETHROWER = "Lanzallamas",
   INFECTED = "Infectado",
   NOBBQ = "¡Nada de barbacoas!",
@@ -68,106 +68,103 @@ export enum Card {
   AWAY_BACK = "Alejate Reversa",
 }
 
-let ReverseCard = new Map<string, keyof typeof Card>();
-Object.keys(Card).forEach((card) => {
-  const key = card as keyof typeof Card;
-  const cardValue: string = Card[key];
+let ReverseCard = new Map<string, keyof typeof CardTypes>();
+Object.keys(CardTypes).forEach((card) => {
+  const key = card as keyof typeof CardTypes;
+  const cardValue: string = CardTypes[key];
   ReverseCard.set(cardValue, key);
 });
 
 type CardsDataType = {
-  [key in Card]: {
+  [key in CardTypes]: {
     image: StaticImageData;
   };
 };
 
 const CardsData: CardsDataType = {
-  [Card.FLAMETHROWER]: {
+  [CardTypes.FLAMETHROWER]: {
     image: IMG_FLAMETHROWER,
   },
-  [Card.INFECTED]: {
+  [CardTypes.INFECTED]: {
     image: IMG_INFECTED,
   },
-  [Card.NOBBQ]: {
+  [CardTypes.NOBBQ]: {
     image: IMG_NOBBQ,
   },
-  [Card.NOTHANKS]: {
+  [CardTypes.NOTHANKS]: {
     image: IMG_NOTHANKS,
   },
-  [Card.THETHING]: {
+  [CardTypes.THETHING]: {
     image: IMG_THETHING,
   },
-  [Card.ANALYSIS]: {
+  [CardTypes.ANALYSIS]: {
     image: IMG_ANALYSIS,
   },
-  [Card.IM_FINE_HERE]: {
+  [CardTypes.IM_FINE_HERE]: {
     image: IMG_IM_FINE_HERE,
   },
-  [Card.SCARY]: {
+  [CardTypes.SCARY]: {
     image: IMG_SCARY,
   },
-  [Card.CHANGE_OF_LOCATION]: {
+  [CardTypes.CHANGE_OF_LOCATION]: {
     image: IMG_CHANGE_OF_LOCATION,
   },
-  [Card.QUARANTINE]: {
+  [CardTypes.QUARANTINE]: {
     image: IMG_QUARANTINE,
   },
-  [Card.DETERMINATION]: {
+  [CardTypes.DETERMINATION]: {
     image: IMG_DETERMINATION,
   },
-  [Card.YOU_FAILED]: {
+  [CardTypes.YOU_FAILED]: {
     image: IMG_YOU_FAILED,
   },
-  [Card.AXE]: {
+  [CardTypes.AXE]: {
     image: IMG_AXE,
   },
-  [Card.YOU_BETTER_RUN]: {
+  [CardTypes.YOU_BETTER_RUN]: {
     image: IMG_YOU_BETTER_RUN,
   },
-  [Card.LOCKED_DOOR]: {
+  [CardTypes.LOCKED_DOOR]: {
     image: IMG_LOCKED_DOOR,
   },
-  [Card.SEDUCTION]: {
+  [CardTypes.SEDUCTION]: {
     image: IMG_SEDUCTION,
   },
-  [Card.SUSPICION]: {
+  [CardTypes.SUSPICION]: {
     image: IMG_SUSPICION,
   },
-  [Card.WATCH_YOUR_BACKS]: {
+  [CardTypes.WATCH_YOUR_BACKS]: {
     image: IMG_WATCH_YOUR_BACKS,
   },
-  [Card.WHISKEY]: {
+  [CardTypes.WHISKEY]: {
     image: IMG_WHISKEY,
   },
-  [Card.UPS]: {
-    image: IMG_UPS,
+  [CardTypes.UPS]:{
+    image:IMG_UPS,
   },
-  [Card.BLIND_DATE]: {
-    image: IMG_BLIND_DATE,
+  [CardTypes.BLIND_DATE]:{
+    image:IMG_BLIND_DATE,
   },
-  [Card.HERE_IS_THE_PARY]: {
-    image: IMG_HERE_IS_THE_PARY,
+  [CardTypes.HERE_IS_THE_PARY]:{
+    image:IMG_HERE_IS_THE_PARY,
   },
-  [Card.WE_CANT_NOT_BE_FRIENDS]: {
-    image: IMG_WE_CANT_NOT_BE_FRIENDS,
+  [CardTypes.WE_CANT_NOT_BE_FRIENDS]:{
+    image:IMG_WE_CANT_NOT_BE_FRIENDS,
   },
-  [Card.FORGETFUL]: {
-    image: IMG_FORGETFUL,
+  [CardTypes.FORGETFUL]:{
+    image:IMG_FORGETFUL,
   },
-  [Card.LET_IT_STAY_BETWEEN_US]: {
-    image: IMG_LET_IT_STAY_BETWEEN_US,
+  [CardTypes.LET_IT_STAY_BETWEEN_US]:{
+    image:IMG_LET_IT_STAY_BETWEEN_US,
   },
-  [Card.REVELATIONS]: {
-    image: IMG_REVELATIONS,
+  [CardTypes.REVELATIONS]:{
+    image:IMG_REVELATIONS,
   },
-  [Card.THREE_FOUR]: {
-    image: IMG_THREE_FOUR,
+  [CardTypes.THREE_FOUR]:{
+    image:IMG_THREE_FOUR,
   },
-  [Card.ONE_TWO]: {
-    image: IMG_ONE_TWO,
-  },
-  [Card.AWAY_BACK]: {
-    image: IMG_AWAY_BACK,
+  [CardTypes.ONE_TWO]:{
+    image:IMG_ONE_TWO,
   },
 };
 
@@ -190,9 +187,8 @@ const GameCard: FC<CardProps> = ({
   // var IMG_LOADED = false;
   var cardData = undefined;
   if (card_key == null) {
-  } else {
-    //sino se me rompe el linter
-    const card = Card[card_key];
+  } else { //sino se me rompe el linter
+    const card = CardTypes[card_key];
     cardData = CardsData[card];
     // IMG_LOADED = true;
   }
