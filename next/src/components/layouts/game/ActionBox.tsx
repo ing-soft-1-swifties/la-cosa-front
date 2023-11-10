@@ -35,7 +35,7 @@ import { Card } from "./GameCard";
 
 type ActionBoxProps = {};
 
-const ActionBox: FC<ActionBoxProps> = ({}) => {
+const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const player = usePlayerGameState();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
@@ -142,8 +142,8 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
                     (cardSelected?.needTarget &&
                       player.selections.player == undefined)
                   }
-                  // TODO: a futuro nos fijamos en PlayerTurnState
-                  // isDisabled={cardSelectedID == undefined && turn !== PlayerTurnState.PLAY_OR_DISCARD && cardSelected?.name == Card.THETHING}
+                // TODO: a futuro nos fijamos en PlayerTurnState
+                // isDisabled={cardSelectedID == undefined && turn !== PlayerTurnState.PLAY_OR_DISCARD && cardSelected?.name == Card.THETHING}
                 >
                   Jugar
                 </Button>
@@ -188,6 +188,21 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
               </Button>
 
             )}
+            {on_exchange && !on_turn && (
+              <Button
+                colorScheme="whiteAlpha"
+                data-testid="ACTION_BOX_DEFENSE_BTN"
+                onClick={defenseCard}
+                rightIcon={<GiFireShield />}
+                isDisabled={
+                  cardSelectedID == undefined ||
+                  cardSelected?.subType !== CardSubTypes.DEFENSE
+                }
+              >
+                Defenderse
+              </Button>
+            )}
+
             {on_exchange && (
               <Button
                 isLoading={exchangedSelect}
