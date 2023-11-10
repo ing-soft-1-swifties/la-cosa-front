@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { GameState, setGameState } from "@/store/gameSlice";
+import { GameState, setGameState, setLastPlayedCard } from "@/store/gameSlice";
 import { store } from "@/store/store";
 import { beginGame, cancelGame, CancelGameReason } from "./manager";
 import { StandaloneToast } from "@/src/pages/_app";
@@ -27,9 +27,9 @@ export enum EventType {
 
 export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.onAny((ev, ...args) => {
-    console.log(`${ev}`)
-    console.log(args)
-  })
+    console.log(`${ev}`);
+    console.log(args);
+  });
   gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_START_GAME, updateGameState);
@@ -52,7 +52,26 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   setupChatListeners(gameSocket)
 
   gameSocket.on("disconnect", onGameSocketDisconnect);
+
+  // Estados especificos:
+  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, onGamePlayerPlayCard);
 };
+
+type PlayCardPayload = {
+  player_name: string;
+  card_id: number;
+  card_name: string;
+};
+
+function onGamePlayerPlayCard(payload: PlayCardPayload) {
+  store.dispatch(
+    setLastPlayedCard({
+      player_name: payload.player_name,
+      card_id: payload.card_id,
+      card_name: payload.card_name,
+    })
+  );
+}
 
 export type GameStateData = {
   gameState: GameState;
@@ -71,7 +90,6 @@ function calculateNewGameState(data: GameStateData) {
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,
-    
   };
   if (data.gameState.playerData != null) {
     newState.playerData = {

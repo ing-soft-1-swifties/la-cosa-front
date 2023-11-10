@@ -1,4 +1,4 @@
-import { Box, BoxProps, Text, useDimensions } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, Text, useDimensions } from "@chakra-ui/react";
 import React, { FC, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,7 +10,8 @@ import {
 import Player from "./Player";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
-import DOOR_ROTTEN from '@/public/game/DoorRotten.png'
+import DOOR_ROTTEN from "@/public/game/DoorRotten.png";
+import GameCard from "@/components/layouts/game/GameCard";
 
 type TableProps = BoxProps & {};
 
@@ -100,6 +101,16 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     >
       {/* Discard card box */}
       <Box ref={discardCardRef} w="20%" aspectRatio={0.717749758} />
+      <Box
+        pos="absolute"
+        top="50%"
+        left="50%"
+        transform="auto"
+        translateX="-50%"
+        translateY="-50%"
+      >
+        <LastPlayedCard />
+      </Box>
 
       {players.map((player: any) => {
         const { x, y } = getTranslatesForPosition(
@@ -119,6 +130,38 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
         );
       })}
     </Box>
+  );
+};
+
+type LastPlayedCardProps = {};
+const LastPlayedCard: FC<LastPlayedCardProps> = () => {
+  const lastPlayedCard = useSelector(
+    (state: RootState) => state.game.lastPlayedCard
+  );
+  if (lastPlayedCard == null) return <></>;
+  return (
+    <Flex
+      flexDir="column"
+      align="center"
+      justify="center"
+      translateX="0px"
+      translateY="0px"
+    >
+      <Box h="11rem" mb="4" w="max-content">
+        <GameCard
+          card_id={lastPlayedCard.card_id}
+          name={lastPlayedCard.card_name}
+          shouldSelect={false}
+        />
+      </Box>
+      <Text color="white" fontWeight="bold" textAlign="center">
+        Ultima Carta Jugada Por:
+        <br />
+        <Text as="span" textDecor="underline" textUnderlineOffset="2px">
+          {lastPlayedCard.player_name}
+        </Text>
+      </Text>
+    </Flex>
   );
 };
 

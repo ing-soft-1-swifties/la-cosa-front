@@ -80,6 +80,13 @@ export type GameState = {
   chat: {
     messages: ChatMessage[];
   };
+  lastPlayedCard:
+    | {
+        player_name: string;
+        card_id: number;
+        card_name: string;
+      }
+    | undefined;
 };
 
 export enum ChatMessageType {
@@ -209,6 +216,11 @@ export const initialState: GameState = {
   chat: {
     messages: [],
   },
+  lastPlayedCard: {
+    player_name: "Pepito",
+    card_id: 2,
+    card_name: "Infectado",
+  },
 };
 
 export type BackendGameState = {
@@ -252,6 +264,12 @@ export const gameSlice = createSlice({
     addChatMessage(state, action: PayloadAction<ChatMessage>) {
       state.chat.messages = state.chat.messages.concat(action.payload);
     },
+    setLastPlayedCard(
+      state,
+      action: PayloadAction<{ player_name: string, card_id: number; card_name: string } | undefined>
+    ) {
+      state.lastPlayedCard = action.payload;
+    },
   },
 });
 
@@ -263,6 +281,7 @@ export const {
   setDiscardDeckDimensions,
   addChatMessage,
   resetGameState,
+  setLastPlayedCard,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
