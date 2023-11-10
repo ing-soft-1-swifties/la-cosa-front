@@ -7,21 +7,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { motion } from "framer-motion";
 import { FramerMotionBox } from "@/src/utils/animations";
-import ICON_PLAYER_1 from "@/public/game/IconPlayer1.png";
-import ICON_PLAYER_2 from "@/public/game/IconPlayer2.png";
-import ICON_PLAYER_3 from "@/public/game/IconPlayer3.png";
-import ICON_PLAYER_4 from "@/public/game/iconPlayer4.png";
-import ICON_PLAYER_5 from "@/public/game/IconPlayer5.png";
-import ICON_PLAYER_6 from "@/public/game/IconPlayer6.png";
-import ICON_PLAYER_7 from "@/public/game/IconPlayer7.png";
-import ICON_PLAYER_8 from "@/public/game/IconPlayer8.png";
-import ICON_PLAYER_9 from "@/public/game/IconPlayer9.png";
-import ICON_PLAYER_10 from "@/public/game/IconPlayer10.png";
-import ICON_PLAYER_11 from "@/public/game/IconPlayer11.png";
-import ICON_PLAYER_12 from "@/public/game/IconPlayer12.png";
-import MASK_ICON1 from '@/public/game/ToxicMask.png'
 import MASK_ICON from '@/public/game/ToxicMask.webp'
 import DANGER_ICON from '@/public/game/DangerCuarentine.webp'
+import PlayerAvatar from "components/utility/PlayerAvatar";
 
 
 const Player = ({
@@ -79,12 +67,9 @@ const Player = ({
             alt="PLAYER_DIAMOND"
           />
         </FramerMotionBox>
-        <Avatar
-          borderWidth="3px"
-          size='lg'
-          borderColor={selected ? "green.500" : "transparent"}
-          src={"game/iconPlayer" + (player.id % 12) + ".png"}
-          name={player.name}
+        <PlayerAvatar
+          isSelected= {selected}
+          playerData= {player}
         />
 
         <Image
