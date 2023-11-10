@@ -13,10 +13,11 @@ import ForestBGHuman from "@/public/game/froest-background-humans.jpg";
 import ForestBGInfect from "@/public/game/froest-background-infected.jpg";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import GameEnd from "@/components/layouts/game/GameEnd";
-import { PlayerRole } from "@/store/gameSlice";
+import { addChatMessage, ChatMessageType, PlayerRole } from "@/store/gameSlice";
 import { Socket } from "socket.io-client";
 import { store } from "@/store/store";
 import ChatBox from "@/components/layouts/game/ChatBox";
+import { useDispatch } from "react-redux";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
@@ -74,11 +75,8 @@ const Page: PageWithLayout = () => {
   );
 };
 
-Page.authConfig = {
-  gameAuthProtected: true,
-};
-
 function useGameNotifications(gameSocket: Socket, toast: any) {
+  const dispatch = useDispatch();
   const roomStartHandler = () => {
     toast(
       buildSucessToastOptions({
@@ -110,42 +108,65 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     );
   };
   const playerStealCard = (data: any) => {
-    toast(
-      buildSucessToastOptions({
-        title: "Aviso",
-        description: `Robaste las cartas: ${data.cards.reduce(
-          (ac: string, card: any) => ac + `${card.name} `,
-          ""
-        )}`,
-      })
-    );
+    const chatMessage = {
+      type: ChatMessageType.GAME_MESSAGE,
+      message: `Robaste las cartas: ${data.cards.reduce(
+        (ac: string, card: any) => ac + `${card.name} `,
+        ""
+      )}`,
+    };
+    dispatch(addChatMessage(chatMessage));
+    // toast(
+    //   buildSucessToastOptions({
+    //     title: "Aviso",
+    //     description: `Robaste las cartas: ${data.cards.reduce(
+    //       (ac: string, card: any) => ac + `${card.name} `,
+    //       ""
+    //     )}`,
+    //   })
+    // );
   };
   const playerPlayCard = (data: any) => {
-    toast(
-      buildSucessToastOptions({
-        title: "Aviso",
-        description: `El jugador ${data.player} jugo la carta: ${data.card.name}`,
-      })
-    );
+    const chatMessage = {
+      type: ChatMessageType.GAME_MESSAGE,
+      message: `El jugador ${data.player} jugo la carta: ${data.card.name}`,
+    };
+    dispatch(addChatMessage(chatMessage));
+    // toast(
+    //   buildSucessToastOptions({
+    //     title: "Aviso",
+    //     description: `El jugador ${data.player} jugo la carta: ${data.card.name}`,
+    //   })
+    // );
   };
   const playerPlayDefenseCard = (data: any) => {
-    toast(
-      buildSucessToastOptions({
-        title: "Aviso",
-        description: `El jugador ${data.player} jugo la carta de defensa: ${data.card.name}`,
-      })
-    );
+    const chatMessage = {
+      type: ChatMessageType.GAME_MESSAGE,
+      message: `El jugador ${data.player} jugo la carta de defensa: ${data.card.name}`,
+    };
+    dispatch(addChatMessage(chatMessage));
+    // toast(
+    //   buildSucessToastOptions({
+    //     title: "Aviso",
+    //     description: `El jugador ${data.player} jugo la carta de defensa: ${data.card.name}`,
+    //   })
+    // );
   };
 
   const beginExchange = (data: any) => {
     const [firstPlayer, secondPlayer] = data.players;
     if (!data.players.includes(store.getState().user.name)) {
-      toast(
-        buildSucessToastOptions({
-          title: "Aviso",
-          description: `Habrá un intercambio entre los jugadores ${firstPlayer} y ${secondPlayer}`,
-        })
-      );
+      const chatMessage = {
+        type: ChatMessageType.GAME_MESSAGE,
+        message: `Habrá un intercambio entre los jugadores ${firstPlayer} y ${secondPlayer}`,
+      };
+      dispatch(addChatMessage(chatMessage));
+      // toast(
+      //   buildSucessToastOptions({
+      //     title: "Aviso",
+      //     description: `Habrá un intercambio entre los jugadores ${firstPlayer} y ${secondPlayer}`,
+      //   })
+      // );
     }
   };
 
@@ -188,3 +209,7 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
 }
 
 export default Page;
+
+Page.authConfig = {
+  gameAuthProtected: true,
+};
