@@ -11,6 +11,8 @@ import {
 import {} from "path";
 import { FC } from "react";
 import { useGetGamesQuery } from "@/store/gameApi";
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 type GameListProps = {};
 
@@ -20,6 +22,10 @@ const GameList: FC<GameListProps> = () => {
     isError: gameListError,
     isLoading,
   } = useGetGamesQuery(undefined, { pollingInterval: 2000 });
+
+  const lobbyFormFieldSetter = useSelector(
+    (state: RootState) => state.user.lobbyFormFieldSetter
+  );
 
   return (
     <Box flexBasis="65%" px={16} py={10} pos="relative" data-testid="game-list">
@@ -54,7 +60,19 @@ const GameList: FC<GameListProps> = () => {
         <Flex flexWrap="wrap" rowGap={8} justify="space-between">
           {gameList?.map(({ id, name, players_count, max_players }) => {
             return (
-              <Box key={id} flexBasis="100%">
+              <Box
+                cursor="pointer"
+                key={id}
+                flexBasis="100%"
+                onClick={() => {
+                  const input_player_name: HTMLInputElement | null =
+                    document.getElementById("name") as HTMLInputElement | null;
+                  if (input_player_name == null || lobbyFormFieldSetter == null)
+                    return;
+                  lobbyFormFieldSetter("room_id", id);
+                  input_player_name.focus();
+                }}
+              >
                 <GameCard
                   id={id}
                   name={name}
