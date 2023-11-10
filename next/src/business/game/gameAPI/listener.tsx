@@ -41,7 +41,7 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_DEATH, updateGameState);
- gameSocket.on(EventType.ON_GAME_END, updateGameState);
+  // gameSocket.on(EventType.ON_GAME_END, updateGameState);
 
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
   gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
@@ -95,7 +95,7 @@ export type GameStateData = {
 
 
 function listenerOnPlayedCard(data: OnPlayedCardData){
-  updateGameState(data.gameState);
+  updateGameState(data as any);
   setCardsToShow(data.effects);
 
   //  temporizador de 5 segundos
