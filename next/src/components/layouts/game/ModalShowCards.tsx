@@ -21,7 +21,7 @@ const ModalShowCards: FC<ModalShowCardProps> = () => {
   const dispatch = useDispatch();
   const cardsToShow = gameState.dataCardPlayed.cardsToShow;
   const player = gameState.dataCardPlayed.player;
-  const title = gameState.dataCardPlayed.title
+  const title = gameState.dataCardPlayed.title;
 
   const sortedCards = useMemo(
     () => [...(cardsToShow ?? [])].sort((c1, c2) => c1.id - c2.id),
@@ -59,7 +59,7 @@ const ModalShowCards: FC<ModalShowCardProps> = () => {
           <ModalBody>
             <Heading textAlign="center" mb="10" color="white">
               {title}
-            </Heading>{" "}
+            </Heading>
             {/* Title */}
             <SimpleGrid columns={4} spacing={4}>
               {sortedCards.map(({ id, name }) => (

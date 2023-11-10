@@ -4,7 +4,6 @@ import {
   setGameState,
   setLastPlayedCard,
   setCardsToShow,
-  OnPlayedCardData,
   Card,
 } from "@/store/gameSlice";
 import { store } from "@/store/store";
@@ -214,6 +213,3 @@ const onGameSocketDisconnect = (reason: SocketDisconnectReason) => {
     cancelGame(CancelGameReason.DISCONNECTION);
   }
 };
-function setCardShow(cards: import("@/store/gameSlice").Card[]) {
-  throw new Error("Function not implemented.");
-}
