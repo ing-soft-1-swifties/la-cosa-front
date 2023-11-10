@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { FramerMotionBox } from "@/src/utils/animations";
 import MASK_ICON from '@/public/game/ToxicMask.webp'
 import DANGER_ICON from '@/public/game/DangerCuarentine.webp'
-import PlayerAvatar from "components/utility/PlayerAvatar";
+import PlayerAvatar from "@/components/utility/PlayerAvatar";
 
 
 const Player = ({

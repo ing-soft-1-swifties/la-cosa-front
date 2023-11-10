@@ -106,7 +106,7 @@ export const initialState: GameState = {
   players: [
     {
       name: "Yo",
-      id: 123,
+      id: 124,
       position: 0,
       in_quarantine: false,
       status: PlayerStatus.ALIVE,
@@ -115,7 +115,7 @@ export const initialState: GameState = {
     },
     {
       name: "otro1",
-      id: 124,
+      id: 123,
       position: 1,
       in_quarantine: false,
       status: PlayerStatus.ALIVE,

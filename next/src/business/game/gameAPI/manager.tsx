@@ -9,7 +9,7 @@ import {
   buildSucessToastOptions,
   buildWarningToastOptions,
 } from "@/src/utils/toasts";
-import { resetGameState } from "store/gameSlice";
+import { resetGameState } from "@/store/gameSlice";
 
 export enum MessageType {
   GET_GAME_STATE = "get_game_state",

@@ -10,11 +10,11 @@ import {
 import { joinPlayerToGame } from "@/src/business/game/gameAPI/manager";
 import { Field, Formik } from "formik";
 import router from "next/router";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { SERVER_API_URL } from "@/src/config";
-import { setLobbyFormFieldSetter } from "store/userSlice";
+import { setLobbyFormFieldSetter } from "@/store/userSlice";
 
 const formSchema = Yup.object({
   room_id: Yup.number().required("Este campo es requerido"),
