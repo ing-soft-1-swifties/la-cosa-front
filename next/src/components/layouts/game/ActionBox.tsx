@@ -38,10 +38,9 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
   const { turn, on_exchange, on_turn } = player;
+  const playerSelected = player.selections.player;
 
   const playCard = () => {
-    const playerSelected = player.selections.player;
-
     var cardOptions = playerSelected ? { target: playerSelected } : {};
     if (cardSelectedID !== undefined) {
       sendPlayerPlayCard(cardSelectedID, cardOptions);
@@ -77,7 +76,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
 
   if (on_turn && !on_exchange) {
     popoverTitle = "Tu turno!";
-    popoverText = "Elije una carta para jugar o descartar.";
+    popoverText = selectMessageText();
   } else if (on_turn && on_exchange) {
     popoverTitle = "Ofrece un intercambio!";
     popoverText = "Elije una carta para intercambiar con el otro jugador.";
@@ -85,6 +84,25 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     popoverTitle = "Te han ofrecido un intercambio!";
     popoverText =
       "Elije una carta para intercambiar o para defenderte del el otro jugador.";
+  }
+
+  function selectMessageText(){
+    if(cardSelected == undefined){
+      return "Seleccione una carta para jugar o descartar"
+    }
+    if(cardSelected.targetAdjacentOnly && playerSelected == undefined){
+      return "La carta seleccionada necesita un objetivo adyacente"
+    }
+    if(cardSelected?.needTarget && playerSelected == undefined){
+      return "La carta seleccionada necesita un objetivo"
+    }
+    if(cardSelected.subType == CardSubTypes.DEFENSE){
+      return "Las cartas de defensa solo se pueden descartar";
+    }
+    if(cardSelected?.name == Card.THETHING){
+      return "La carta seleccionada no se puede jugar o descartar"
+    }
+    return "Seleccione la acción a realizar"
   }
 
   if (exchangedSelect && !on_exchange) {
@@ -116,6 +134,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
                     cardSelectedID == undefined ||
                     cardSelected?.name == Card.THETHING ||
                     cardSelected?.name == Card.INFECTED ||
+                    cardSelected?.subType == CardSubTypes.DEFENSE ||
                     (cardSelected?.needTarget &&
                       player.selections.player == undefined)
                   }

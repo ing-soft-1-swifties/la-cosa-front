@@ -229,9 +229,6 @@ const GameCard: FC<CardProps> = ({ card_id: id, name, ...props }) => {
           alt={"Card " + name}
           clipPath="inset(2% 4% 2% 2%)"
         />
-        
-
-
         :
         <>
           <Text color='white'>
