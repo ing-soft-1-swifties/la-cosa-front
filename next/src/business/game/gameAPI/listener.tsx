@@ -55,6 +55,7 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
 
   // Estados especificos:
   gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, onGamePlayerPlayCard);
+  gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD, onGameDiscardCard);
 };
 
 type PlayCardPayload = {
@@ -62,7 +63,6 @@ type PlayCardPayload = {
   card_id: number;
   card_name: string;
 };
-
 function onGamePlayerPlayCard(payload: PlayCardPayload) {
   store.dispatch(
     setLastPlayedCard({
@@ -71,6 +71,10 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
       card_name: payload.card_name,
     })
   );
+}
+
+function onGameDiscardCard() {
+  store.dispatch(setLastPlayedCard(undefined));
 }
 
 export type GameStateData = {
