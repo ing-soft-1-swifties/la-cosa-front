@@ -15,8 +15,10 @@ import {
   GiFireShield,
   GiSwitchWeapon,
   GiChaliceDrops,
+  GiSharpedTeethSkull,
 } from "react-icons/gi";
 import {
+  sendFinishGame,
   sendPlayerDiscardCard,
   sendPlayerPlayCard,
   sendPlayerSelectDefenseCard,
@@ -65,6 +67,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     }
   };
 
+  
   const [exchangedSelect, setExchangeSelected] = useState(false);
 
   if (player.status == PlayerStatus.DEATH) {
@@ -108,6 +111,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   if (exchangedSelect && !on_exchange) {
     setExchangeSelected(false);
   }
+
 
   return (
     <Box mx="5">
@@ -173,7 +177,17 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
                 Defenderse
               </Button>
             )}
+            {player.role == PlayerRole.THETHING && (  <Button
+                colorScheme="whiteAlpha"
+                data-testid="ACTION_BOX_THETHING_END_BTN"
+                onClick={sendFinishGame}
+                rightIcon={<GiSharpedTeethSkull />}
+                isDisabled={!on_turn}
+              >
+                Finalizar
+              </Button>
 
+            )}
             {on_exchange && (
               <Button
                 isLoading={exchangedSelect}
