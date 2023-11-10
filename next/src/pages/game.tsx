@@ -129,7 +129,7 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
   const playerPlayCard = (data: any) => {
     const chatMessage = {
       type: ChatMessageType.GAME_MESSAGE,
-      message: `El jugador ${data.player} jugo la carta: ${data.card.name}`,
+      message: `El jugador ${data.player_name} jugo la carta: ${data.card_name}`,
     };
     dispatch(addChatMessage(chatMessage));
     // toast(
