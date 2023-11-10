@@ -45,13 +45,13 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_ROOM_START_GAME, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_TURN, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, updateGameState);
-  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, listenerOnPlayedCard);
+  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD, updateGameState);
   gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_DEATH, updateGameState);
-  // gameSocket.on(EventType.ON_GAME_END, updateGameState);
+  gameSocket.on(EventType.ON_GAME_END, updateGameState);
 
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
   gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
@@ -97,18 +97,28 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
   // Dependiendo de la carta jugada actualizamos el estado correspondiente:
   if (payload.effects != null) {
     const card = payload.card_name;
-    const player = payload.effects.player
+    const player = payload.effects.player;
     let title = "";
     if (card == GameCardEnum.WHISKEY || card == GameCardEnum.ANALYSIS) {
-      if (card == GameCardEnum.WHISKEY) title = `${player} jugo una carta de Whisky:`;
-      if (card == GameCardEnum.ANALYSIS) title = `Resultados del Analisis de ${player}:`;
+      if (card == GameCardEnum.WHISKEY)
+        title = `${player} jugo una carta de Whisky:`;
+      if (card == GameCardEnum.ANALYSIS)
+        title = `Resultados del Analisis de ${player}:`;
       store.dispatch(
         setCardsToShow({
           cardsToShow: payload.effects.cards,
           player,
-          title
+          title,
         })
       );
+      //  temporizador de 5 segundos
+      setTimeout(() => {
+        setCardsToShow({
+          cardsToShow: undefined,
+          player: undefined,
+          title: undefined,
+        }); //no es undi
+      }, 5000);
     }
   }
 }
@@ -132,16 +142,6 @@ export type GameStateData = {
   gameState: GameState;
 };
 
-function listenerOnPlayedCard(data: OnPlayedCardData) {
-  updateGameState(data as any);
-  setCardsToShow(data.effects);
-
-  //  temporizador de 5 segundos
-  setTimeout(() => {
-    setCardsToShow({ cardsToShow: [], player: "" }); //no es undi
-  }, 5000);
-}
-
 function calculateNewGameState(data: GameStateData) {
   const newState: any = {
     config: data.gameState.config,
@@ -155,7 +155,7 @@ function calculateNewGameState(data: GameStateData) {
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,
-    direction: data.gameState.direction
+    direction: data.gameState.direction,
   };
   if (data.gameState.playerData != null) {
     newState.playerData = {
@@ -214,3 +214,6 @@ const onGameSocketDisconnect = (reason: SocketDisconnectReason) => {
     cancelGame(CancelGameReason.DISCONNECTION);
   }
 };
+function setCardShow(cards: import("@/store/gameSlice").Card[]) {
+  throw new Error("Function not implemented.");
+}
