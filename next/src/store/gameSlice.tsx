@@ -34,6 +34,7 @@ export type GamePlayer = {
   position: number;
   on_turn: boolean;
   on_exchange: boolean;
+  on_defense: boolean;
 };
 
 type GameConfig = {
