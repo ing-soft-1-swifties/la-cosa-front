@@ -15,7 +15,7 @@ export enum MessageType {
   GET_GAME_STATE = "get_game_state",
   ROOM_START_GAME = "room_start_game",
   ROOM_QUIT_GAME = "room_quit_game",
-
+  FINISH_GAME = "finish_game",
   GAME_PLAY_CARD = "game_play_card",
   GAME_PLAY_DEFENSE_CARD = "game_play_defense_card",
   GAME_DISCARD_CARD = "game_discard_card",
@@ -74,6 +74,10 @@ export async function sendPlayerDiscardCard(card: number) {
   );
 }
 
+export function sendFinishGame() {
+  gameSocket.emit(MessageType.FINISH_GAME);
+}
+
 export type SelectExchangeCardPayload = {
   card: number;
   on_defense: boolean;
@@ -108,7 +112,7 @@ export function joinPlayerToGame(
 ) {
   store.dispatch(setUserName(playerName));
   store.dispatch(setGameConnectionToken(connectionToken));
-  store.dispatch(resetGameState())
+  store.dispatch(resetGameState());
   router.push("/lobby");
 }
 
