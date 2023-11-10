@@ -258,4 +258,17 @@ describe("Component Game Card", () => {
     screenCard.click();
     expect(store.getState().game.playerData!.cardSelected).toBe(undefined);
   });
+
+  it("click on card", () => {
+    var card = PlayerInGameState.game!.playerData!.cards[3];
+
+    store.dispatch(setGameState(PlayerInGameState.game!));
+    renderWithProviders(<GameCard card_id={card.id} name={card.name} />, {
+      store,
+    });
+
+    const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
+    screenCard.click();
+    expect(store.getState().game.playerData!.cardSelected).toBe(card.id);
+  });
 });
