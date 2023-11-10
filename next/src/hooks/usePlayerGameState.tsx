@@ -50,7 +50,7 @@ const usePlayerGameState: () => PlayerGameState = () => {
     position: playerPublicData.position,
     on_turn: playerPublicData.on_turn,
     on_exchange: playerPublicData.on_exchange,
-    on_defense: false,
+    on_defense: playerPublicData.on_defense,
     status: playerPublicData.status,
     role: playerData.role,
     turn: undefined,
