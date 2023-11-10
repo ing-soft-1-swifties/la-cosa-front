@@ -2,6 +2,7 @@ import { Box, BoxProps, Text } from "@chakra-ui/react";
 import {} from "path";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+import IMG_AWAY_BACK from "@/public/cards/AlejateBack.png";
 import IMG_INFECTED from "@/public/cards/Infectado.png";
 import IMG_FLAMETHROWER from "@/public/cards/lanzallamas.png";
 import IMG_NOBBQ from "@/public/cards/NadaDeBarbacoas.png";
@@ -64,6 +65,7 @@ export enum Card {
   REVELATIONS = "Revelaciones",
   THREE_FOUR = "Tres Cuatro",
   ONE_TWO = "Uno Dos",
+  AWAY_BACK = "Alejate Reversa",
 }
 
 let ReverseCard = new Map<string, keyof typeof Card>();
@@ -163,6 +165,9 @@ const CardsData: CardsDataType = {
   },
   [Card.ONE_TWO]: {
     image: IMG_ONE_TWO,
+  },
+  [Card.AWAY_BACK]: {
+    image: IMG_AWAY_BACK,
   },
 };
 

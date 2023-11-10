@@ -216,11 +216,7 @@ export const initialState: GameState = {
   chat: {
     messages: [],
   },
-  lastPlayedCard: {
-    player_name: "Pepito",
-    card_id: 2,
-    card_name: "Infectado",
-  },
+  lastPlayedCard: undefined,
 };
 
 export type BackendGameState = {
