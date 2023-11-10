@@ -75,6 +75,7 @@ const AnimatedGameCard = React.forwardRef<
         data-testid={"Hand_card_" + id}
         name={name}
         card_id={id}
+        shouldSelect={true}
       />
     </FramerMotionBox>
     // <FramerMotionBox
