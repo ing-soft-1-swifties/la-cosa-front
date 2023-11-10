@@ -13,6 +13,7 @@ import { FC, useState } from "react";
 import {
   GiBroadsword,
   GiFireShield,
+  GiDeathSkull,
   GiSwitchWeapon,
   GiChaliceDrops,
   GiSharpedTeethSkull,
@@ -31,7 +32,7 @@ import {
   PlayerStatus,
   PlayerTurnState,
 } from "@/store/gameSlice";
-import { Card } from "./GameCard";
+import { CardTypes } from "./GameCard";
 
 type ActionBoxProps = {};
 
@@ -39,7 +40,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const player = usePlayerGameState();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
-  const { turn, on_exchange, on_turn } = player;
+  const { turn, on_exchange, on_turn, on_defense } = player;
   const playerSelected = player.selections.player;
 
   const playCard = () => {
@@ -85,8 +86,10 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     popoverText = "Elije una carta para intercambiar con el otro jugador.";
   } else if (!on_turn && on_exchange) {
     popoverTitle = "Te han ofrecido un intercambio!";
-    popoverText =
-      "Elije una carta para intercambiar o para defenderte del el otro jugador.";
+    popoverText = "Elije una carta para intercambiar o para defenderte del el otro jugador.";
+  } else if (on_defense){
+    popoverTitle = "Te estan atacando!";
+    popoverText = "Elije una carta para defenderte o no te podras defender.";
   }
 
   function selectMessageText(){
@@ -102,7 +105,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     if(cardSelected.subType == CardSubTypes.DEFENSE){
       return "Las cartas de defensa solo se pueden descartar";
     }
-    if(cardSelected?.name == Card.THETHING){
+    if(cardSelected?.name == CardTypes.THETHING){
       return "La carta seleccionada no se puede jugar o descartar"
     }
     return "Seleccione la acción a realizar"
@@ -136,8 +139,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                   rightIcon={<GiBroadsword />}
                   isDisabled={
                     cardSelectedID == undefined ||
-                    cardSelected?.name == Card.THETHING ||
-                    cardSelected?.name == Card.INFECTED ||
+                    cardSelected?.name == CardTypes.THETHING ||
+                    cardSelected?.name == CardTypes.INFECTED ||
                     cardSelected?.subType == CardSubTypes.DEFENSE ||
                     (cardSelected?.needTarget &&
                       player.selections.player == undefined)
@@ -155,7 +158,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                   onClick={discardCard}
                   isDisabled={
                     cardSelectedID == undefined ||
-                    cardSelected?.name == Card.THETHING
+                    cardSelected?.name == CardTypes.THETHING
                   }
                 >
                   Descartar
@@ -163,7 +166,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               </>
             )}
 
-            {on_exchange && !on_turn && (
+            {(on_defense || (on_exchange && !on_turn)) && (
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
@@ -171,7 +174,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 rightIcon={<GiFireShield />}
                 isDisabled={
                   cardSelectedID == undefined ||
-                  cardSelected?.subType !== CardSubTypes.DEFENSE
+                  cardSelected?.subType !== CardSubTypes.DEFENSE ||
+                  cardSelected.name == CardTypes.FLAMETHROWER 
                 }
               >
                 Defenderse
@@ -188,18 +192,14 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               </Button>
 
             )}
-            {on_exchange && !on_turn && (
+            {(on_defense || (on_exchange && !on_turn)) && (
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
                 onClick={defenseCard}
-                rightIcon={<GiFireShield />}
-                isDisabled={
-                  cardSelectedID == undefined ||
-                  cardSelected?.subType !== CardSubTypes.DEFENSE
-                }
+                rightIcon={<GiDeathSkull />}
               >
-                Defenderse
+                No Defenderse
               </Button>
             )}
 
@@ -215,8 +215,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 }}
                 isDisabled={
                   cardSelectedID == undefined ||
-                  cardSelected?.name == Card.THETHING ||
-                  (cardSelected?.name == Card.INFECTED &&
+                  cardSelected?.name == CardTypes.THETHING ||
+                  (cardSelected?.name == CardTypes.INFECTED &&
                     player.role == PlayerRole.HUMAN)
                   // TODO: la condicion de abajo esta incompleta.
                   // tambien le falta que sea la unica carta de infectado en la mano
