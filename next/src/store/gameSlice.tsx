@@ -37,7 +37,6 @@ export type GamePlayer = {
   position: number;
   on_turn: boolean;
   on_exchange: boolean;
-  turnStatus: PlayerTurnState;
 };
 
 type GameConfig = {
@@ -54,6 +53,7 @@ type PlayerData = {
   role: PlayerRole;
   cardSelected: number | undefined;
   playerSelected: number | undefined;
+  state: PlayerTurnState;
 };
 
 // no se si poner en ingles estos nombres pero por ahora nos manejamos asi
@@ -147,7 +147,6 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      turnStatus: PlayerTurnState.PLAYING,
     },
     {
       name: "otro1",
@@ -157,7 +156,6 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: true,
       on_exchange: false,
-      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro2",
@@ -167,7 +165,6 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro3",
@@ -177,7 +174,6 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro4",
@@ -187,7 +183,6 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro5",
@@ -197,7 +192,6 @@ export const initialState: GameState = {
       status: PlayerStatus.DEATH,
       on_turn: false,
       on_exchange: false,
-      turnStatus: PlayerTurnState.DEFENDING,
     },
   ],
   playerData: {
@@ -245,6 +239,7 @@ export const initialState: GameState = {
     cardSelected: 1,
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
+    state: PlayerTurnState.PLAYING,
   },
   discardDeckDimensions: null,
   chat: {
