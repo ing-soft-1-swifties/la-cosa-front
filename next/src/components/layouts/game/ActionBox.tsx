@@ -187,7 +187,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
-                onClick={on_defense? defenseCardOnExchange : defenseCard}
+                onClick={on_defense? defenseCard : defenseCardOnExchange}
                 rightIcon={<GiFireShield />}
                 isDisabled={
                   cardSelectedID == undefined ||
