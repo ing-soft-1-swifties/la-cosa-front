@@ -94,7 +94,7 @@ export async function sendPlayerSelectExchangeCard(card: number) {
   );
 }
 
-export async function sendPlayerSelectDefenseCard(card: number) {
+export async function sendPlayerSelectDefenseCardOnExchange(card: number) {
   const selectExchangeCardPayload: SelectExchangeCardPayload = {
     card: card,
     on_defense: true,
