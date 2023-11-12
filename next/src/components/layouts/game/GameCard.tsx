@@ -62,8 +62,8 @@ export enum Card {
   WE_CANT_NOT_BE_FRIENDS = "No Podemos Ser Amigos",
   FORGETFUL = "Olvidadizo",
   LET_IT_STAY_BETWEEN_US = "Que Quede Entre Nosotros",
-  REVELATIONS = "Revelaciones",
-  THREE_FOUR = "Tres Cuatro",
+  REVELATIONS ="Revelaciones",
+  THREE_FOUR ="Tres, cuatro",
   ONE_TWO = "Uno Dos",
   AWAY_BACK = "Alejate Reversa",
 }
