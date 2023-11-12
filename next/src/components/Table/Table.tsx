@@ -18,13 +18,13 @@ import Player from "./Player";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
 import DOOR_ROTTEN from "@/public/game/DoorRotten.png";
-import GameCard, { Card } from "@/components/layouts/game/GameCard";
 import {
   FaArrowUp,
   FaArrowDown,
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
+import GameCard, { CardTypes } from "@/components/layouts/game/GameCard";
 
 type TableProps = BoxProps & {};
 
@@ -210,7 +210,7 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
     >
       <Box h="11rem" mb="4" w="max-content">
         {lastPlayedCard == null ? (
-          <GameCard card_id={0} name={Card.AWAY_BACK} shouldSelect={false} />
+          <GameCard card_id={0} name={CardTypes.AWAY_BACK} shouldSelect={false} />
         ) : (
           <GameCard
             card_id={lastPlayedCard.card_id}

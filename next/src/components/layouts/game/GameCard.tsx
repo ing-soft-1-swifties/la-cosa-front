@@ -57,7 +57,7 @@ export enum CardTypes {
   WATCH_YOUR_BACKS = "Vigila tus espaldas",
   WHISKEY = "Whisky",
   UPS = "¡Ups!",
-  BLIND_DATE = "Cita a Ciegas",
+  BLIND_DATE = "Cita a ciegas",
   HERE_IS_THE_PARY = "Es Aqui La Fiesta",
   WE_CANT_NOT_BE_FRIENDS = "No Podemos Ser Amigos",
   FORGETFUL = "Olvidadizo",
