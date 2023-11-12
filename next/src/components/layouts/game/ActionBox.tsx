@@ -204,7 +204,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               </Button>
             )}
 
-            {(on_defense || (on_exchange && !on_turn)) && (
+            {(on_defense) && (
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
