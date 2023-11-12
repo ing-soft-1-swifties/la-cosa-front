@@ -44,7 +44,7 @@ export async function sendPlayerPlayCard(
   await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload);
 }
 
-type PlayDefenseCardPayload = {card: number | undefined, on_defense: boolean};
+export type PlayDefenseCardPayload = {card: number | undefined, on_defense: boolean};
 export async function sendPlayerPlayDefenseCard(
   card: number
 ) {

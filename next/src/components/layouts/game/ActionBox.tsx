@@ -207,7 +207,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
             {(on_defense) && (
               <Button
                 colorScheme="whiteAlpha"
-                data-testid="ACTION_BOX_DEFENSE_BTN"
+                data-testid="ACTION_BOX_NO_DEFENSE_BTN"
                 onClick={noDefense}
                 rightIcon={<GiDeathSkull />}
               >
