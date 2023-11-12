@@ -10,6 +10,7 @@ import {
   GameStatus,
   PlayerRole,
   PlayerStatus,
+  PlayerTurnState,
   initialState,
   setGameState,
   setSelectedCard,
@@ -28,6 +29,7 @@ import {
   DiscardCardPayload,
   MessageType,
   PlayCardPayload,
+  PlayDefenseCardPayload,
   SelectExchangeCardPayload,
 } from "@/src/business/game/gameAPI/manager";
 import { Socket } from "socket.io-client";
@@ -77,6 +79,7 @@ const notTurnExchangeState: PreloadedState<RootState> = {
       },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
@@ -130,6 +133,7 @@ const onTurnExchangeState: PreloadedState<RootState> = {
       },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
@@ -183,6 +187,7 @@ const onTurnState: PreloadedState<RootState> = {
       },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
@@ -224,6 +229,7 @@ const InGameAppState: PreloadedState<RootState> = {
       { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.DEATH, on_turn: false, on_exchange: false },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
@@ -430,6 +436,54 @@ describe("Page Lobby", () => {
     });
 
     const discardbtn = screen.getByTestId("ACTION_BOX_SWAP_BTN");
+    act(() => {
+      discardbtn.click();
+    });
+  });
+
+  it("click on defense", (done) => {
+    act(() => {
+      renderWithProviders(<ActionBox />, {
+        preloadedState: notTurnExchangeState,
+      });
+    });
+
+    // Mockeamos el servidor para revisar que llegue el mensaje
+    serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
+      expect(data);
+      const playDefenseCardPayload: PlayDefenseCardPayload = {
+        card: 1,
+        on_defense: true,
+      };
+      expect(data).toStrictEqual(playDefenseCardPayload);
+      done();
+    });
+
+    const discardbtn = screen.getByTestId("ACTION_BOX_DEFENSE_BTN");
+    act(() => {
+      discardbtn.click();
+    });
+  });
+
+  it("click on no defense", (done) => {
+    act(() => {
+      renderWithProviders(<ActionBox />, {
+        preloadedState: notTurnExchangeState,
+      });
+    });
+
+    // Mockeamos el servidor para revisar que llegue el mensaje
+    serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
+      expect(data);
+      const playDefenseCardPayload: PlayDefenseCardPayload = {
+        card: undefined,
+        on_defense: false,
+      };
+      expect(data).toStrictEqual(playDefenseCardPayload);
+      done();
+    });
+
+    const discardbtn = screen.getByTestId("ACTION_BOX_NO_DEFENSE_BTN");
     act(() => {
       discardbtn.click();
     });
