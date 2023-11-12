@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
   Heading,
+  Flex,
 } from "@chakra-ui/react";
 import { FC, useMemo } from "react";
 import GameCard from "@/components/layouts/game/GameCard";
@@ -17,12 +18,14 @@ import { setCardsToShow } from "@/store/gameSlice";
 
 type ModalShowCardProps = {};
 const ModalShowCards: FC<ModalShowCardProps> = () => {
-  const gameState = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
-  const cardsToShow = gameState.dataCardPlayed.cardsToShow;
-  const player = gameState.dataCardPlayed.player;
-  const title = gameState.dataCardPlayed.title;
-
+  const cardsToShow = useSelector(
+    (state: RootState) => state.game.dataCardPlayed.cardsToShow
+  );
+  // const player = useSelector((state: RootState) => state.game.dataCardPlayed.player);
+  const title = useSelector(
+    (state: RootState) => state.game.dataCardPlayed.title
+  );
   const sortedCards = useMemo(
     () => [...(cardsToShow ?? [])].sort((c1, c2) => c1.id - c2.id),
     [cardsToShow]
@@ -61,16 +64,20 @@ const ModalShowCards: FC<ModalShowCardProps> = () => {
               {title}
             </Heading>
             {/* Title */}
-            <SimpleGrid columns={4} spacing={4}>
+            <Flex justify="center" align="center" columnGap={4}>
               {sortedCards.map(({ id, name }) => (
                 <GameCard
-                  alignSelf="stretch"
+                  maxW="25%"
+                  gridColumnStart={0}
+                  gridColumnEnd={5}
+                  alignSelf="center"
+                  justifySelf="center"
                   key={id}
                   name={name}
                   card_id={id}
                 />
               ))}
-            </SimpleGrid>
+            </Flex>
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>

@@ -115,14 +115,6 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
           title,
         })
       );
-      //  temporizador de 5 segundos
-      setTimeout(() => {
-        setCardsToShow({
-          cardsToShow: undefined,
-          player: undefined,
-          title: undefined,
-        }); //no es undi
-      }, 5000);
     }
   }
 }

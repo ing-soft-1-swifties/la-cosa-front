@@ -307,6 +307,7 @@ export const gameSlice = createSlice({
     setCardsToShow(state, action: PayloadAction<DataCardPlayed>) {
       state.dataCardPlayed.cardsToShow = action.payload.cardsToShow;
       state.dataCardPlayed.player = action.payload.player;
+      state.dataCardPlayed.title = action.payload.title
     },
   },
 });
