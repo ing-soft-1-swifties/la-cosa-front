@@ -113,10 +113,10 @@ export function joinPlayerToGame(
 }
 
 export function finishGame() {
+  Router.push("/");
   store.dispatch(setUserName(undefined));
   store.dispatch(setGameConnectionToken(undefined));
   store.dispatch(resetGameState())
-  Router.push("/");
 }
 
 export enum CancelGameReason {

@@ -93,6 +93,11 @@ const Player = ({
           userSelect="none"
           color={selected ? "green.500" : "white"}
           textAlign="center"
+          maxW="12ch"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          wordBreak="keep-all"
         >
           {player.name}
         </Text>

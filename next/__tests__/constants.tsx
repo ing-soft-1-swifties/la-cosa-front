@@ -71,6 +71,7 @@ export const PLAYER_IN_GAME_STATE_MOCK_1: PreloadedState<RootState> = {
     },
     status: GameStatus.PLAYING,
     player_in_turn: HOST_PLAYER_NAME,
+    direction: true,
     players: [
       PLAYER_IN_GAME_DATA_MOCK_1,
       PLAYER_IN_GAME_DATA_MOCK_2,
@@ -129,9 +130,11 @@ export const PLAYER_IN_GAME_STATE_MOCK_1: PreloadedState<RootState> = {
     chat: {
       messages: [],
     },
+    lastPlayedCard: undefined,
   },
   user: {
     gameConnToken: TEST_CONNECTION_TOKEN,
     name: PLAYER_IN_GAME_DATA_MOCK_1.name,
+    lobbyFormFieldSetter: undefined,
   },
 };

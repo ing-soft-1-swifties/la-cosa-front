@@ -8,7 +8,7 @@ import {
   ListItem,
   OrderedList,
 } from "@chakra-ui/react";
-import { FC, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { ChatMessageType } from "@/store/gameSlice";
 import { RootState } from "@/store/store";
@@ -48,6 +48,11 @@ const ChatBox: FC<ChatBoxProps> = () => {
     if (message == null || message == "" || message.trim() == "") return;
     sendPlayerMessage(message);
   };
+
+  useEffect(() => {
+    if (chatBoxRef.current != null)
+      chatBoxRef.current!.scrollTop = chatBoxRef.current!.scrollHeight;
+  }, [allMessages, chatBoxRef]);
 
   return (
     <>

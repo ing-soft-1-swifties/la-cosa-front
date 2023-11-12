@@ -76,6 +76,7 @@ export type GameState = {
   players: GamePlayer[];
   playerData?: PlayerData;
   player_in_turn: string | undefined;
+  direction: boolean;
   discardDeckDimensions: BoxModel | null;
   chat: {
     messages: ChatMessage[];
@@ -110,6 +111,7 @@ export const initialState: GameState = {
   },
   status: GameStatus.WAITING,
   player_in_turn: "otro2",
+  direction: true,
   players: [
     {
       name: "Yo",
@@ -225,6 +227,7 @@ export type BackendGameState = {
   players: GamePlayer[];
   playerData?: PlayerData;
   player_in_turn: string | undefined;
+  direction: boolean;
 };
 
 export const gameSlice = createSlice({
@@ -243,6 +246,7 @@ export const gameSlice = createSlice({
       state.status = action.payload.status;
       state.playerData = action.payload.playerData;
       state.player_in_turn = action.payload.player_in_turn;
+      state.direction = action.payload.direction;
     },
     setSelectedCard(state, action: PayloadAction<number | undefined>) {
       state.playerData!.cardSelected = action.payload;
@@ -262,7 +266,9 @@ export const gameSlice = createSlice({
     },
     setLastPlayedCard(
       state,
-      action: PayloadAction<{ player_name: string, card_id: number; card_name: string } | undefined>
+      action: PayloadAction<
+        { player_name: string; card_id: number; card_name: string } | undefined
+      >
     ) {
       state.lastPlayedCard = action.payload;
     },
