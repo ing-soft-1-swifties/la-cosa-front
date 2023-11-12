@@ -98,9 +98,10 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
     const player = payload.effects.player;
     let title = "";
     if (
-      player != store.getState().user.name && (card == GameCardEnum.WHISKEY ||
-      card == GameCardEnum.ANALYSIS ||
-      card == GameCardEnum.SUSPICION)
+      player != store.getState().user.name &&
+      (card == GameCardEnum.WHISKEY ||
+        card == GameCardEnum.ANALYSIS ||
+        card == GameCardEnum.SUSPICION)
     ) {
       if (card == GameCardEnum.WHISKEY)
         title = `${player} jugo una carta de Whisky:`;

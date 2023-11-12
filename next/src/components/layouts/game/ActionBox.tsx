@@ -8,8 +8,15 @@ import {
   PopoverContent,
   PopoverHeader,
   Box,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import {
   GiBroadsword,
   GiFireShield,
@@ -50,6 +57,13 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
+  const {
+    isOpen: isFinishOpen,
+    onClose: finishOnClose,
+    onOpen: finishOnOpen,
+  } = useDisclosure();
+  const leastDestructiveRef = useRef(null);
+
   const playCard = () => {
     var cardOptions = playerSelected ? { target: playerSelected } : {};
     if (cardSelectedID !== undefined) {
@@ -111,13 +125,13 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
 
   function selectMessageText() {
     if (cardSelected == undefined) {
-      return "Seleccione una carta para jugar o descartar"
+      return "Seleccione una carta para jugar o descartar";
     }
     if (cardSelected.targetAdjacentOnly && playerSelected == undefined) {
-      return "La carta seleccionada necesita un objetivo adyacente"
+      return "La carta seleccionada necesita un objetivo adyacente";
     }
     if (cardSelected?.needTarget && playerSelected == undefined) {
-      return "La carta seleccionada necesita un objetivo"
+      return "La carta seleccionada necesita un objetivo";
     }
     if (cardSelected.subType == CardSubTypes.DEFENSE) {
       return "Las cartas de defensa solo se pueden descartar";
@@ -125,7 +139,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     if (cardSelected?.name == CardTypes.THETHING) {
       return "La carta seleccionada no se puede jugar o descartar"
     }
-    return "Seleccione la acción a realizar"
+    return "Seleccione la acción a realizar";
   }
 
   function canUseDefensCard() {
@@ -140,7 +154,6 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   if (exchangedSelect && !on_exchange) {
     setExchangeSelected(false);
   }
-
 
   return (
     <Box mx="5">
@@ -207,17 +220,6 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 Defenderse
               </Button>
             )}
-            {player.role == PlayerRole.THETHING && (  <Button
-                colorScheme="whiteAlpha"
-                data-testid="ACTION_BOX_THETHING_END_BTN"
-                onClick={sendFinishGame}
-                rightIcon={<GiSharpedTeethSkull />}
-                isDisabled={!on_turn}
-              >
-                Finalizar
-              </Button>
-
-            )}
             {(on_defense) && (
               <Button
                 colorScheme="whiteAlpha"
@@ -252,6 +254,62 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 Intercambiar
                 {turn}
               </Button>
+            )}
+            {player.role == PlayerRole.THETHING && (
+              <>
+                <Button
+                  mt="6"
+                  colorScheme="red"
+                  data-testid="ACTION_BOX_THETHING_END_BTN"
+                  onClick={finishOnOpen}
+                  rightIcon={<GiSharpedTeethSkull />}
+                >
+                  Finalizar
+                </Button>
+                <AlertDialog
+                  leastDestructiveRef={leastDestructiveRef}
+                  isOpen={isFinishOpen}
+                  onClose={finishOnClose}
+                >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent pb="7" pt="5">
+                      <AlertDialogHeader
+                        fontSize="xl"
+                        fontWeight="bold"
+                        textAlign="center"
+                      >
+                        Declarar Infeccion Global
+                      </AlertDialogHeader>
+
+                      <AlertDialogBody>
+                        <Text textAlign="center" fontWeight="500">
+                          Estas seguro? Si no estan todos los jugadores
+                          infectados perderas!
+                        </Text>
+                      </AlertDialogBody>
+
+                      <AlertDialogFooter justifyContent="center">
+                        <Button
+                          ref={leastDestructiveRef}
+                          onClick={finishOnClose}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => {
+                            finishOnClose();
+                            sendFinishGame();
+                          }}
+                          ml={3}
+                        >
+                          Aceptar
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </>
             )}
           </Stack>
         </PopoverTrigger>

@@ -10,7 +10,7 @@ import {
   Heading,
   Flex,
 } from "@chakra-ui/react";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import GameCard from "@/components/layouts/game/GameCard";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -19,13 +19,11 @@ import { setCardsToShow } from "@/store/gameSlice";
 type ModalShowCardProps = {};
 const ModalShowCards: FC<ModalShowCardProps> = () => {
   const dispatch = useDispatch();
-  const cardsToShow = useSelector(
-    (state: RootState) => state.game.dataCardPlayed.cardsToShow
+  const dataCards = useSelector(
+    (state: RootState) => state.game.dataCardPlayed
   );
-  // const player = useSelector((state: RootState) => state.game.dataCardPlayed.player);
-  const title = useSelector(
-    (state: RootState) => state.game.dataCardPlayed.title
-  );
+  const cardsToShow = dataCards.cardsToShow;
+  const title = dataCards.title;
   const sortedCards = useMemo(
     () => [...(cardsToShow ?? [])].sort((c1, c2) => c1.id - c2.id),
     [cardsToShow]
