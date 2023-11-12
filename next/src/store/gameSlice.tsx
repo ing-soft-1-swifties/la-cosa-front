@@ -96,6 +96,7 @@ export type GameState = {
 export type DataCardPlayed = {
   cardsToShow: Card[] | undefined;
   player: string | undefined;
+  title: string | undefined
 };
 
 export enum ChatMessageType {
@@ -239,41 +240,9 @@ export const initialState: GameState = {
   },
   lastPlayedCard: undefined,
   dataCardPlayed: {
-    player: "pepe",
-    cardsToShow: [
-      {
-        id: 1,
-        name: "Lanzallamas",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: true,
-        targetAdjacentOnly: true,
-      },
-      {
-        id: 2,
-        name: "Infectado",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: false,
-        targetAdjacentOnly: false,
-      },
-      {
-        id: 3,
-        name: "¡Nada de barbacoas!",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: true,
-        targetAdjacentOnly: false,
-      },
-      {
-        id: 4,
-        name: "¡No, gracias!",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: true,
-        targetAdjacentOnly: true,
-      },
-    ],
+    title: undefined,
+    player: undefined,
+    cardsToShow: undefined,
   },
 };
 

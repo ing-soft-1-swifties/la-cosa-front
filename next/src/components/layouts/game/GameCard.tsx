@@ -197,6 +197,12 @@ const GameCard: FC<CardProps> = ({
     // IMG_LOADED = true;
   }
 
+  const borderProps: BoxProps = shouldSelect ? {
+    borderColor: player.selections.card?.id == id ? "green.500" : "black"
+  } : {
+    borderColor: "black"
+  }
+
   return (
     <Box
       onClick={() => {
@@ -205,8 +211,7 @@ const GameCard: FC<CardProps> = ({
             setSelectedCard(player.selections.card?.id !== id ? id : undefined)
           );
       }}
-      borderWidth="4px"
-      borderRadius="lg"
+      
       backgroundColor="black"
       minH="full"
       h="full"
@@ -214,7 +219,8 @@ const GameCard: FC<CardProps> = ({
       minW="auto"
       data-testid={`GAME_CARD_${id}`}
       bgColor="black"
-      borderColor={player.selections.card?.id == id ? "green.500" : "black"}
+      borderWidth="4px"
+      borderRadius="lg"
       cursor="pointer"
       {...props}
       transform="auto"
@@ -222,6 +228,7 @@ const GameCard: FC<CardProps> = ({
         scale: 1.1,
       }}
       transitionDuration="300ms"
+      {...borderProps}
     >
       {cardData !== undefined ? (
         <Image
