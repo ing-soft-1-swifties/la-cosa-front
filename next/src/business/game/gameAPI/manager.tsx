@@ -44,16 +44,24 @@ export async function sendPlayerPlayCard(
   await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload);
 }
 
-type PlayDefenseCardPayload = PlayCardPayload;
+type PlayDefenseCardPayload = {card: number | undefined, on_defense: boolean};
 export async function sendPlayerPlayDefenseCard(
-  target_player: number,
   card: number
 ) {
   const playDefenseCardPayload: PlayDefenseCardPayload = {
     card: card,
-    card_options: {
-      target: target_player,
-    },
+    on_defense: true,
+  };
+  await gameSocket.emitWithAck(
+    MessageType.GAME_PLAY_DEFENSE_CARD,
+    playDefenseCardPayload
+  );
+}
+
+export async function sendPlayerPlayNoDefense() {
+  const playDefenseCardPayload: PlayDefenseCardPayload = {
+    card: undefined,
+    on_defense: false,
   };
   await gameSocket.emitWithAck(
     MessageType.GAME_PLAY_DEFENSE_CARD,
