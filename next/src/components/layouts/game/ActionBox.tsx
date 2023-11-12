@@ -76,7 +76,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   };
 
   const defenseCard = () => {
-    if (cardSelectedID !== undefined && playerSelected !== undefined) {
+    if (cardSelectedID !== undefined) {
       sendPlayerPlayDefenseCard(cardSelectedID);
     }
   };
