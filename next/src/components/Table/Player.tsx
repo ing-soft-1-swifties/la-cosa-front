@@ -7,10 +7,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { motion } from "framer-motion";
 import { FramerMotionBox } from "@/src/utils/animations";
-import MASK_ICON from '@/public/game/ToxicMask.webp'
-import DANGER_ICON from '@/public/game/DangerCuarentine.webp'
+import MASK_ICON from "@/public/game/ToxicMask.webp";
+import DANGER_ICON from "@/public/game/DangerCuarentine.webp";
 import PlayerAvatar from "@/components/utility/PlayerAvatar";
-
 
 const Player = ({
   player,
@@ -44,10 +43,9 @@ const Player = ({
       >
         <FramerMotionBox
           position="absolute"
-          top='-40px'
+          top="-40px"
           display={player.on_turn ? "block" : "none"}
           zIndex={10}
-
           key="diamondTurn"
           animate={{ y: [10, 0, 10] }}
           initial={{ y: 0 }}
@@ -62,22 +60,18 @@ const Player = ({
             w="auto"
             h="30px"
             data-testid={`PLAYER_DIAMOND_IMG_`}
-            // src={DIAMOND_IMG}
             src={DIAMOND_IMG}
             alt="PLAYER_DIAMOND"
           />
         </FramerMotionBox>
-        <PlayerAvatar
-          isSelected= {selected}
-          playerData= {player}
-        />
+        <PlayerAvatar isSelected={selected} player={player} />
 
         <Image
           position="absolute"
           zIndex={10}
           w="70px"
           h="auto"
-          bottom='25px'
+          bottom="25px"
           src={MASK_ICON}
           alt="MASK_ICON"
           display={player.on_turn ? "block" : "none"}
@@ -88,8 +82,8 @@ const Player = ({
           zIndex={100}
           w="35px"
           h="auto"
-          left='calc(50% + 10px)'
-          bottom='60px'
+          left="calc(50% + 10px)"
+          bottom="60px"
           src={DANGER_ICON}
           alt="DANGER_ICON"
           display={player.on_turn ? "block" : "none"}
@@ -100,17 +94,11 @@ const Player = ({
           color={selected ? "green.500" : "white"}
           textAlign="center"
         >
-        
           {player.name}
-
         </Text>
       </Flex>
     </>
   );
 };
 
-
 export default Player;
-
-
-
