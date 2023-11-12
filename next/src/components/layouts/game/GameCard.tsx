@@ -35,6 +35,7 @@ import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
+import {Card as CardData, CardTypes as CardType} from "@/store/gameSlice"
 
 export enum CardTypes {
   FLAMETHROWER = "Lanzallamas",
@@ -203,6 +204,11 @@ const GameCard: FC<CardProps> = ({
     : {
         borderColor: "black",
       };
+  const card: CardData | undefined = player.cards.find((card) => card.id == id);
+  const shouldBlur =
+    shouldSelect &&
+    card != null &&
+    player.panicCards.length > 0 && card.type != CardType.PANIC;
 
   return (
     <Box
@@ -228,6 +234,7 @@ const GameCard: FC<CardProps> = ({
         scale: 1.1,
       }}
       transitionDuration="300ms"
+      opacity={shouldBlur ? "0.4" : "1"}
       {...borderProps}
     >
       {cardData !== undefined ? (

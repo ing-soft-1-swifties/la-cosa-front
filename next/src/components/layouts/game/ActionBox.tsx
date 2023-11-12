@@ -37,23 +37,24 @@ import {
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import {
   CardSubTypes,
+  CardTypes,
   PlayerRole,
   PlayerStatus,
   PlayerTurnState,
 } from "@/store/gameSlice";
-import { CardTypes } from "./GameCard";
+import { CardTypes as GameCardTypes } from "./GameCard";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 
 type ActionBoxProps = {};
 
-const ActionBox: FC<ActionBoxProps> = ({ }) => {
+const ActionBox: FC<ActionBoxProps> = ({}) => {
   const player = usePlayerGameState();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
-  const { turn, on_exchange, on_turn, state} = player;
+  const { turn, on_exchange, on_turn, state } = player;
   const playerSelected = player.selections.player;
-  const on_defense = (state == PlayerTurnState.DEFENDING);
+  const on_defense = state == PlayerTurnState.DEFENDING;
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
@@ -96,10 +97,9 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   };
 
   const noDefense = () => {
-    sendPlayerPlayNoDefense()
+    sendPlayerPlayNoDefense();
   };
 
-  
   const [exchangedSelect, setExchangeSelected] = useState(false);
 
   if (player.status == PlayerStatus.DEATH) {
@@ -117,7 +117,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     popoverText = "Elije una carta para intercambiar con el otro jugador.";
   } else if (!on_turn && on_exchange) {
     popoverTitle = "Te han ofrecido un intercambio!";
-    popoverText = "Elije una carta para intercambiar o para defenderte del el otro jugador.";
+    popoverText =
+      "Elije una carta para intercambiar o para defenderte del el otro jugador.";
   } else if (on_defense) {
     popoverTitle = "Te estan atacando!";
     popoverText = "Elije una carta para defenderte o no te podras defender.";
@@ -136,16 +137,21 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     if (cardSelected.subType == CardSubTypes.DEFENSE) {
       return "Las cartas de defensa solo se pueden descartar";
     }
-    if (cardSelected?.name == CardTypes.THETHING) {
-      return "La carta seleccionada no se puede jugar o descartar"
+    if (cardSelected?.name == GameCardTypes.THETHING) {
+      return "La carta seleccionada no se puede jugar o descartar";
     }
     return "Seleccione la acción a realizar";
   }
 
   function canUseDefensCard() {
-    if (cardSelected != undefined && lastPlayedCard != undefined) { 
-      return (cardSelected.name == CardTypes.NOBBQ && lastPlayedCard.card_name == CardTypes.FLAMETHROWER) ||
-        (cardSelected.name == CardTypes.IM_FINE_HERE && lastPlayedCard.card_name == (CardTypes.YOU_BETTER_RUN || CardTypes.CHANGE_OF_LOCATION))
+    if (cardSelected != undefined && lastPlayedCard != undefined) {
+      return (
+        (cardSelected.name == GameCardTypes.NOBBQ &&
+          lastPlayedCard.card_name == GameCardTypes.FLAMETHROWER) ||
+        (cardSelected.name == GameCardTypes.IM_FINE_HERE &&
+          lastPlayedCard.card_name ==
+            (GameCardTypes.YOU_BETTER_RUN || GameCardTypes.CHANGE_OF_LOCATION))
+      );
     } else {
       return false;
     }
@@ -154,6 +160,19 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   if (exchangedSelect && !on_exchange) {
     setExchangeSelected(false);
   }
+
+  let cannotPlaySelectedCard =
+    cardSelectedID == undefined ||
+    cardSelected?.name == GameCardTypes.THETHING ||
+    cardSelected?.name == GameCardTypes.INFECTED ||
+    cardSelected?.subType == CardSubTypes.DEFENSE ||
+    (cardSelected?.needTarget && player.selections.player == undefined);
+  if (
+    player.panicCards.length > 0 &&
+    cardSelected != null &&
+    cardSelected.type != CardTypes.PANIC
+  )
+    cannotPlaySelectedCard = true;
 
   return (
     <Box mx="5">
@@ -176,16 +195,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                   data-testid="ACTION_BOX_PLAY_BTN"
                   onClick={playCard}
                   rightIcon={<GiBroadsword />}
-                  isDisabled={
-                    cardSelectedID == undefined ||
-                    cardSelected?.name == CardTypes.THETHING ||
-                    cardSelected?.name == CardTypes.INFECTED ||
-                    cardSelected?.subType == CardSubTypes.DEFENSE ||
-                    (cardSelected?.needTarget &&
-                      player.selections.player == undefined)
-                  }
-                // TODO: a futuro nos fijamos en PlayerTurnState
-                // isDisabled={cardSelectedID == undefined && turn !== PlayerTurnState.PLAY_OR_DISCARD && cardSelected?.name == Card.THETHING}
+                  isDisabled={cannotPlaySelectedCard}
                 >
                   Jugar
                 </Button>
@@ -197,7 +207,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                   onClick={discardCard}
                   isDisabled={
                     cardSelectedID == undefined ||
-                    cardSelected?.name == CardTypes.THETHING
+                    cardSelected?.name == GameCardTypes.THETHING
                   }
                 >
                   Descartar
@@ -209,7 +219,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
-                onClick={on_defense? defenseCard : defenseCardOnExchange}
+                onClick={on_defense ? defenseCard : defenseCardOnExchange}
                 rightIcon={<GiFireShield />}
                 isDisabled={
                   cardSelectedID == undefined ||
@@ -220,7 +230,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 Defenderse
               </Button>
             )}
-            {(on_defense) && (
+            {on_defense && (
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_NO_DEFENSE_BTN"
@@ -243,8 +253,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 }}
                 isDisabled={
                   cardSelectedID == undefined ||
-                  cardSelected?.name == CardTypes.THETHING ||
-                  (cardSelected?.name == CardTypes.INFECTED &&
+                  cardSelected?.name == GameCardTypes.THETHING ||
+                  (cardSelected?.name == GameCardTypes.INFECTED &&
                     player.role == PlayerRole.HUMAN)
                   // TODO: la condicion de abajo esta incompleta.
                   // tambien le falta que sea la unica carta de infectado en la mano

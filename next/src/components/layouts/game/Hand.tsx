@@ -23,8 +23,8 @@ const Hand: FC<HandProps> = ({ card_height }) => {
   if (player.status == PlayerStatus.DEATH) return null; // si el jugador esta muerto no muestro la mano
 
   return (
-    <Flex justify="center" h="100%" columnGap={10}> //
-      <AnimatePresence mode="popLayout"> // animacion de entrada y salida de las cartas
+    <Flex justify="center" h="100%" columnGap={10}>
+      <AnimatePresence mode="popLayout"> 
         {sortedCards.map(({ id, name }) => { // mapeo las cartas del jugador
           return (
             <AnimatedGameCard key={id} {...{ id, name, height: card_height }} /> // muestro la carta

@@ -1,5 +1,6 @@
 import {
   Card,
+  CardTypes,
   GamePlayer,
   PlayerRole,
   PlayerStatus,
@@ -8,6 +9,7 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { GameError, NotInGameError } from "@/src/utils/exceptions";
+import { useMemo } from "react";
 
 type PlayerGameState = {
   id: number;
@@ -16,6 +18,7 @@ type PlayerGameState = {
   role: PlayerRole;
   turn: undefined | PlayerTurnState;
   cards: Card[];
+  panicCards: Card[];
   on_turn: boolean;
   on_exchange: boolean;
   state: PlayerTurnState;
@@ -45,6 +48,12 @@ const usePlayerGameState: () => PlayerGameState = () => {
     );
   }
 
+  const panicCards = useMemo(() => {
+    return playerData.cards.filter((card) => {
+      return card.type == CardTypes.PANIC;
+    });
+  }, [playerData.cards]);
+
   const playerState: PlayerGameState = {
     id: playerData.playerID,
     position: playerPublicData.position,
@@ -55,8 +64,9 @@ const usePlayerGameState: () => PlayerGameState = () => {
     role: playerData.role,
     turn: undefined,
     cards: playerData.cards,
+    panicCards: panicCards,
     selections: {
-      card: playerData.cards.find(card => card.id == playerData.cardSelected),
+      card: playerData.cards.find((card) => card.id == playerData.cardSelected),
       player: playerData.playerSelected,
     },
     isHost: gameState.config.host == playerPublicData.name,
