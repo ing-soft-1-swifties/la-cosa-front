@@ -123,6 +123,8 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
             position="absolute"
             left={`calc(50% + ${x * 62}%)`}
             bottom={`calc(50% + ${y * 62}%)`}
+            transition="all"
+            transitionDuration="1400ms"
             onClick={() => onPlayerSelectedToggle(player.id)}
           >
             <Player player={player} selected={player.id === selectedPlayerID} />
