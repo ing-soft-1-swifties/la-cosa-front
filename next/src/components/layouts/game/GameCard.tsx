@@ -62,9 +62,9 @@ export enum Card {
   WE_CANT_NOT_BE_FRIENDS = "No Podemos Ser Amigos",
   FORGETFUL = "Olvidadizo",
   LET_IT_STAY_BETWEEN_US = "Que Quede Entre Nosotros",
-  REVELATIONS ="Revelaciones",
-  THREE_FOUR ="Tres, cuatro",
-  ONE_TWO = "Uno Dos",
+  REVELATIONS = "Revelaciones",
+  THREE_FOUR = "Tres, cuatro...",
+  ONE_TWO = "Uno, dos...",
   AWAY_BACK = "Alejate Reversa",
 }
 
@@ -197,11 +197,13 @@ const GameCard: FC<CardProps> = ({
     // IMG_LOADED = true;
   }
 
-  const borderProps: BoxProps = shouldSelect ? {
-    borderColor: player.selections.card?.id == id ? "green.500" : "black"
-  } : {
-    borderColor: "black"
-  }
+  const borderProps: BoxProps = shouldSelect
+    ? {
+        borderColor: player.selections.card?.id == id ? "green.500" : "black",
+      }
+    : {
+        borderColor: "black",
+      };
 
   return (
     <Box
@@ -211,7 +213,6 @@ const GameCard: FC<CardProps> = ({
             setSelectedCard(player.selections.card?.id !== id ? id : undefined)
           );
       }}
-      
       backgroundColor="black"
       minH="full"
       h="full"
