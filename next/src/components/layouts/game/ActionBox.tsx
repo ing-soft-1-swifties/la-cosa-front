@@ -182,7 +182,6 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
                 data-testid="ACTION_BOX_THETHING_END_BTN"
                 onClick={sendFinishGame}
                 rightIcon={<GiSharpedTeethSkull />}
-                isDisabled={!on_turn}
               >
                 Finalizar
               </Button>
