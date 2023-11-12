@@ -166,6 +166,9 @@ const CardsData: CardsDataType = {
   [CardTypes.ONE_TWO]:{
     image:IMG_ONE_TWO,
   },
+  [CardTypes.AWAY_BACK]: {
+    image: IMG_AWAY_BACK,
+  },
 };
 
 type CardProps = BoxProps & {
