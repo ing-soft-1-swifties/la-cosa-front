@@ -22,7 +22,7 @@ import {
   sendFinishGame,
   sendPlayerDiscardCard,
   sendPlayerPlayCard,
-  sendPlayerSelectDefenseCard,
+  sendPlayerPlayDefenseCard,
   sendPlayerSelectDefenseCardOnExchange,
   sendPlayerSelectExchangeCard,
 } from "@/src/business/game/gameAPI/manager";
@@ -43,9 +43,9 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const player = usePlayerGameState();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
-  const { turn, on_exchange, on_turn, turnStatus} = player;
+  const { turn, on_exchange, on_turn, state} = player;
   const playerSelected = player.selections.player;
-  const on_defense = (turnStatus == PlayerTurnState.DEFENDING);
+  const on_defense = (state == PlayerTurnState.DEFENDING);
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
@@ -75,8 +75,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   };
 
   const defenseCard = () => {
-    if (cardSelectedID !== undefined) {
-      sendPlayerSelectDefenseCard(cardSelectedID);
+    if (cardSelectedID !== undefined && playerSelected !== undefined) {
+      sendPlayerPlayDefenseCard(playerSelected, cardSelectedID);
     }
   };
 
