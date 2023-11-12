@@ -76,7 +76,13 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   };
 
   const defenseCard = () => {
-    sendPlayerPlayNoDefense();
+    if (cardSelectedID !== undefined && playerSelected !== undefined) {
+      sendPlayerPlayDefenseCard(cardSelectedID);
+    }
+  };
+
+  const noDefense = () => {
+    sendPlayerPlayNoDefense()
   };
 
   
@@ -216,7 +222,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
-                onClick={defenseCard}
+                onClick={noDefense}
                 rightIcon={<GiDeathSkull />}
               >
                 No Defenderse
