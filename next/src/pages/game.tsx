@@ -144,7 +144,7 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
   const playerPlayDefenseCard = (data: any) => {
     const chatMessage = {
       type: ChatMessageType.GAME_MESSAGE,
-      message: `El jugador ${data.player} jugo la carta de defensa: ${data.card.name}`,
+      message: `El jugador ${data.player} jugo la carta de defensa: ${data.card_name}`,
     };
     dispatch(addChatMessage(chatMessage));
     // toast(
