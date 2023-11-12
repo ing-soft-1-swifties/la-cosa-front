@@ -1,4 +1,11 @@
-import { Box, BoxProps, Flex, Text, useDimensions } from "@chakra-ui/react";
+import {
+  Box,
+  BoxProps,
+  Flex,
+  Icon,
+  Text,
+  useDimensions,
+} from "@chakra-ui/react";
 import React, { FC, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +19,12 @@ import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
 import DOOR_ROTTEN from "@/public/game/DoorRotten.png";
 import GameCard, { Card } from "@/components/layouts/game/GameCard";
+import {
+  FaArrowUp,
+  FaArrowDown,
+  FaArrowLeft,
+  FaArrowRight,
+} from "react-icons/fa";
 
 type TableProps = BoxProps & {};
 
@@ -30,6 +43,7 @@ function getTranslatesForPosition(
 const Table: FC<TableProps> = ({ ...boxProps }) => {
   const localPlayer = usePlayerGameState();
   const playerID = localPlayer.id;
+  const gameDirection = useSelector((state: RootState) => state.game.direction) 
   const players_data = useSelector((state: RootState) => state.game.players);
   const players = players_data.filter(
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
@@ -131,6 +145,52 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
           </Box>
         );
       })}
+      {/* Top */}
+      <Box
+        pt="4"
+        pos="absolute"
+        top="0"
+        left="50%"
+        transform="auto"
+        translateX="-50%"
+      >
+        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowLeft : FaArrowRight} />
+      </Box>
+      {/* Bottom */}
+      <Box
+        pb="4"
+        pos="absolute"
+        top="100%"
+        left="50%"
+        transform="auto"
+        translateX="-50%"
+        translateY="-100%"
+      >
+        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowRight : FaArrowLeft} />
+      </Box>
+      {/* Left */}
+      <Box
+        ml="4"
+        pos="absolute"
+        top="50%"
+        left="0"
+        transform="auto"
+        translateY="-50%"
+      >
+        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowDown : FaArrowUp} />
+      </Box>
+      {/* Right */}
+      <Box
+        pr="4"
+        pos="absolute"
+        top="50%"
+        left="100%"
+        transform="auto"
+        translateX="-100%"
+        translateY="-50%"
+      >
+        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowUp : FaArrowDown} />
+      </Box>
     </Box>
   );
 };

@@ -106,6 +106,7 @@ function calculateNewGameState(data: GameStateData) {
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,
+    direction: data.gameState.direction
   };
   if (data.gameState.playerData != null) {
     newState.playerData = {
