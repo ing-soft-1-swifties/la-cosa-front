@@ -21,6 +21,7 @@ import {
   sendPlayerDiscardCard,
   sendPlayerPlayCard,
   sendPlayerSelectDefenseCard,
+  sendPlayerSelectDefenseCardOnExchange,
   sendPlayerSelectExchangeCard,
 } from "@/src/business/game/gameAPI/manager";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
@@ -31,6 +32,8 @@ import {
   PlayerTurnState,
 } from "@/store/gameSlice";
 import { CardTypes } from "./GameCard";
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 type ActionBoxProps = {};
 
@@ -38,9 +41,12 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const player = usePlayerGameState();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
-  const { turn, on_exchange, on_turn, on_defense } = player;
+  const { turn, on_exchange, on_turn, turnStatus} = player;
   const playerSelected = player.selections.player;
-
+  const on_defense = (turnStatus == PlayerTurnState.DEFENDING);
+  const lastPlayedCard = useSelector(
+    (state: RootState) => state.game.lastPlayedCard
+  );
   const playCard = () => {
     var cardOptions = playerSelected ? { target: playerSelected } : {};
     if (cardSelectedID !== undefined) {
@@ -57,6 +63,12 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const swapCard = () => {
     if (cardSelectedID !== undefined) {
       sendPlayerSelectExchangeCard(cardSelectedID);
+    }
+  };
+
+  const defenseCardOnExchange = () => {
+    if (cardSelectedID !== undefined) {
+      sendPlayerSelectDefenseCardOnExchange(cardSelectedID);
     }
   };
 
@@ -84,28 +96,37 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   } else if (!on_turn && on_exchange) {
     popoverTitle = "Te han ofrecido un intercambio!";
     popoverText = "Elije una carta para intercambiar o para defenderte del el otro jugador.";
-  } else if (on_defense){
+  } else if (on_defense) {
     popoverTitle = "Te estan atacando!";
     popoverText = "Elije una carta para defenderte o no te podras defender.";
   }
 
-  function selectMessageText(){
-    if(cardSelected == undefined){
+  function selectMessageText() {
+    if (cardSelected == undefined) {
       return "Seleccione una carta para jugar o descartar"
     }
-    if(cardSelected.targetAdjacentOnly && playerSelected == undefined){
+    if (cardSelected.targetAdjacentOnly && playerSelected == undefined) {
       return "La carta seleccionada necesita un objetivo adyacente"
     }
-    if(cardSelected?.needTarget && playerSelected == undefined){
+    if (cardSelected?.needTarget && playerSelected == undefined) {
       return "La carta seleccionada necesita un objetivo"
     }
-    if(cardSelected.subType == CardSubTypes.DEFENSE){
+    if (cardSelected.subType == CardSubTypes.DEFENSE) {
       return "Las cartas de defensa solo se pueden descartar";
     }
-    if(cardSelected?.name == CardTypes.THETHING){
+    if (cardSelected?.name == CardTypes.THETHING) {
       return "La carta seleccionada no se puede jugar o descartar"
     }
     return "Seleccione la acción a realizar"
+  }
+
+  function canUseDefensCard() {
+    if (cardSelected != undefined && lastPlayedCard != undefined) { 
+      return (cardSelected.name == CardTypes.NOBBQ && lastPlayedCard.card_name == CardTypes.FLAMETHROWER) ||
+        (cardSelected.name == CardTypes.IM_FINE_HERE && lastPlayedCard.card_name == (CardTypes.YOU_BETTER_RUN || CardTypes.CHANGE_OF_LOCATION))
+    } else {
+      return false;
+    }
   }
 
   if (exchangedSelect && !on_exchange) {
@@ -166,12 +187,12 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
-                onClick={defenseCard}
+                onClick={on_defense? defenseCardOnExchange : defenseCard}
                 rightIcon={<GiFireShield />}
                 isDisabled={
                   cardSelectedID == undefined ||
                   cardSelected?.subType !== CardSubTypes.DEFENSE ||
-                  cardSelected.name == CardTypes.FLAMETHROWER 
+                  canUseDefensCard()
                 }
               >
                 Defenderse

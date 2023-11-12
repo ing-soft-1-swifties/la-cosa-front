@@ -5,8 +5,11 @@ import GameCard from "components/layouts/game/GameCard";
 import { GameStateData } from "business/game/gameAPI/listener";
 
 export enum PlayerTurnState {
-  PLAY_OR_DISCARD = "play_or_discard",
-  SELECT_EXCHANGE_CARD = "select_exchange_Card",
+  PLAYING = "PLAYING",
+  WAITING = "WAITING",
+  DEFENDING = "DEFENDING",
+  RECEIVING_EXCHANGE = "RECEIVING_EXCHANGE",
+  OFFERING_EXCHANGE = "OFFERING_EXCHANGE"
 }
 
 export enum GameStatus {
@@ -34,7 +37,7 @@ export type GamePlayer = {
   position: number;
   on_turn: boolean;
   on_exchange: boolean;
-  on_defense: boolean;
+  turnStatus: PlayerTurnState;
 };
 
 type GameConfig = {
@@ -144,7 +147,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      on_defense: true,
+      turnStatus: PlayerTurnState.PLAYING,
     },
     {
       name: "otro1",
@@ -154,7 +157,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: true,
       on_exchange: false,
-      on_defense: true,
+      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro2",
@@ -164,7 +167,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      on_defense: true,
+      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro3",
@@ -174,7 +177,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      on_defense: true,
+      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro4",
@@ -184,7 +187,7 @@ export const initialState: GameState = {
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
-      on_defense: true,
+      turnStatus: PlayerTurnState.WAITING,
     },
     {
       name: "otro5",
@@ -194,7 +197,7 @@ export const initialState: GameState = {
       status: PlayerStatus.DEATH,
       on_turn: false,
       on_exchange: false,
-      on_defense: true,
+      turnStatus: PlayerTurnState.DEFENDING,
     },
   ],
   playerData: {
