@@ -128,7 +128,6 @@ export function finishGame() {
   Router.push("/");
   store.dispatch(setUserName(undefined));
   store.dispatch(setGameConnectionToken(undefined));
-  store.dispatch(resetGameState())
 }
 
 export enum CancelGameReason {
