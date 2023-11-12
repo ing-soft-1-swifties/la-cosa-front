@@ -237,14 +237,15 @@ describe("Component Game Card", () => {
     var card = PlayerInGameState.game!.playerData!.cards[3];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard card_id={card.id} name={card.name} shouldSelect={true}/>, {
-      store,
-    });
+    renderWithProviders(
+      <GameCard card_id={card.id} name={card.name} shouldSelect={true} />,
+      {
+        store,
+      }
+    );
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-    act(() => {
       screenCard.click();
-    });
     expect(store.getState().game.playerData!.cardSelected).toBe(card.id);
   });
 
@@ -252,12 +253,15 @@ describe("Component Game Card", () => {
     var card = PlayerInGameState.game!.playerData!.cards[0];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard card_id={card.id} name={card.name} shouldSelect={true} />, {
-      store,
-    });
+    renderWithProviders(
+      <GameCard card_id={card.id} name={card.name} shouldSelect={true} />,
+      {
+        store,
+      }
+    );
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-    screenCard.click();
+      screenCard.click();
     expect(store.getState().game.playerData!.cardSelected).toBe(undefined);
   });
 
@@ -265,12 +269,15 @@ describe("Component Game Card", () => {
     var card = PlayerInGameState.game!.playerData!.cards[3];
 
     store.dispatch(setGameState(PlayerInGameState.game!));
-    renderWithProviders(<GameCard card_id={card.id} name={card.name} shouldSelect={true}/>, {
-      store,
-    });
+    renderWithProviders(
+      <GameCard card_id={card.id} name={card.name} shouldSelect={true} />,
+      {
+        store,
+      }
+    );
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-    screenCard.click();
+      screenCard.click();
     expect(store.getState().game.playerData!.cardSelected).toBe(card.id);
   });
 });
