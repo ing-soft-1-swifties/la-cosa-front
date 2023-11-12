@@ -97,11 +97,17 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
     const card = payload.card_name;
     const player = payload.effects.player;
     let title = "";
-    if (card == GameCardEnum.WHISKEY || card == GameCardEnum.ANALYSIS) {
+    if (
+      player != store.getState().user.name && (card == GameCardEnum.WHISKEY ||
+      card == GameCardEnum.ANALYSIS ||
+      card == GameCardEnum.SUSPICION)
+    ) {
       if (card == GameCardEnum.WHISKEY)
         title = `${player} jugo una carta de Whisky:`;
       if (card == GameCardEnum.ANALYSIS)
         title = `Resultados del Analisis de ${player}:`;
+      if (card == GameCardEnum.SUSPICION)
+        title = `Carta aleatoria de ${player}:`;
       store.dispatch(
         setCardsToShow({
           cardsToShow: payload.effects.cards,
