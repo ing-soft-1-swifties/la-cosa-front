@@ -21,6 +21,7 @@ import {
   sendPlayerDiscardCard,
   sendPlayerPlayCard,
   sendPlayerPlayDefenseCard,
+  sendPlayerPlayNoDefense,
   sendPlayerSelectDefenseCardOnExchange,
   sendPlayerSelectExchangeCard,
 } from "@/src/business/game/gameAPI/manager";
@@ -73,9 +74,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   };
 
   const defenseCard = () => {
-    if (cardSelectedID !== undefined && playerSelected !== undefined) {
-      sendPlayerPlayDefenseCard(playerSelected, cardSelectedID);
-    }
+    sendPlayerPlayNoDefense();
   };
 
   const [exchangedSelect, setExchangeSelected] = useState(false);
