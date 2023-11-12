@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BoxModel } from "@chakra-ui/utils";
+import { G } from "msw/lib/glossary-de6278a9";
+import GameCard from "components/layouts/game/GameCard";
+import { GameStateData } from "business/game/gameAPI/listener";
 
 export enum PlayerTurnState {
   PLAY_OR_DISCARD = "play_or_discard",
@@ -88,6 +91,13 @@ export type GameState = {
         card_name: string;
       }
     | undefined;
+  dataCardPlayed: DataCardPlayed;
+};
+
+export type DataCardPlayed = {
+  cardsToShow: Card[] | undefined;
+  player: string | undefined;
+  title: string | undefined
 };
 
 export enum ChatMessageType {
@@ -99,6 +109,18 @@ export type ChatMessage = {
   type: ChatMessageType;
   player_name?: string;
   message: string;
+};
+
+export type OnPlayedCardData = {
+  gameState: GameStateData;
+  card_id: number;
+  card_name: string;
+  card_options: any;
+  player_name: string;
+  effects: {
+    player: string;
+    cardsToShow: Card[];
+  };
 };
 
 export const initialState: GameState = {
@@ -219,6 +241,11 @@ export const initialState: GameState = {
     messages: [],
   },
   lastPlayedCard: undefined,
+  dataCardPlayed: {
+    title: undefined,
+    player: undefined,
+    cardsToShow: undefined,
+  },
 };
 
 export type BackendGameState = {
@@ -272,6 +299,10 @@ export const gameSlice = createSlice({
     ) {
       state.lastPlayedCard = action.payload;
     },
+    setCardsToShow(state, action: PayloadAction<DataCardPlayed>) {
+      state.dataCardPlayed.cardsToShow = action.payload.cardsToShow;
+      state.dataCardPlayed.player = action.payload.player;
+    },
   },
 });
 
@@ -284,6 +315,7 @@ export const {
   addChatMessage,
   resetGameState,
   setLastPlayedCard,
+  setCardsToShow,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
