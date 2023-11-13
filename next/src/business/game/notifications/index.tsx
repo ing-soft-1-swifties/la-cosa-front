@@ -19,10 +19,12 @@ import {
 
 export function setupNotificationsListeners(gameSocket: Socket) {
   gameSocket.on(EventType.ON_GAME_PLAYER_TURN, onPlayerTurn);
+  gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, onPlayerStealCard);
   gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, onPlayerPlayCard);
   gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD, onPlayerDiscardCard);
+  gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, onBeginExchange);
+  gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, onFinishExchange);
   gameSocket.on(EventType.ON_GAME_PLAYER_DEATH, onPlayerDeath);
-  gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, onPlayerStealCard);
 }
 
 type PlayerDeathReasonEncoded = "LANZALLAMAS" | "SUPERINFECCION";
@@ -125,12 +127,10 @@ type OnPlayerStealCardPayload = {
   cards?: Card[];
   card_type: CardTypes;
   quarantine:
-    | [
-        {
-          player_name: string;
-          card: Card;
-        }
-      ]
+    | {
+        player_name: string;
+        card: Card;
+      }[]
     | null;
 };
 function onPlayerStealCard(payload: OnPlayerStealCardPayload) {
@@ -271,12 +271,10 @@ function onPlayerPlayCard(payload: OnPlayerPlayCardPayload) {
 type OnPlayerDiscardCardPayload = {
   player: string;
   quarantine:
-    | [
-        {
-          player_name: string;
-          card: Card;
-        }
-      ]
+    | {
+        player_name: string;
+        card: Card;
+      }[]
     | null;
 };
 function onPlayerDiscardCard(payload: OnPlayerDiscardCardPayload) {
@@ -319,6 +317,186 @@ function onPlayerDiscardCard(payload: OnPlayerDiscardCardPayload) {
     addChatMessage({
       type: ChatMessageType.GAME_MESSAGE,
       severity: severity,
+      message,
+    })
+  );
+}
+
+/*
+ * ======================================
+ *   NOTIFICACION INICIO DE INTERCAMBIO
+ * ======================================
+ */
+type OnBeginExchangePayload = {
+  players: [string, string];
+};
+function onBeginExchange(payload: OnBeginExchangePayload) {
+  const localPlayerName = store.getState().user.name;
+  const isExchanging =
+    payload.players.find((player) => player == localPlayerName) != null;
+
+  const [first_player, second_player] = payload.players;
+  let message = "";
+  let severity = ChatMessageSeverity.NORMAL;
+  if (isExchanging) {
+    const target =
+      localPlayerName == first_player ? second_player : first_player;
+    message = `Debes elegir una carta para intercambiar con el jugador ${target}!`;
+    severity = ChatMessageSeverity.WARNING;
+    StandaloneToast(
+      buildWarningToastOptions({
+        description: message,
+        duration: 12000,
+        position: "bottom",
+      })
+    );
+  } else
+    message = `Los jugadores ${first_player} y ${second_player} van a intercambiar cartas.`;
+  store.dispatch(
+    addChatMessage({
+      type: ChatMessageType.GAME_MESSAGE,
+      severity,
+      message,
+    })
+  );
+}
+
+/*
+ * ======================================
+ *   NOTIFICACION FIN DE INTERCAMBIO
+ * ======================================
+ */
+type OnFinishExchangePayload = {
+  players: [string, string];
+  quarantine:
+    | {
+        player_name: string;
+        card: Card;
+      }[]
+    | null;
+  card_in?: Card;
+  card_out?: Card;
+};
+function onFinishExchange(payload: OnFinishExchangePayload) {
+  const localPlayerName = store.getState().user.name;
+  const isExchanging =
+    payload.players.find((player) => player == localPlayerName) != null;
+  const [first_player, second_player] = payload.players;
+  let message = "";
+  let severity = ChatMessageSeverity.NORMAL;
+  if (isExchanging) {
+    const other_player =
+      localPlayerName == first_player ? second_player : first_player;
+    message = `Finalizo tu intercambio con ${other_player}, recibiste la carta ${payload.card_in}`;
+    severity = ChatMessageSeverity.INFO;
+    StandaloneToast(
+      buildSucessToastOptions({
+        description: message,
+        duration: 9000,
+        position: "top",
+      })
+    );
+    // TODO! REMOVER SI NO HACE FALTA:
+    // if (payload.quarantine == null) {
+    //   // CASO NINGUNO EN CUARENTENA
+    //   const other_player =
+    //     localPlayerName == first_player ? second_player : first_player;
+    // } else {
+    //   const exchange = payload.quarantine;
+    //   const on_quarantine =
+    //     payload.quarantine.find(
+    //       (player) => player.player_name == localPlayerName
+    //     ) != null;
+    //   if (exchange.length == 1) {
+    //     // CASO UNO EN CUARENTENA Y EL OTRO NO
+    //     const quarantine_player = exchange[0];
+    //     if (localPlayerName == quarantine_player.player_name) {
+    //       // CASO ESTOY EN CUARENTENA
+    //       const other_player =
+    //         localPlayerName == first_player ? second_player : first_player;
+    //       message = `Finalizo tu intercambio con el jugador ${other_player}, recibiste la carta ${payload.card_in}`;
+    //     } else {
+    //       // CASO NO ESTOY EN CUARENTENA
+    //       const card = quarantine_player.card;
+    //       const other_player = quarantine_player.player_name;
+    //       message = `Finalizo tu intercambio con el jugador en cuarentena ${quarantine_player}, recibiste la carta ${card.name}`;
+    //       severity = ChatMessageSeverity.WARNING;
+    //     }
+    //   } else {
+    //     // CASO LOS DOS EN CUARENTENA
+    //     const quarantine_first_player = exchange[0];
+    //     const quarantine_second_player = exchange[1];
+    //     store.dispatch(
+    //       addChatMessage({
+    //         type: ChatMessageType.GAME_MESSAGE,
+    //         severity: ChatMessageSeverity.WARNING,
+    //         message: `El jugador en cuarentena ${quarantine_first_player.player_name} le paso la
+    //           carta ${quarantine_first_player.card.name} al jugador ${quarantine_second_player.player_name}`,
+    //       })
+    //     );
+    //     severity = ChatMessageSeverity.WARNING;
+    //     message = `El jugador en cuarentena ${quarantine_second_player.player_name} le paso la
+    //           carta ${quarantine_second_player.card.name} al jugador ${quarantine_first_player.player_name}`;
+    //   }
+    // }
+  } else {
+    if (payload.quarantine == null) {
+      // CASO NINGUNO EN CUARENTENA
+      message = `Los jugadores ${first_player} y ${second_player} finalizaron su intercambio de cartas.`;
+    } else {
+      const exchange = payload.quarantine;
+      if (exchange.length == 1) {
+        // CASO UNO EN CUARENTENA Y EL OTRO NO
+        const quarantine_player = exchange[0].player_name;
+        const card = exchange[0].card;
+        const other_player =
+          quarantine_player == first_player ? second_player : first_player;
+        message = `El jugador en cuarentena ${quarantine_player} le paso la carta ${card.name} al jugador ${other_player}`;
+        severity = ChatMessageSeverity.WARNING;
+        StandaloneToast(
+          buildWarningToastOptions({
+            position: "top-right",
+            description: message,
+            duration: 9000,
+          })
+        );
+      } else {
+        // CASO LOS DOS EN CUARENTENA
+        const quarantine_first_player = exchange[0];
+        const quarantine_second_player = exchange[1];
+        StandaloneToast(
+          buildWarningToastOptions({
+            position: "top-right",
+            description: `El jugador en cuarentena ${quarantine_first_player.player_name} le paso la 
+            carta ${quarantine_first_player.card.name} al jugador ${quarantine_second_player.player_name}`,
+            duration: 12000,
+          })
+        );
+        store.dispatch(
+          addChatMessage({
+            type: ChatMessageType.GAME_MESSAGE,
+            severity: ChatMessageSeverity.WARNING,
+            message: `El jugador en cuarentena ${quarantine_first_player.player_name} le paso la 
+            carta ${quarantine_first_player.card.name} al jugador ${quarantine_second_player.player_name}`,
+          })
+        );
+        severity = ChatMessageSeverity.WARNING;
+        message = `El jugador en cuarentena ${quarantine_second_player.player_name} le paso la 
+            carta ${quarantine_second_player.card.name} al jugador ${quarantine_first_player.player_name}`;
+        StandaloneToast(
+          buildWarningToastOptions({
+            position: "top-right",
+            description: message,
+            duration: 12000,
+          })
+        );
+      }
+    }
+  }
+  store.dispatch(
+    addChatMessage({
+      type: ChatMessageType.GAME_MESSAGE,
+      severity,
       message,
     })
   );
