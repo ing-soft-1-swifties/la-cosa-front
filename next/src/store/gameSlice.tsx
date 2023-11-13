@@ -159,7 +159,7 @@ export const initialState: GameState = {
       name: "Otro 1",
       id: 124,
       position: 0,
-      quarantine: 0,
+      quarantine: 3,
       status: PlayerStatus.ALIVE,
       on_turn: true,
       on_exchange: false,
