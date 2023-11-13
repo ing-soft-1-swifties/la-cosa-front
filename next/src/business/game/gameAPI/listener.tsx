@@ -14,6 +14,7 @@ import { setupChatListeners } from "../chat";
 import GameCard, {
   CardTypes as GameCardEnum,
 } from "@/components/layouts/game/GameCard";
+import { setupNotificationsListeners } from "../notifications";
 
 export enum EventType {
   ON_ROOM_NEW_PLAYER = "on_room_new_player",
@@ -58,6 +59,7 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
 
   setupChatListeners(gameSocket);
+  setupNotificationsListeners(gameSocket)
 
   gameSocket.on("disconnect", onGameSocketDisconnect);
 

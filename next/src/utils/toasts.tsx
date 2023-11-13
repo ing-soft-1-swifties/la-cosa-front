@@ -14,10 +14,8 @@ export const buildErrorToastOptions = (options: UseToastOptions) => {
 
 export const buildWarningToastOptions = (options: UseToastOptions) => {
   const toastOptions: UseToastOptions = {
-    title: "Warning",
     status: "warning",
     isClosable: true,
-    description: "Cuidado!",
     position: "top",
     ...options,
   };
@@ -26,10 +24,18 @@ export const buildWarningToastOptions = (options: UseToastOptions) => {
 
 export const buildSucessToastOptions = (options: UseToastOptions) => {
   const toastOptions: UseToastOptions = {
-    title: "Success",
     status: "success",
     isClosable: true,
-    description: "Accion completada.",
+    position: "top",
+    ...options,
+  };
+  return toastOptions;
+};
+
+export const buildInfoToastOptions = (options: UseToastOptions) => {
+  const toastOptions: UseToastOptions = {
+    status: "info",
+    isClosable: true,
     position: "top",
     ...options,
   };

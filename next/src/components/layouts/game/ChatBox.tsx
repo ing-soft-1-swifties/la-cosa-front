@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { ChatMessageType } from "@/store/gameSlice";
+import { ChatMessageSeverity, ChatMessageType } from "@/store/gameSlice";
 import { RootState } from "@/store/store";
 import { sendPlayerMessage } from "@/src/business/game/chat";
 
@@ -142,6 +142,7 @@ const ChatBox: FC<ChatBoxProps> = () => {
                           <ListItem key={index} color="rgba(200, 200, 200)">
                             <ChatMessageLine
                               sender={chatMessage.player_name ?? "Error"}
+                              severity={chatMessage.severity}
                               message={chatMessage.message}
                             />
                           </ListItem>
@@ -152,6 +153,7 @@ const ChatBox: FC<ChatBoxProps> = () => {
                           <ListItem key={index} color="rgba(200, 200, 200)">
                             <ChatMessageLine
                               sender="Juego"
+                              severity={chatMessage.severity}
                               message={chatMessage.message}
                             />
                           </ListItem>
@@ -227,15 +229,24 @@ const ChatBox: FC<ChatBoxProps> = () => {
 
 type ChatMessageLineProps = {
   sender?: string;
+  severity?: ChatMessageSeverity;
   message: string;
 };
-const ChatMessageLine: FC<ChatMessageLineProps> = ({ sender, message }) => {
+const ChatMessageLine: FC<ChatMessageLineProps> = ({
+  sender,
+  severity = ChatMessageSeverity.NORMAL,
+  message,
+}) => {
+  let color = "white";
+  if (severity == ChatMessageSeverity.INFO) color = "green.400";
+  if (severity == ChatMessageSeverity.WARNING) color = "yellow.500";
+  if (severity == ChatMessageSeverity.CRITICAL) color = "red.500";
   return (
     <>
       {sender && (
         <Text
           as="span"
-          color="white"
+          color={color}
           fontWeight="500"
           mr="1"
           textDecor="underline"
@@ -244,7 +255,7 @@ const ChatMessageLine: FC<ChatMessageLineProps> = ({ sender, message }) => {
           {sender}:
         </Text>
       )}
-      {message}
+      <Text as="span" color={color}>{message}</Text>
     </>
   );
 };
