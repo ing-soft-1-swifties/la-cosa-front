@@ -12,7 +12,7 @@ import { StandaloneToast } from "@/src/pages/_app";
 import { buildErrorToastOptions } from "@/src/utils/toasts";
 import { setupChatListeners } from "../chat";
 import GameCard, {
-  Card as GameCardEnum,
+  CardTypes as GameCardEnum,
 } from "@/components/layouts/game/GameCard";
 
 export enum EventType {
