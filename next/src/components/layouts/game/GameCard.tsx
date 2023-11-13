@@ -3,6 +3,7 @@ import {} from "path";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import IMG_AWAY_BACK from "@/public/cards/AlejateBack.png";
+import IMG_ROTTEN_ROPES from "@/public/cards/CuerdasPodridas.png";
 import IMG_INFECTED from "@/public/cards/Infectado.png";
 import IMG_FLAMETHROWER from "@/public/cards/lanzallamas.png";
 import IMG_NOBBQ from "@/public/cards/NadaDeBarbacoas.png";
@@ -67,6 +68,7 @@ export enum CardTypes {
   THREE_FOUR = "Tres, cuatro...",
   ONE_TWO = "Uno, dos...",
   AWAY_BACK = "Alejate Reversa",
+  ROTTEN_ROPES = "Cuerdas podridas"
 }
 
 let ReverseCard = new Map<string, keyof typeof CardTypes>();
@@ -169,6 +171,9 @@ const CardsData: CardsDataType = {
   },
   [CardTypes.AWAY_BACK]: {
     image: IMG_AWAY_BACK,
+  },
+  [CardTypes.ROTTEN_ROPES]: {
+    image: IMG_ROTTEN_ROPES
   },
 };
 

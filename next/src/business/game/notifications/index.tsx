@@ -8,6 +8,7 @@ import {
   ChatMessageSeverity,
   Card,
   CardTypes,
+  setCardsToShow,
 } from "@/store/gameSlice";
 import { EventType } from "../gameAPI/listener";
 import { StandaloneToast } from "pages/_app";
@@ -102,13 +103,6 @@ function onPlayerTurn(payload: OnPlayerTurnPayload) {
   if (isLocalPlayer) {
     message = "¡Es el comienzo de tu turno!";
     severity = ChatMessageSeverity.INFO;
-    StandaloneToast(
-      buildSucessToastOptions({
-        description: message,
-        position: "top-right",
-        duration: 9000,
-      })
-    );
   } else {
     message = `Es el comienzo del turno de ${player.name}`;
     severity = ChatMessageSeverity.NORMAL;
@@ -163,7 +157,7 @@ function onPlayerStealCard(payload: OnPlayerStealCardPayload) {
     message = `Robaste la carta: ${card.name}`;
     StandaloneToast(
       buildSucessToastOptions({
-        position: "top-right",
+        position: "bottom",
         description: message,
         duration: 9000,
       })
@@ -187,13 +181,16 @@ function onPlayerStealCard(payload: OnPlayerStealCardPayload) {
         payload.card_type == CardTypes.AWAY ? "¡Alejate!" : "¡Panico!"
       }`;
       severity = ChatMessageSeverity.NORMAL;
-      StandaloneToast(
-        buildInfoToastOptions({
-          position: "top-right",
-          description: message,
-          duration: 9000,
-        })
-      );
+      if (payload.card_type == CardTypes.PANIC) {
+        StandaloneToast(
+          buildWarningToastOptions({
+            position: "top-right",
+            colorScheme: "purple",
+            description: message,
+            duration: 9000,
+          })
+        );
+      }
     }
   }
   store.dispatch(
@@ -248,12 +245,14 @@ function onPlayerPlayCard(payload: OnPlayerPlayCardPayload) {
         buildInfoToastOptions({
           description: message,
           duration: 6000,
+          position: "top-right",
         })
       );
     else if (severity == ChatMessageSeverity.WARNING)
       StandaloneToast(
         buildWarningToastOptions({
           title: "¡Cuidado!",
+          position: "top-right",
           description: message,
           duration: 9000,
         })
@@ -303,10 +302,11 @@ function onPlayerDiscardCard(payload: OnPlayerDiscardCardPayload) {
         card.name
       } de tipo ${card.type == CardTypes.AWAY ? "¡Alejate!" : "¡Panico!"}`;
       severity = ChatMessageSeverity.WARNING;
-      StandaloneToast(
-        buildWarningToastOptions({
-          description: message,
-          duration: 6000,
+      store.dispatch(
+        setCardsToShow({
+          cardsToShow: [card],
+          title: `El jugador en cuarentena ${player.name} descarto la carta:`,
+          player: undefined,
         })
       );
     } else {
@@ -387,13 +387,13 @@ function onFinishExchange(payload: OnFinishExchangePayload) {
   if (isExchanging) {
     const other_player =
       localPlayerName == first_player ? second_player : first_player;
-    message = `Finalizo tu intercambio con ${other_player}, recibiste la carta ${payload.card_in}`;
+    message = `Finalizo tu intercambio con ${other_player}, recibiste la carta ${payload.card_in?.name}`;
     severity = ChatMessageSeverity.INFO;
-    StandaloneToast(
-      buildSucessToastOptions({
-        description: message,
-        duration: 9000,
-        position: "top",
+    store.dispatch(
+      setCardsToShow({
+        cardsToShow: payload.card_in != null ? [payload.card_in] : undefined,
+        title: `Recibiste de ${other_player} la carta:`,
+        player: undefined,
       })
     );
     // TODO! REMOVER SI NO HACE FALTA:
@@ -453,25 +453,25 @@ function onFinishExchange(payload: OnFinishExchangePayload) {
           quarantine_player == first_player ? second_player : first_player;
         message = `El jugador en cuarentena ${quarantine_player} le paso la carta ${card.name} al jugador ${other_player}`;
         severity = ChatMessageSeverity.WARNING;
-        StandaloneToast(
-          buildWarningToastOptions({
-            position: "top-right",
-            description: message,
-            duration: 9000,
+        store.dispatch(
+          setCardsToShow({
+            cardsToShow: [card],
+            title: `El jugador ${quarantine_player} le paso la siguiente carta al jugador ${other_player}:`,
+            player: undefined,
           })
         );
       } else {
         // CASO LOS DOS EN CUARENTENA
         const quarantine_first_player = exchange[0];
         const quarantine_second_player = exchange[1];
-        StandaloneToast(
-          buildWarningToastOptions({
-            position: "top-right",
-            description: `El jugador en cuarentena ${quarantine_first_player.player_name} le paso la 
-            carta ${quarantine_first_player.card.name} al jugador ${quarantine_second_player.player_name}`,
-            duration: 12000,
-          })
-        );
+        // StandaloneToast(
+        //   buildWarningToastOptions({
+        //     position: "top-right",
+        //     description: `El jugador en cuarentena ${quarantine_first_player.player_name} le paso la
+        //     carta ${quarantine_first_player.card.name} al jugador ${quarantine_second_player.player_name}`,
+        //     duration: 12000,
+        //   })
+        // );
         store.dispatch(
           addChatMessage({
             type: ChatMessageType.GAME_MESSAGE,
@@ -483,13 +483,13 @@ function onFinishExchange(payload: OnFinishExchangePayload) {
         severity = ChatMessageSeverity.WARNING;
         message = `El jugador en cuarentena ${quarantine_second_player.player_name} le paso la 
             carta ${quarantine_second_player.card.name} al jugador ${quarantine_first_player.player_name}`;
-        StandaloneToast(
-          buildWarningToastOptions({
-            position: "top-right",
-            description: message,
-            duration: 12000,
-          })
-        );
+        // StandaloneToast(
+        //   buildWarningToastOptions({
+        //     position: "top-right",
+        //     description: message,
+        //     duration: 12000,
+        //   })
+        // );
       }
     }
   }
