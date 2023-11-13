@@ -50,7 +50,7 @@ function getTranslatesForPositionDoor(
   // Obtenemos el angulo para la posicion del jugador
   let angle = position * ((2 * Math.PI) / playerAmount);
   angle -= Math.PI / 2;
-  angle += Math.PI / playerAmount
+  angle += Math.PI / playerAmount;
 
   // Devolvemos sus coordenadas en el círculo trigonométrico
   return { x: Math.cos(angle), y: Math.sin(angle) };
@@ -86,9 +86,12 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   function isAdjacentDoor(door: number) {
     const alivePlayersAmount = players_data.filter(
       (p) => p.status == PlayerStatus.ALIVE
-      ).length;
-    const positionLeft = (localPlayer.position-1 < 0? (alivePlayersAmount-1) : (localPlayer.position-1)) ;
-    return (door == positionLeft) || (door == localPlayer.position);
+    ).length;
+    const positionLeft =
+      localPlayer.position - 1 < 0
+        ? alivePlayersAmount - 1
+        : localPlayer.position - 1;
+    return door == positionLeft || door == localPlayer.position;
   }
 
   function onPlayerSelectedToggle(playerID: number) {
@@ -103,10 +106,14 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     if (
       localPlayer.selections.card === undefined ||
       !localPlayer.selections.card?.needTarget
-    ) return;
-    
+    )
+      return;
+
     // si la carta es hacha no se puede seleccionar a alguien q no este en cuarentena
-    if(localPlayer.selections.card.name == CardTypes.AXE && playerSelected?.quarantine == 0)
+    if (
+      localPlayer.selections.card.name == CardTypes.AXE &&
+      playerSelected?.quarantine == 0
+    )
       return;
 
     // si requiere seleccion y el jugador clickeado aplica, lo seleccionamos
@@ -214,7 +221,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
           >
             <Door isSelected={selectedDoor == door} position={door} />
           </Box>
-        )
+        );
       })}
 
       <Tooltip label={localPlayer.name} placement="bottom">
@@ -234,7 +241,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
           wordBreak="keep-all"
         >
           {localPlayer.name}
-          </Text>
+        </Text>
       </Tooltip>
 
       {/* Top */}
@@ -316,29 +323,39 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
       translateX="0px"
       translateY="0px"
     >
-      <Box h="11rem" mb="4" w="max-content">
-        {lastPlayedCard == null ? (
-          <GameCard
-            card_id={0}
-            name={CardTypes.AWAY_BACK}
-            shouldSelect={false}
-          />
-        ) : (
-          <GameCard
-            card_id={lastPlayedCard.card_id}
-            name={lastPlayedCard.card_name}
-            shouldSelect={false}
-          />
-        )}
-      </Box>
       {lastPlayedCard != null && (
-        <Text color="white" fontWeight="bold" textAlign="center">
-          Ultima Carta Jugada Por:
-          <br />
-          <Text as="span" textDecor="underline" textUnderlineOffset="2px">
-            {lastPlayedCard.player_name}
+        <>
+          <Text color="white" fontWeight="bold" textAlign="center">
+            Jugada por:
+            <br />
+            <Text as="span" textDecor="none">
+              {lastPlayedCard.player_name}
+            </Text>
           </Text>
-        </Text>
+
+          <Box h="11rem" mb="4" w="max-content">
+            {lastPlayedCard == null ? (
+              <GameCard
+                card_id={0}
+                name={CardTypes.AWAY_BACK}
+                shouldSelect={false}
+              />
+            ) : (
+              <GameCard
+                card_id={lastPlayedCard.card_id}
+                name={lastPlayedCard.card_name}
+                shouldSelect={false}
+              />
+            )}
+          </Box>
+          {lastPlayedCard.player_target && (
+            <Text color="white" fontWeight="bold" textAlign="center">
+              Sobre:
+              <br />
+              {lastPlayedCard.player_target}
+            </Text>
+          )}
+        </>
       )}
     </Flex>
   );

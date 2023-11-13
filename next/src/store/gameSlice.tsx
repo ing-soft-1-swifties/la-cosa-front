@@ -97,8 +97,11 @@ export type GameState = {
         player_name: string;
         card_id: number;
         card_name: string;
+        //objetivo de la ultima carta jugada
+        player_target?: string;
       }
     | undefined;
+  
   dataCardPlayed: DataCardPlayed;
   doors_positions: number[];
   isExchanging: boolean;
@@ -278,6 +281,7 @@ export const initialState: GameState = {
   multiSelect: {
     away_selected: [],
   },
+  isExchanging: false
 };
 
 export type BackendGameState = {
