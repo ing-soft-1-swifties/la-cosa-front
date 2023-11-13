@@ -50,9 +50,13 @@ const ChatBox: FC<ChatBoxProps> = () => {
   };
 
   useEffect(() => {
-    if (chatBoxRef.current != null)
+    if (chatBoxRef.current != null) {
       chatBoxRef.current!.scrollTop = chatBoxRef.current!.scrollHeight;
-  }, [allMessages, chatBoxRef]);
+    }
+    if (onChatTab) {
+      inputRef.current?.focus();
+    }
+  }, [allMessages, chatBoxRef, onChatTab, isOpen]);
 
   return (
     <>
@@ -68,13 +72,25 @@ const ChatBox: FC<ChatBoxProps> = () => {
         >
           <Button
             onClick={onClose}
-            transitionDuration="300ms"
-            bg="white"
-            borderRightRadius="2xl"
             borderLeftRadius="none"
-            cursor="pointer"
             fontWeight="bold"
             mb="4"
+            pos="absolute"
+            left="0"
+            transform="auto"
+            translateY="-50%"
+            translateX="-7"
+            _hover={{
+              translateX: 0,
+            }}
+            transitionDuration="300ms"
+            bg="white"
+            pl="12"
+            pr="6"
+            py="2"
+            borderRightRadius="2xl"
+            cursor="pointer"
+            zIndex={10}
           >
             Cerrar Chat
           </Button>
@@ -177,6 +193,7 @@ const ChatBox: FC<ChatBoxProps> = () => {
                     columnGap="4"
                   >
                     <Input
+                      id="INPUT_CHAT"
                       ref={inputRef}
                       flex="1"
                       height="2rem"
