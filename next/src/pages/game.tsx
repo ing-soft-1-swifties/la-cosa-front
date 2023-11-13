@@ -87,20 +87,6 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
       })
     );
   };
-  const playerTurnHandler = (data: any) => {
-    toast(
-      buildSucessToastOptions({
-        title: "Aviso",
-        description: `Es el turno de ${data.player}`,
-      })
-    );
-  };
-  // const newPlayerRoom = () => {
-  //   toast(buildSucessToastOptions({ description: "Nuevo jugador en la partida" }));
-  // };
-  // const leftPlayerRoom = () => {
-  //   toast(buildSucessToastOptions({ description: "Un jugador abandonó la partida" }));
-  // };
   const canceledRoom = () => {
     toast(
       buildSucessToastOptions({
@@ -108,38 +94,6 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
         description: "Se cancelo la partida",
       })
     );
-  };
-  const playerStealCard = (data: any) => {
-    const chatMessage = {
-      type: ChatMessageType.GAME_MESSAGE,
-      message: `Robaste las cartas: ${data.cards.reduce(
-        (ac: string, card: any) => ac + `${card.name} `,
-        ""
-      )}`,
-    };
-    dispatch(addChatMessage(chatMessage));
-    // toast(
-    //   buildSucessToastOptions({
-    //     title: "Aviso",
-    //     description: `Robaste las cartas: ${data.cards.reduce(
-    //       (ac: string, card: any) => ac + `${card.name} `,
-    //       ""
-    //     )}`,
-    //   })
-    // );
-  };
-  const playerPlayCard = (data: any) => {
-    const chatMessage = {
-      type: ChatMessageType.GAME_MESSAGE,
-      message: `El jugador ${data.player_name} jugo la carta: ${data.card_name}`,
-    };
-    dispatch(addChatMessage(chatMessage));
-    // toast(
-    //   buildSucessToastOptions({
-    //     title: "Aviso",
-    //     description: `El jugador ${data.player} jugo la carta: ${data.card.name}`,
-    //   })
-    // );
   };
   const playerPlayDefenseCard = (data: any) => {
     const chatMessage = {
@@ -174,10 +128,7 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
 
   useEffect(() => {
     gameSocket.on(EventType.ON_ROOM_START_GAME, roomStartHandler);
-    gameSocket.on(EventType.ON_GAME_PLAYER_TURN, playerTurnHandler);
     gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, canceledRoom);
-    gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, playerStealCard);
-    gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, playerPlayCard);
     gameSocket.on(
       EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD,
       playerPlayDefenseCard
@@ -185,19 +136,7 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
     gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, beginExchange);
     return () => {
       gameSocket.removeListener(EventType.ON_ROOM_START_GAME, roomStartHandler);
-      gameSocket.removeListener(
-        EventType.ON_GAME_PLAYER_TURN,
-        playerTurnHandler
-      );
       gameSocket.removeListener(EventType.ON_ROOM_CANCELLED_GAME, canceledRoom);
-      gameSocket.removeListener(
-        EventType.ON_GAME_PLAYER_STEAL_CARD,
-        playerStealCard
-      );
-      gameSocket.removeListener(
-        EventType.ON_GAME_PLAYER_PLAY_CARD,
-        playerPlayCard
-      );
       gameSocket.removeListener(
         EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD,
         playerPlayDefenseCard

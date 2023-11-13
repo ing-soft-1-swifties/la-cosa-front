@@ -110,8 +110,16 @@ export enum ChatMessageType {
   GAME_MESSAGE = "game_message",
 }
 
+export enum ChatMessageSeverity {
+  NORMAL = "normal",
+  INFO = "info",
+  WARNING = "warning",
+  CRITICAL = "critical",
+}
+
 export type ChatMessage = {
   type: ChatMessageType;
+  severity?: ChatMessageSeverity;
   player_name?: string;
   message: string;
 };
