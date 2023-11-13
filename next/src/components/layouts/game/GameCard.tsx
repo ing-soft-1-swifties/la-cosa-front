@@ -306,7 +306,6 @@ const GameCard: FC<CardProps> = ({
         scale: 1.1,
       }}
       transitionDuration="300ms"
-      opacity={shouldBlur ? "0.4" : "1"}
       {...borderProps}
     >
       {cardData !== undefined ? (
@@ -329,7 +328,3 @@ const GameCard: FC<CardProps> = ({
 };
 
 export default GameCard;
-
-
-
-
