@@ -28,6 +28,7 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 import GameCard, { CardTypes } from "@/components/layouts/game/GameCard";
+import { FramerMotionBox } from "utils/animations";
 
 type TableProps = BoxProps & {};
 
@@ -168,7 +169,6 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     if (dimensions == null) return;
     dispatch(setDiscardDeckDimensions(dimensions));
   }, [dimensions, dispatch]);
-
   return (
     <Box
       w="auto"
@@ -328,6 +328,27 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
+  const InspectingCard = useSelector(
+    (state: RootState) => state.game.inspectingCard
+  );
+
+  const variants2 = {
+    open: {
+      y: "-13vh",
+      x: "-12.5rem",
+      height: "35rem",
+      width: "25rem",
+      display: "block",
+    },
+    closed: {
+      y: 0,
+      x: 0,
+      height: "0px",
+      width: "auto",
+      display: "none",
+    },
+  };
+
   return (
     <Flex
       flexDir="column"

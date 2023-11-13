@@ -49,7 +49,6 @@ import { setInspectingCard, setSelectedCard } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import {Card as CardData, CardTypes as CardType} from "@/store/gameSlice"
 import React, { useState } from "react";
-import { FramerMotionBox } from "utils/animations";
 
 export enum CardTypes {
   FLAMETHROWER = "Lanzallamas",
@@ -203,12 +202,14 @@ type CardProps = BoxProps & {
   card_id: number;
   name: string;
   shouldSelect?: boolean;
+  isIspecteable: boolean;
 };
 
 const GameCard: FC<CardProps> = ({
   card_id: id,
   name,
   shouldSelect = false,
+  isIspecteable,
   ...props
 }) => {
   const player = usePlayerGameState();
@@ -270,10 +271,10 @@ const GameCard: FC<CardProps> = ({
   const InspectingCard = useSelector(
     (state: RootState) => state.game.inspectingCard
   );
-  const variants = {
-    open: { y: -10, x: -10, zindex: 1000, heigh: "60rem", width: "100px" },
-    closed: { y: 0, x: 0, zindex: -1, heigh: "0px", width: "auto" },
-  };
+  // const variants = {
+  //   open: { y: -10, x: -10, zindex: -1000, heigh: "60rem", width: "100px" },
+  //   closed: { y: 0, x: 0, zindex: -1, heigh: "0px", width: "auto" },
+  // };
 
   return (
 <<<<<<< HEAD
@@ -412,7 +413,7 @@ const GameCard: FC<CardProps> = ({
               right="0"
               top="0"
               display={
-                seeInspectCard && InspectingCard != id ? "inline-block" : "none"
+                isIspecteable && seeInspectCard && InspectingCard != id ? "inline-block" : "none"
               }
               onClick={() => {
                 dispatch(setInspectingCard(id));

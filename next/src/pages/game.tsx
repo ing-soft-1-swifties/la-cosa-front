@@ -35,7 +35,7 @@ const Page: PageWithLayout = () => {
   const InspectingCard = useSelector(
     (state: RootState) => state.game.inspectingCard
   );
-  const isIspecting = InspectingCard != undefined;
+  const isIspecting = (InspectingCard != undefined);
   const dispatch = useDispatch();
 
   return (
@@ -49,7 +49,7 @@ const Page: PageWithLayout = () => {
           h="full"
           w="100%"
           backgroundColor= "black"
-          opacity={isIspecting ? 0.9 : 0}
+          opacity={isIspecting ? 0.8 : 0}
           zIndex={isIspecting ? 11 : 0}
           transitionDuration="200ms"
           onClick={()=>{

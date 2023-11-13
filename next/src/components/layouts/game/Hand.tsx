@@ -54,7 +54,6 @@ const AnimatedGameCard = React.forwardRef<
     (state: RootState) => state.game.discardDeckDimensions
   );
   let leftRel = 0;
-  let leftNRel = 0;
   let topRel = 0;
 
   // Todo por que useDimensions no anda!
@@ -64,9 +63,6 @@ const AnimatedGameCard = React.forwardRef<
     leftRel =
       -(rect.left - (discardDeckDimensions?.borderBox.left ?? 0)) -
       (rect.width - (discardDeckDimensions?.borderBox.width ?? 0)) / 2;
-    leftNRel =
-      -(rect.left - (discardDeckDimensions?.borderBox.left ?? 0)) * 1.5 -
-      ((rect.width - (discardDeckDimensions?.borderBox.width ?? 0)) * 1.5) / 2;
     topRel =
       -(rect.top - (discardDeckDimensions?.borderBox.top ?? 0)) -
       (rect.height - (discardDeckDimensions?.borderBox.height ?? 0)) / 2;
@@ -82,15 +78,13 @@ const AnimatedGameCard = React.forwardRef<
       x: "calc(14vw)",
       height: "35rem",
       width: "auto",
-      zIndex: 11,
       display: "block",
     },
     closed: {
       y: 0,
-      x: 0,
+      x: leftRel,
       height: "0px",
       width: "auto",
-      zindex: -1,
       display: "none",
     },
   };
@@ -118,6 +112,7 @@ const AnimatedGameCard = React.forwardRef<
           shouldSelect={true}
           h={height ?? "auto"}
           position="relative"
+          isIspecteable = {true}
         />
       </FramerMotionBox>
       <FramerMotionBox
@@ -126,7 +121,7 @@ const AnimatedGameCard = React.forwardRef<
         transition={{ duration: 0.8 }}
         position="absolute"
         zIndex={100000}
-        opacity={InspectingCard == id ? 1 : 0.3}
+        display={InspectingCard == id ? "block" : "none"}
       >
         <GameCard
           // h="20rem"
@@ -135,9 +130,9 @@ const AnimatedGameCard = React.forwardRef<
           data-testid={"Hand_card_" + id}
           name={name}
           card_id={id}
-          zIndex={100000}
           shouldSelect={true}
           h={height ?? "auto"}
+          isIspecteable = {true}
         />
       </FramerMotionBox>
     </>

@@ -180,7 +180,11 @@ export const initialState: GameState = {
   chat: {
     messages: [],
   },
-  lastPlayedCard: undefined,
+  lastPlayedCard: {
+    card_id: 9,
+    card_name: "¡No, gracias!",
+    player_name: "hola"
+  },
   dataCardPlayed: {
     title: undefined,
     player: undefined,
