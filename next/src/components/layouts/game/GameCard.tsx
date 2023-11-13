@@ -418,6 +418,19 @@ const GameCard: FC<CardProps> = ({
                 dispatch(setInspectingCard(id));
               }}
             />
+            <CloseIcon
+              color="white"
+              position="absolute"
+              zIndex={1000000}
+              w="5%"
+              h="auto"
+              right="0"
+              top="0"
+              display={InspectingCard == id ? "inline-block" : "none"}
+              onClick={() => {
+                dispatch(setInspectingCard(undefined));
+              }}
+            />
           </>
         ) : (
           <>
