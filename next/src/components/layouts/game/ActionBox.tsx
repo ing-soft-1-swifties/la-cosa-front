@@ -211,7 +211,11 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   }
 
   return (
+<<<<<<< HEAD
     <Box mx="5" maxW="70vh" pb={player.quarantine>0? 10 : 4}>
+=======
+    <Box mx="5" maxW="70vh" pb={4}>
+>>>>>>> enfoques, con nueva botonera y cuarentena
       <VStack spacing={4} align="stretch">
         {player.quarantine > 0 && (
           <Box>
