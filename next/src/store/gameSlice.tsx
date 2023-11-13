@@ -156,7 +156,7 @@ export const initialState: GameState = {
   direction: true,
   players: [
     {
-      name: "Yo",
+      name: "Otro 1",
       id: 124,
       position: 0,
       quarantine: 0,
@@ -165,12 +165,12 @@ export const initialState: GameState = {
       on_exchange: false,
     },
     {
-      name: "otro1",
+      name: "yo",
       id: 123,
       position: 1,
-      quarantine: 0,
+      quarantine: 3,
       status: PlayerStatus.ALIVE,
-      on_turn: false,
+      on_turn: true,
       on_exchange: false,
     },
     {

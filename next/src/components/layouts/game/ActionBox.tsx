@@ -4,6 +4,8 @@ import {
   Popover,
   PopoverBody,
   Stack,
+  VStack,
+  StackDivider,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
@@ -14,7 +16,15 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Card,
+  CardHeader,
+  Heading,
+  CardBody,
   useDisclosure,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { FC, useEffect, useRef, useState } from "react";
 import {
@@ -24,6 +34,7 @@ import {
   GiSwitchWeapon,
   GiChaliceDrops,
   GiSharpedTeethSkull,
+  GiGasMask,
 } from "react-icons/gi";
 import {
   sendFinishGame,
@@ -200,156 +211,172 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   }
 
   return (
-    <Box mx="5">
-      <Popover isOpen placement="top" autoFocus={false}>
-        <PopoverContent
-          bg="rgba(0, 0, 0, 0.4)"
-          color="white"
-          borderWidth="1px"
-          borderColor="gray"
-        >
-          <PopoverHeader borderColor="gray">{popoverTitle}</PopoverHeader>
-          <PopoverBody>{popoverText}</PopoverBody>
-        </PopoverContent>
-        <PopoverTrigger>
-          <Stack maxW="20vw" data-testid={`HAND`} justify="center">
-            {on_turn && !on_exchange && (
-              <>
-                <Button
-                  colorScheme="whiteAlpha"
-                  data-testid="ACTION_BOX_PLAY_BTN"
-                  onClick={playCard}
-                  rightIcon={<GiBroadsword />}
-                  isDisabled={cannotPlaySelectedCard}
-                >
-                  Jugar
-                </Button>
+    <Box mx="5" maxW="70vh" pb={4}>
+      <VStack spacing={4} align="stretch">
+        {player.quarantine > 0 && (
+          <Box>
+            <Alert status="error">
+              <GiGasMask size={30} />
+              <AlertTitle>Estas en cuarentena!</AlertTitle>
+              <AlertDescription>Rondas restantes {player.quarantine}.</AlertDescription>
+            </Alert>
+          </Box>
+        )}
+        <Box>
+          <Card
+            size="sm"
+            bg="rgba(0, 0, 0, 0.4)"
+            color="white"
+            borderWidth="1px"
+            borderColor="gray"
+          >
+            <CardHeader>
+              <Heading size="md" borderColor="gray">
+                {popoverTitle}
+              </Heading>
+            </CardHeader>
 
-                <Button
-                  colorScheme="whiteAlpha"
-                  data-testid="ACTION_BOX_DSC_BTN"
-                  rightIcon={<GiChaliceDrops />}
-                  onClick={discardCard}
-                  isDisabled={
-                    cardSelectedID == undefined ||
-                    cardSelected?.name == GameCardTypes.THETHING ||
-                    cardSelected?.type == CardTypes.PANIC
-                  }
-                >
-                  Descartar
-                </Button>
-              </>
-            )}
+            <CardBody>{popoverText}</CardBody>
+            <CardBody>
+              <Stack data-testid={`HAND`} justify="center">
+                {on_turn && !on_exchange && (
+                  <>
+                    <Button
+                      colorScheme="whiteAlpha"
+                      data-testid="ACTION_BOX_PLAY_BTN"
+                      onClick={playCard}
+                      rightIcon={<GiBroadsword />}
+                      isDisabled={cannotPlaySelectedCard}
+                    >
+                      Jugar
+                    </Button>
 
-            {(on_defense || (on_exchange && !on_turn)) && (
-              <Button
-                colorScheme="whiteAlpha"
-                data-testid="ACTION_BOX_DEFENSE_BTN"
-                onClick={on_defense ? defenseCard : defenseCardOnExchange}
-                rightIcon={<GiFireShield />}
-                isDisabled={
-                  cardSelectedID == undefined ||
-                  cardSelected?.subType !== CardSubTypes.DEFENSE ||
-                  canUseDefensCard()
-                }
-              >
-                Defenderse
-              </Button>
-            )}
-            {on_defense && (
-              <Button
-                colorScheme="whiteAlpha"
-                data-testid="ACTION_BOX_NO_DEFENSE_BTN"
-                onClick={noDefense}
-                rightIcon={<GiDeathSkull />}
-              >
-                No Defenderse
-              </Button>
-            )}
+                    <Button
+                      colorScheme="whiteAlpha"
+                      data-testid="ACTION_BOX_DSC_BTN"
+                      rightIcon={<GiChaliceDrops />}
+                      onClick={discardCard}
+                      isDisabled={
+                        cardSelectedID == undefined ||
+                        cardSelected?.name == GameCardTypes.THETHING
+                      }
+                    >
+                      Descartar
+                    </Button>
+                  </>
+                )}
 
-            {on_exchange && (
-              <Button
-                isLoading={exchangedSelect}
-                colorScheme="whiteAlpha"
-                data-testid="ACTION_BOX_SWAP_BTN"
-                rightIcon={<GiSwitchWeapon />}
-                onClick={() => {
-                  setExchangeSelected(true);
-                  swapCard();
-                }}
-                isDisabled={
-                  cardSelectedID == undefined ||
-                  cardSelected?.name == GameCardTypes.THETHING ||
-                  (cardSelected?.name == GameCardTypes.INFECTED &&
-                    player.role == PlayerRole.HUMAN)
-                  // TODO: la condicion de abajo esta incompleta.
-                  // tambien le falta que sea la unica carta de infectado en la mano
-                  // || (cardSelected?.name == Card.INFECTED && player.role == PlayerRole.INFECTED)
-                }
-              >
-                Intercambiar
-                {turn}
-              </Button>
-            )}
-            {player.role == PlayerRole.THETHING && (
-              <>
-                <Button
-                  mt="6"
-                  colorScheme="red"
-                  data-testid="ACTION_BOX_THETHING_END_BTN"
-                  onClick={finishOnOpen}
-                  rightIcon={<GiSharpedTeethSkull />}
-                >
-                  Finalizar
-                </Button>
-                <AlertDialog
-                  leastDestructiveRef={leastDestructiveRef}
-                  isOpen={isFinishOpen}
-                  onClose={finishOnClose}
-                >
-                  <AlertDialogOverlay>
-                    <AlertDialogContent pb="7" pt="5">
-                      <AlertDialogHeader
-                        fontSize="xl"
-                        fontWeight="bold"
-                        textAlign="center"
-                      >
-                        Declarar Infeccion Global
-                      </AlertDialogHeader>
+                {(on_defense || (on_exchange && !on_turn)) && (
+                  <Button
+                    colorScheme="whiteAlpha"
+                    data-testid="ACTION_BOX_DEFENSE_BTN"
+                    onClick={on_defense ? defenseCard : defenseCardOnExchange}
+                    rightIcon={<GiFireShield />}
+                    isDisabled={
+                      cardSelectedID == undefined ||
+                      cardSelected?.subType !== CardSubTypes.DEFENSE ||
+                      canUseDefensCard()
+                    }
+                  >
+                    Defenderse
+                  </Button>
+                )}
+                {on_defense && (
+                  <Button
+                    colorScheme="whiteAlpha"
+                    data-testid="ACTION_BOX_NO_DEFENSE_BTN"
+                    onClick={noDefense}
+                    rightIcon={<GiDeathSkull />}
+                  >
+                    No Defenderse
+                  </Button>
+                )}
 
-                      <AlertDialogBody>
-                        <Text textAlign="center" fontWeight="500">
-                          Estas seguro? Si no estan todos los jugadores
-                          infectados perderas!
-                        </Text>
-                      </AlertDialogBody>
+                {on_exchange && (
+                  <Button
+                    isLoading={exchangedSelect}
+                    colorScheme="whiteAlpha"
+                    data-testid="ACTION_BOX_SWAP_BTN"
+                    rightIcon={<GiSwitchWeapon />}
+                    onClick={() => {
+                      setExchangeSelected(true);
+                      swapCard();
+                    }}
+                    isDisabled={
+                      cardSelectedID == undefined ||
+                      cardSelected?.name == GameCardTypes.THETHING ||
+                      (cardSelected?.name == GameCardTypes.INFECTED &&
+                        player.role == PlayerRole.HUMAN)
+                      // TODO: la condicion de abajo esta incompleta.
+                      // tambien le falta que sea la unica carta de infectado en la mano
+                      // || (cardSelected?.name == Card.INFECTED && player.role == PlayerRole.INFECTED)
+                    }
+                  >
+                    Intercambiar
+                    {turn}
+                  </Button>
+                )}
+                {player.role == PlayerRole.THETHING && (
+                  <>
+                    <Button
+                      mt="6"
+                      colorScheme="red"
+                      data-testid="ACTION_BOX_THETHING_END_BTN"
+                      onClick={finishOnOpen}
+                      rightIcon={<GiSharpedTeethSkull />}
+                    >
+                      Finalizar
+                    </Button>
+                    <AlertDialog
+                      leastDestructiveRef={leastDestructiveRef}
+                      isOpen={isFinishOpen}
+                      onClose={finishOnClose}
+                    >
+                      <AlertDialogOverlay>
+                        <AlertDialogContent pb="7" pt="5">
+                          <AlertDialogHeader
+                            fontSize="xl"
+                            fontWeight="bold"
+                            textAlign="center"
+                          >
+                            Declarar Infeccion Global
+                          </AlertDialogHeader>
 
-                      <AlertDialogFooter justifyContent="center">
-                        <Button
-                          ref={leastDestructiveRef}
-                          onClick={finishOnClose}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          colorScheme="red"
-                          onClick={() => {
-                            finishOnClose();
-                            sendFinishGame();
-                          }}
-                          ml={3}
-                        >
-                          Aceptar
-                        </Button>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialogOverlay>
-                </AlertDialog>
-              </>
-            )}
-          </Stack>
-        </PopoverTrigger>
-      </Popover>
+                          <AlertDialogBody>
+                            <Text textAlign="center" fontWeight="500">
+                              Estas seguro? Si no estan todos los jugadores
+                              infectados perderas!
+                            </Text>
+                          </AlertDialogBody>
+
+                          <AlertDialogFooter justifyContent="center">
+                            <Button
+                              ref={leastDestructiveRef}
+                              onClick={finishOnClose}
+                            >
+                              Cancelar
+                            </Button>
+                            <Button
+                              colorScheme="red"
+                              onClick={() => {
+                                finishOnClose();
+                                sendFinishGame();
+                              }}
+                              ml={3}
+                            >
+                              Aceptar
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialogOverlay>
+                    </AlertDialog>
+                  </>
+                )}
+              </Stack>
+            </CardBody>
+          </Card>
+        </Box>
+      </VStack>
     </Box>
   );
 };
