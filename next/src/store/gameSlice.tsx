@@ -209,7 +209,7 @@ export const initialState: GameState = {
       {
         id: 1,
         name: "Lanzallamas",
-        type: CardTypes.PANIC,
+        type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
         needTarget: true,
         targetAdjacentOnly: true,
