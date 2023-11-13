@@ -8,8 +8,15 @@ import {
   PopoverContent,
   PopoverHeader,
   Box,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import {
   GiBroadsword,
   GiFireShield,
@@ -30,26 +37,36 @@ import {
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import {
   CardSubTypes,
+  CardTypes,
   PlayerRole,
   PlayerStatus,
   PlayerTurnState,
 } from "@/store/gameSlice";
-import { CardTypes } from "./GameCard";
+import { CardTypes as GameCardTypes } from "./GameCard";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
+import { gameSocket } from "@/src/business/game/gameAPI";
+import { EventType } from "@/src/business/game/gameAPI/listener";
 
 type ActionBoxProps = {};
 
-const ActionBox: FC<ActionBoxProps> = ({ }) => {
+const ActionBox: FC<ActionBoxProps> = ({}) => {
   const player = usePlayerGameState();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
-  const { turn, on_exchange, on_turn, state} = player;
+  const { turn, on_exchange, on_turn, state } = player;
   const playerSelected = player.selections.player;
-  const on_defense = (state == PlayerTurnState.DEFENDING);
+  const on_defense = state == PlayerTurnState.DEFENDING;
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
+  const {
+    isOpen: isFinishOpen,
+    onClose: finishOnClose,
+    onOpen: finishOnOpen,
+  } = useDisclosure();
+  const leastDestructiveRef = useRef(null);
+
   const playCard = () => {
     var cardOptions = playerSelected ? { target: playerSelected } : {};
     if (cardSelectedID !== undefined) {
@@ -82,11 +99,20 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   };
 
   const noDefense = () => {
-    sendPlayerPlayNoDefense()
+    sendPlayerPlayNoDefense();
   };
 
-  
   const [exchangedSelect, setExchangeSelected] = useState(false);
+
+  useEffect(() => {
+    const callback = () => {
+      setExchangeSelected(false);
+    };
+    gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, callback);
+    return () => {
+      gameSocket.off(EventType.ON_GAME_BEGIN_EXCHANGE, callback);
+    };
+  }, [setExchangeSelected]);
 
   if (player.status == PlayerStatus.DEATH) {
     return null;
@@ -103,7 +129,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     popoverText = "Elije una carta para intercambiar con el otro jugador.";
   } else if (!on_turn && on_exchange) {
     popoverTitle = "Te han ofrecido un intercambio!";
-    popoverText = "Elije una carta para intercambiar o para defenderte del el otro jugador.";
+    popoverText =
+      "Elije una carta para intercambiar o para defenderte del el otro jugador.";
   } else if (on_defense) {
     popoverTitle = "Te estan atacando!";
     popoverText = "Elije una carta para defenderte o no te podras defender.";
@@ -111,27 +138,32 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
 
   function selectMessageText() {
     if (cardSelected == undefined) {
-      return "Seleccione una carta para jugar o descartar"
+      return "Seleccione una carta para jugar o descartar";
     }
     if (cardSelected.targetAdjacentOnly && playerSelected == undefined) {
-      return "La carta seleccionada necesita un objetivo adyacente"
+      return "La carta seleccionada necesita un objetivo adyacente";
     }
     if (cardSelected?.needTarget && playerSelected == undefined) {
-      return "La carta seleccionada necesita un objetivo"
+      return "La carta seleccionada necesita un objetivo";
     }
     if (cardSelected.subType == CardSubTypes.DEFENSE) {
       return "Las cartas de defensa solo se pueden descartar";
     }
-    if (cardSelected?.name == CardTypes.THETHING) {
-      return "La carta seleccionada no se puede jugar o descartar"
+    if (cardSelected?.name == GameCardTypes.THETHING) {
+      return "La carta seleccionada no se puede jugar o descartar";
     }
-    return "Seleccione la acción a realizar"
+    return "Seleccione la acción a realizar";
   }
 
   function canUseDefensCard() {
-    if (cardSelected != undefined && lastPlayedCard != undefined) { 
-      return (cardSelected.name == CardTypes.NOBBQ && lastPlayedCard.card_name == CardTypes.FLAMETHROWER) ||
-        (cardSelected.name == CardTypes.IM_FINE_HERE && lastPlayedCard.card_name == (CardTypes.YOU_BETTER_RUN || CardTypes.CHANGE_OF_LOCATION))
+    if (cardSelected != undefined && lastPlayedCard != undefined) {
+      return (
+        (cardSelected.name == GameCardTypes.NOBBQ &&
+          lastPlayedCard.card_name == GameCardTypes.FLAMETHROWER) ||
+        (cardSelected.name == GameCardTypes.IM_FINE_HERE &&
+          lastPlayedCard.card_name ==
+            (GameCardTypes.YOU_BETTER_RUN || GameCardTypes.CHANGE_OF_LOCATION))
+      );
     } else {
       return false;
     }
@@ -141,6 +173,18 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     setExchangeSelected(false);
   }
 
+  let cannotPlaySelectedCard =
+    cardSelectedID == undefined ||
+    cardSelected?.name == GameCardTypes.THETHING ||
+    cardSelected?.name == GameCardTypes.INFECTED ||
+    cardSelected?.subType == CardSubTypes.DEFENSE ||
+    (cardSelected?.needTarget && player.selections.player == undefined);
+  if (
+    player.panicCards.length > 0 &&
+    cardSelected != null &&
+    cardSelected.type != CardTypes.PANIC
+  )
+    cannotPlaySelectedCard = true;
 
   return (
     <Box mx="5">
@@ -163,16 +207,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                   data-testid="ACTION_BOX_PLAY_BTN"
                   onClick={playCard}
                   rightIcon={<GiBroadsword />}
-                  isDisabled={
-                    cardSelectedID == undefined ||
-                    cardSelected?.name == CardTypes.THETHING ||
-                    cardSelected?.name == CardTypes.INFECTED ||
-                    cardSelected?.subType == CardSubTypes.DEFENSE ||
-                    (cardSelected?.needTarget &&
-                      player.selections.player == undefined)
-                  }
-                // TODO: a futuro nos fijamos en PlayerTurnState
-                // isDisabled={cardSelectedID == undefined && turn !== PlayerTurnState.PLAY_OR_DISCARD && cardSelected?.name == Card.THETHING}
+                  isDisabled={cannotPlaySelectedCard}
                 >
                   Jugar
                 </Button>
@@ -184,7 +219,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                   onClick={discardCard}
                   isDisabled={
                     cardSelectedID == undefined ||
-                    cardSelected?.name == CardTypes.THETHING
+                    cardSelected?.name == GameCardTypes.THETHING
                   }
                 >
                   Descartar
@@ -196,7 +231,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_DEFENSE_BTN"
-                onClick={on_defense? defenseCard : defenseCardOnExchange}
+                onClick={on_defense ? defenseCard : defenseCardOnExchange}
                 rightIcon={<GiFireShield />}
                 isDisabled={
                   cardSelectedID == undefined ||
@@ -207,18 +242,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 Defenderse
               </Button>
             )}
-            {player.role == PlayerRole.THETHING && (  <Button
-                colorScheme="whiteAlpha"
-                data-testid="ACTION_BOX_THETHING_END_BTN"
-                onClick={sendFinishGame}
-                rightIcon={<GiSharpedTeethSkull />}
-                isDisabled={!on_turn}
-              >
-                Finalizar
-              </Button>
-
-            )}
-            {(on_defense) && (
+            {on_defense && (
               <Button
                 colorScheme="whiteAlpha"
                 data-testid="ACTION_BOX_NO_DEFENSE_BTN"
@@ -241,8 +265,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 }}
                 isDisabled={
                   cardSelectedID == undefined ||
-                  cardSelected?.name == CardTypes.THETHING ||
-                  (cardSelected?.name == CardTypes.INFECTED &&
+                  cardSelected?.name == GameCardTypes.THETHING ||
+                  (cardSelected?.name == GameCardTypes.INFECTED &&
                     player.role == PlayerRole.HUMAN)
                   // TODO: la condicion de abajo esta incompleta.
                   // tambien le falta que sea la unica carta de infectado en la mano
@@ -252,6 +276,62 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                 Intercambiar
                 {turn}
               </Button>
+            )}
+            {player.role == PlayerRole.THETHING && (
+              <>
+                <Button
+                  mt="6"
+                  colorScheme="red"
+                  data-testid="ACTION_BOX_THETHING_END_BTN"
+                  onClick={finishOnOpen}
+                  rightIcon={<GiSharpedTeethSkull />}
+                >
+                  Finalizar
+                </Button>
+                <AlertDialog
+                  leastDestructiveRef={leastDestructiveRef}
+                  isOpen={isFinishOpen}
+                  onClose={finishOnClose}
+                >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent pb="7" pt="5">
+                      <AlertDialogHeader
+                        fontSize="xl"
+                        fontWeight="bold"
+                        textAlign="center"
+                      >
+                        Declarar Infeccion Global
+                      </AlertDialogHeader>
+
+                      <AlertDialogBody>
+                        <Text textAlign="center" fontWeight="500">
+                          Estas seguro? Si no estan todos los jugadores
+                          infectados perderas!
+                        </Text>
+                      </AlertDialogBody>
+
+                      <AlertDialogFooter justifyContent="center">
+                        <Button
+                          ref={leastDestructiveRef}
+                          onClick={finishOnClose}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => {
+                            finishOnClose();
+                            sendFinishGame();
+                          }}
+                          ml={3}
+                        >
+                          Aceptar
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </>
             )}
           </Stack>
         </PopoverTrigger>

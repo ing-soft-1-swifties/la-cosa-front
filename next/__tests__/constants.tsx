@@ -21,7 +21,7 @@ export const PLAYER_IN_GAME_DATA_MOCK_1: GamePlayer = {
   position: 0,
   on_turn: true,
   on_exchange: false,
-  in_quarantine: false,
+  quarantine: 0,
 };
 
 // Propiedades: No es host y no esta en turno
@@ -33,7 +33,7 @@ export const PLAYER_IN_GAME_DATA_MOCK_2: GamePlayer = {
   position: 1,
   on_turn: false,
   on_exchange: false,
-  in_quarantine: false,
+  quarantine: 0,
 };
 
 // Propiedades: No es host y no esta en turno
@@ -45,7 +45,7 @@ export const PLAYER_IN_GAME_DATA_MOCK_3: GamePlayer = {
   position: 2,
   on_turn: false,
   on_exchange: false,
-  in_quarantine: false,
+  quarantine: 0,
 };
 
 // Propiedades: No es host y no esta en turno
@@ -57,7 +57,7 @@ export const PLAYER_IN_GAME_DATA_MOCK_4: GamePlayer = {
   position: 3,
   on_turn: false,
   on_exchange: false,
-  in_quarantine: false,
+  quarantine: 0,
 };
 
 export const PLAYER_IN_GAME_STATE_MOCK_1: PreloadedState<RootState> = {

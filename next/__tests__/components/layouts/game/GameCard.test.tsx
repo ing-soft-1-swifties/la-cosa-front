@@ -36,7 +36,7 @@ const PlayerInGameState: PreloadedState<RootState> = {
       {
         id: 1,
         name: "Test",
-        in_quarantine: false,
+        quarantine: false,
         status: PlayerStatus.ALIVE,
         position: 1,
       },
@@ -245,7 +245,7 @@ describe("Component Game Card", () => {
     );
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-      screenCard.click();
+    screenCard.click();
     expect(store.getState().game.playerData!.cardSelected).toBe(card.id);
   });
 
@@ -261,7 +261,7 @@ describe("Component Game Card", () => {
     );
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-      screenCard.click();
+    screenCard.click();
     expect(store.getState().game.playerData!.cardSelected).toBe(undefined);
   });
 
@@ -277,7 +277,7 @@ describe("Component Game Card", () => {
     );
 
     const screenCard = screen.getByTestId(`GAME_CARD_${card.id}`);
-      screenCard.click();
+    screenCard.click();
     expect(store.getState().game.playerData!.cardSelected).toBe(card.id);
   });
 });

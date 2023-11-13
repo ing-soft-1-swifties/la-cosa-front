@@ -12,7 +12,7 @@ import { StandaloneToast } from "@/src/pages/_app";
 import { buildErrorToastOptions } from "@/src/utils/toasts";
 import { setupChatListeners } from "../chat";
 import GameCard, {
-  Card as GameCardEnum,
+  CardTypes as GameCardEnum,
 } from "@/components/layouts/game/GameCard";
 
 export enum EventType {
@@ -97,11 +97,18 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
     const card = payload.card_name;
     const player = payload.effects.player;
     let title = "";
-    if (card == GameCardEnum.WHISKEY || card == GameCardEnum.ANALYSIS) {
+    if (
+      player != store.getState().user.name &&
+      (card == GameCardEnum.WHISKEY ||
+        card == GameCardEnum.ANALYSIS ||
+        card == GameCardEnum.SUSPICION)
+    ) {
       if (card == GameCardEnum.WHISKEY)
         title = `${player} jugo una carta de Whisky:`;
       if (card == GameCardEnum.ANALYSIS)
         title = `Resultados del Analisis de ${player}:`;
+      if (card == GameCardEnum.SUSPICION)
+        title = `Carta aleatoria de ${player}:`;
       store.dispatch(
         setCardsToShow({
           cardsToShow: payload.effects.cards,
@@ -109,14 +116,6 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
           title,
         })
       );
-      //  temporizador de 5 segundos
-      setTimeout(() => {
-        setCardsToShow({
-          cardsToShow: undefined,
-          player: undefined,
-          title: undefined,
-        }); //no es undi
-      }, 5000);
     }
   }
 }
@@ -150,6 +149,7 @@ function calculateNewGameState(data: GameStateData) {
       status: player.status,
       on_turn: player.on_turn,
       on_exchange: player.on_exchange,
+      quarantine: player.quarantine
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,

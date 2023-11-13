@@ -33,7 +33,7 @@ export type GamePlayer = {
   name: string;
   id: number;
   status: PlayerStatus;
-  in_quarantine: boolean;
+  quarantine: number;
   position: number;
   on_turn: boolean;
   on_exchange: boolean;
@@ -96,10 +96,11 @@ export type GameState = {
       }
     | undefined;
   dataCardPlayed: DataCardPlayed;
+  isExchanging: boolean;
 };
 
 export type DataCardPlayed = {
-  title: string | undefined
+  title: string | undefined;
   cardsToShow: Card[] | undefined;
   player: string | undefined;
 };
@@ -143,7 +144,7 @@ export const initialState: GameState = {
       name: "Yo",
       id: 124,
       position: 0,
-      in_quarantine: false,
+      quarantine: 0,
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
@@ -152,7 +153,7 @@ export const initialState: GameState = {
       name: "otro1",
       id: 123,
       position: 1,
-      in_quarantine: false,
+      quarantine: 0,
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
@@ -161,7 +162,7 @@ export const initialState: GameState = {
       name: "ot",
       id: 125,
       position: 2,
-      in_quarantine: false,
+      quarantine: 0,
       status: PlayerStatus.ALIVE,
       on_turn: true,
       on_exchange: false,
@@ -170,7 +171,7 @@ export const initialState: GameState = {
       name: "otro3",
       id: 126,
       position: 3,
-      in_quarantine: false,
+      quarantine: 0,
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
@@ -179,7 +180,7 @@ export const initialState: GameState = {
       name: "otro4",
       id: 127,
       position: 4,
-      in_quarantine: false,
+      quarantine: 0,
       status: PlayerStatus.ALIVE,
       on_turn: false,
       on_exchange: false,
@@ -188,7 +189,7 @@ export const initialState: GameState = {
       name: "otro5",
       id: 128,
       position: 5,
-      in_quarantine: false,
+      quarantine: 0,
       status: PlayerStatus.DEATH,
       on_turn: false,
       on_exchange: false,
@@ -307,6 +308,7 @@ export const gameSlice = createSlice({
     setCardsToShow(state, action: PayloadAction<DataCardPlayed>) {
       state.dataCardPlayed.cardsToShow = action.payload.cardsToShow;
       state.dataCardPlayed.player = action.payload.player;
+      state.dataCardPlayed.title = action.payload.title;
     },
   },
 });

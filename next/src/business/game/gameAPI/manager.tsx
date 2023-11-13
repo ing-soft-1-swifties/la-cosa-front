@@ -15,7 +15,7 @@ export enum MessageType {
   GET_GAME_STATE = "get_game_state",
   ROOM_START_GAME = "room_start_game",
   ROOM_QUIT_GAME = "room_quit_game",
-  FINISH_GAME = "finish_game",
+  FINISH_GAME = "game_thething_finish_game",
   GAME_PLAY_CARD = "game_play_card",
   GAME_PLAY_DEFENSE_CARD = "game_play_defense_card",
   GAME_DISCARD_CARD = "game_discard_card",
@@ -128,7 +128,6 @@ export function finishGame() {
   Router.push("/");
   store.dispatch(setUserName(undefined));
   store.dispatch(setGameConnectionToken(undefined));
-  store.dispatch(resetGameState())
 }
 
 export enum CancelGameReason {

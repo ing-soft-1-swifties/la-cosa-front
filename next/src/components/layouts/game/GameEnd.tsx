@@ -27,7 +27,6 @@ const GameEnd: FC<GameEndProps> = () => {
     undefined
   );
   const handleGameEnd = (data: GameEndData) => {
-    console.log("GAME ENDDD")
     setGameEndData(data);
   };
   useEffect(() => {
