@@ -149,6 +149,7 @@ function calculateNewGameState(data: GameStateData) {
       status: player.status,
       on_turn: player.on_turn,
       on_exchange: player.on_exchange,
+      quarantine: player.quarantine
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,

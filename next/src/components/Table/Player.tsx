@@ -74,7 +74,7 @@ const Player = ({
           top="-3px"
           src={MASK_ICON}
           alt="MASK_ICON"
-          display={player.on_turn ? "block" : "none"}
+          display={player.quarantine > 0 ? "block" : "none"}
         />
 
         <Image
@@ -86,7 +86,7 @@ const Player = ({
           top="0px"
           src={DANGER_ICON}
           alt="DANGER_ICON"
-          display={player.on_turn ? "block" : "none"}
+          display={player.quarantine > 0 ? "block" : "none"}
         />
 
         <Text

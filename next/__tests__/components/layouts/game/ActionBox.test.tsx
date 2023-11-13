@@ -63,19 +63,19 @@ const notTurnExchangeState: PreloadedState<RootState> = {
         id: 1,
         name: "Pepito",
         position: 1,
-        in_quarantine: false,
+        quarantine: false,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: true
+        on_exchange: true,
       },
       {
         id: 2,
         name: "Juanito",
         position: 2,
-        in_quarantine: false,
+        quarantine: false,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: false
+        on_exchange: false,
       },
     ],
     playerData: {
@@ -87,7 +87,7 @@ const notTurnExchangeState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: true
+          targetAdjacentOnly: true,
         },
       ],
       cardSelected: 1,
@@ -117,19 +117,19 @@ const onTurnExchangeState: PreloadedState<RootState> = {
         id: 1,
         name: "Pepito",
         position: 1,
-        in_quarantine: false,
+        quarantine: false,
         status: PlayerStatus.ALIVE,
         on_turn: true,
-        on_exchange: true
+        on_exchange: true,
       },
       {
         id: 2,
         name: "Juanito",
         position: 2,
-        in_quarantine: false,
+        quarantine: false,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: false
+        on_exchange: false,
       },
     ],
     playerData: {
@@ -141,7 +141,7 @@ const onTurnExchangeState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: true
+          targetAdjacentOnly: true,
         },
       ],
       cardSelected: 1,
@@ -171,19 +171,19 @@ const onTurnState: PreloadedState<RootState> = {
         id: 1,
         name: "Pepito",
         position: 1,
-        in_quarantine: false,
+        quarantine: false,
         status: PlayerStatus.ALIVE,
         on_turn: true,
-        on_exchange: false
+        on_exchange: false,
       },
       {
         id: 2,
         name: "Juanito",
         position: 2,
-        in_quarantine: false,
+        quarantine: false,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: false
+        on_exchange: false,
       },
     ],
     playerData: {
@@ -195,7 +195,7 @@ const onTurnState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: true
+          targetAdjacentOnly: true,
         },
       ],
       cardSelected: 1,
@@ -221,12 +221,60 @@ const InGameAppState: PreloadedState<RootState> = {
     },
     status: GameStatus.PLAYING,
     players: [
-      { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-      { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: true, on_exchange: false },
-      { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-      { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-      { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-      { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.DEATH, on_turn: false, on_exchange: false },
+      {
+        name: "Yo",
+        id: 123,
+        position: 0,
+        quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
+      },
+      {
+        name: "otro1",
+        id: 124,
+        position: 1,
+        quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: true,
+        on_exchange: false,
+      },
+      {
+        name: "otro2",
+        id: 125,
+        position: 2,
+        quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
+      },
+      {
+        name: "otro3",
+        id: 126,
+        position: 3,
+        quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
+      },
+      {
+        name: "otro4",
+        id: 127,
+        position: 4,
+        quarantine: false,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
+      },
+      {
+        name: "otro5",
+        id: 128,
+        position: 5,
+        quarantine: false,
+        status: PlayerStatus.DEATH,
+        on_turn: false,
+        on_exchange: false,
+      },
     ],
     playerData: {
       state: PlayerTurnState.DEFENDING,
@@ -404,7 +452,7 @@ describe("Page Lobby", () => {
     serverSocket.once(MessageType.GAME_DISCARD_CARD, (data) => {
       expect(data);
       const discardCardPayload: DiscardCardPayload = {
-        card: 1
+        card: 1,
       };
       expect(data).toStrictEqual(discardCardPayload);
       done();
@@ -415,7 +463,6 @@ describe("Page Lobby", () => {
       discardbtn.click();
     });
   });
-
 
   it("click on swap", (done) => {
     act(() => {
@@ -429,7 +476,7 @@ describe("Page Lobby", () => {
       expect(data);
       const selectExchangeCardPayload: SelectExchangeCardPayload = {
         on_defense: false,
-        card: 1
+        card: 1,
       };
       expect(data).toStrictEqual(selectExchangeCardPayload);
       done();
@@ -494,45 +541,29 @@ describe("Page Lobby", () => {
       store,
     });
 
-    act(()=> {
-      store.dispatch(
-        setSelectedCard(undefined)
-      );
+    act(() => {
+      store.dispatch(setSelectedCard(undefined));
     });
     screen.getByText("Seleccione una carta para jugar o descartar");
 
-
-    act(()=> {
-      store.dispatch(
-        setSelectedCard(3)
-      );
+    act(() => {
+      store.dispatch(setSelectedCard(3));
     });
     screen.getByText("La carta seleccionada necesita un objetivo");
 
-
-    act(()=> {
-      store.dispatch(
-        setSelectedCard(1)
-      );
+    act(() => {
+      store.dispatch(setSelectedCard(1));
     });
     screen.getByText("La carta seleccionada necesita un objetivo adyacente");
 
-
-    act(()=> {
-      store.dispatch(
-        setSelectedCard(4)
-      );
+    act(() => {
+      store.dispatch(setSelectedCard(4));
     });
     screen.getByText("Las cartas de defensa solo se pueden descartar");
 
-
-    act(()=> {
-      store.dispatch(
-        setSelectedCard(2)
-      );
+    act(() => {
+      store.dispatch(setSelectedCard(2));
     });
     screen.getByText("Seleccione la acción a realizar");
-
   });
-
 });

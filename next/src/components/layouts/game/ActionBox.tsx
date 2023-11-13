@@ -16,7 +16,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import {
   GiBroadsword,
   GiFireShield,
@@ -45,6 +45,9 @@ import {
 import { CardTypes as GameCardTypes } from "./GameCard";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
+import { Card } from "./GameCard";
+import { gameSocket } from "@/src/business/game/gameAPI";
+import { EventType } from "business/game/gameAPI/listener";
 
 type ActionBoxProps = {};
 
@@ -101,6 +104,16 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   };
 
   const [exchangedSelect, setExchangeSelected] = useState(false);
+
+  useEffect(() => {
+    const callback = () => {
+      setExchangeSelected(false);
+    };
+    gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, callback);
+    return () => {
+      gameSocket.off(EventType.ON_GAME_BEGIN_EXCHANGE, callback);
+    };
+  }, [setExchangeSelected]);
 
   if (player.status == PlayerStatus.DEATH) {
     return null;
