@@ -36,7 +36,6 @@ import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
 import { setSelectedCard } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
-import {Card as CardData, CardTypes as CardType} from "@/store/gameSlice"
 
 export enum CardTypes {
   FLAMETHROWER = "Lanzallamas",
@@ -202,40 +201,21 @@ const GameCard: FC<CardProps> = ({
     // IMG_LOADED = true;
   }
 
-
-  const borderProps: BoxProps = shouldSelect
-    ? {
-        borderColor:
-          player.selections.card?.id === id // selecciono la carta y es la misma que la que tengo
-            ? "green.500" // la pongo verde
-            : player.cards.find((card) => card.id === id)?.type === CardType.PANIC // si no es la misma, es una carta de panico
-            ? "purple.500" // la pongo morada
-            : "black", // si no es ninguna de las dos, la pongo negra
-      }
-    : {
-        borderColor: "black",
-      };
-
- 
-  const card: CardData | undefined = player.cards.find((card) => card.id == id);
-  const shouldBlur =
-    shouldSelect &&
-    card != null &&
-    player.panicCards.length > 0 && card.type != CardType.PANIC;
-
+  //VEO SE ES UNA CARTA DE PANICO;
+  const isPanicCard = player.panicCards.find((card) => card.id == id) != null
+  let borderColor = "black"; // Por defecto, el borde es negro
+  if (shouldSelect && player.selections.card?.id == id) {
+    // Si se selecciona una carta
+    borderColor = isPanicCard ? "purple.500" : "green.500"; // Carta pánico: violeta, Carta normal: verde
+  }
+  
   return (
     <Box
       onClick={() => {
-        
-        if (shouldSelect) {
-          // Si es una carta de pánico y puede ser seleccionada, se establece el borde violeta
-          if (card != null && card.type === CardType.PANIC) {
-            dispatch(setSelectedCard(player.selections.card?.id !== id ? id : undefined));
-          } else {
-            // Si no es una carta de pánico, se mantiene la lógica 
-            dispatch(setSelectedCard(player.selections.card?.id !== id ? id : undefined));
-          }
-        }
+        if (shouldSelect)
+          dispatch(
+            setSelectedCard(player.selections.card?.id !== id ? id : undefined)
+          );
       }}
       backgroundColor="black"
       minH="full"
@@ -253,8 +233,7 @@ const GameCard: FC<CardProps> = ({
         scale: 1.1,
       }}
       transitionDuration="300ms"
-      opacity={shouldBlur ? "0.4" : "1"}
-      {...borderProps}
+      borderColor={borderColor} // Aplica el color determinado al borde
     >
       {cardData !== undefined ? (
         <Image
@@ -276,7 +255,3 @@ const GameCard: FC<CardProps> = ({
 };
 
 export default GameCard;
-
-
-
-
