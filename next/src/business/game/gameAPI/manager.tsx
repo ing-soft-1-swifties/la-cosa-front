@@ -28,6 +28,7 @@ export function isGameHost() {
 
 export type CardOptions = {
   target?: number;
+  is_quaratine?: boolean;
 };
 export type PlayCardPayload = {
   card: number;

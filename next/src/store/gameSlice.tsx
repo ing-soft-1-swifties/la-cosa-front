@@ -3,6 +3,7 @@ import { BoxModel } from "@chakra-ui/utils";
 import { G } from "msw/lib/glossary-de6278a9";
 import GameCard from "components/layouts/game/GameCard";
 import { GameStateData } from "business/game/gameAPI/listener";
+import {CardTypes as CardNames} from "@/components/layouts/game/GameCard"
 
 export enum PlayerTurnState {
   PLAYING = "PLAYING",
@@ -156,7 +157,7 @@ export const initialState: GameState = {
   status: GameStatus.WAITING,
   player_in_turn: "Yo",
   direction: true,
-  doors_positions: [2],
+  doors_positions: [1,2,3,4,5],
   players: [
     {
       name: "Otro 1",
@@ -242,10 +243,10 @@ export const initialState: GameState = {
       },
       {
         id: 4,
-        name: "¡No, gracias!",
+        name: "Hacha",
         type: CardTypes.AWAY,
-        subType: CardSubTypes.DEFENSE,
-        needTarget: false,
+        subType: CardSubTypes.ACTION,
+        needTarget: true,
         targetAdjacentOnly: false,
       },
       {
@@ -259,7 +260,7 @@ export const initialState: GameState = {
     ],
     card_picking_amount: 0,
     cardSelected: undefined,
-    doorSelected: undefined,
+    doorSelected: 3,
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
     state: PlayerTurnState.PANICKING,

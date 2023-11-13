@@ -69,6 +69,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   const cardSelectedID = cardSelected?.id;
   const { turn, on_exchange, on_turn, state } = player;
   const playerSelected = player.selections.player;
+  const doorSelected = player.selections.door;
   const on_defense = state == PlayerTurnState.DEFENDING;
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
@@ -82,9 +83,18 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
 
   const playCard = () => {
     let cardOptions: any = {};
+    
     if (playerSelected) cardOptions.target = playerSelected;
     if (player.card_picking_amount > 0)
       cardOptions.cards = player.multiSelect.away_selected;
+  
+    // control de la carta hacha
+    if (player.selections.card?.name == GameCardTypes.AXE) {
+      const isQuaratine = playerSelected != undefined
+      const target = doorSelected != undefined ? doorSelected : playerSelected
+      cardOptions = doorSelected ? { target: target, is_quaratine: isQuaratine} : {};
+    }
+
     if (cardSelectedID !== undefined) {
       sendPlayerPlayCard(cardSelectedID, cardOptions);
       dispatch(
@@ -199,26 +209,27 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     cardSelected?.name == GameCardTypes.THETHING ||
     cardSelected?.name == GameCardTypes.INFECTED ||
     cardSelected?.subType == CardSubTypes.DEFENSE ||
-    (cardSelected?.needTarget && player.selections.player == undefined);
-
-  if ((player.state = PlayerTurnState.PANICKING)) {
-    cannotPlaySelectedCard = cardSelected?.type != CardTypes.PANIC;
-    if (
-      player.card_picking_amount > 0 &&
-      player.multiSelect.away_selected.length < player.card_picking_amount
-    )
-      cannotPlaySelectedCard = true;
-  }
+    (cardSelected?.needTarget && player.selections.player == undefined) ||
+    (cardSelected?.name == GameCardTypes.AXE &&
+      player.selections.door == undefined);
+  if (
+    player.panicCards.length > 0 &&
+    cardSelected != null &&
+    cardSelected.type != CardTypes.PANIC
+  )
+    cannotPlaySelectedCard = true;
 
   return (
-    <Box mx="5" maxW="70vh" pb={player.quarantine>0? 10 : 4}>
+    <Box mx="5" maxW="70vh" pb={player.quarantine > 0 ? 10 : 4}>
       <VStack spacing={4} align="stretch">
         {player.quarantine > 0 && (
           <Box>
             <Alert status="error">
               <GiGasMask size={30} />
               <AlertTitle>Estas en cuarentena!</AlertTitle>
-              <AlertDescription>Rondas restantes {player.quarantine}.</AlertDescription>
+              <AlertDescription>
+                Rondas restantes {player.quarantine}.
+              </AlertDescription>
             </Alert>
           </Box>
         )}

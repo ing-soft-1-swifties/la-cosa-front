@@ -18,7 +18,7 @@ import {
   unselectPlayer,
 } from "@/store/gameSlice";
 import Player from "./Player";
-import {DoorElem} from "@/src/components/Table/Door";
+import Door from "@/components/Table/Door";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
 import {
@@ -43,6 +43,19 @@ function getTranslatesForPosition(
   return { x: Math.cos(angle), y: Math.sin(angle) };
 }
 
+function getTranslatesForPositionDoor(
+  position: number,
+  playerAmount: number
+): { x: number; y: number } {
+  // Obtenemos el angulo para la posicion del jugador
+  let angle = position * ((2 * Math.PI) / playerAmount);
+  angle -= Math.PI / 2;
+  angle += Math.PI / playerAmount
+
+  // Devolvemos sus coordenadas en el círculo trigonométrico
+  return { x: Math.cos(angle), y: Math.sin(angle) };
+}
+
 const Table: FC<TableProps> = ({ ...boxProps }) => {
   const localPlayer = usePlayerGameState();
   const playerID = localPlayer.id;
@@ -52,11 +65,6 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   const players = players_data.filter(
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
   );
-
-  console.log(
-    typeof DoorElem == "undefined"
-  )
-  console.log("sdf")
 
   const selectedPlayerID = localPlayer.selections.player;
   const selectedDoor = localPlayer.selections.door;
@@ -80,7 +88,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     const alivePlayersAmount = players_data.filter(
       (p) => p.status == PlayerStatus.ALIVE
     ).length;
-    return door == playerID || rest == alivePlayersAmount - 1;
+    return (rest == alivePlayersAmount - 1) || (door == localPlayer.position);
   }
 
   function onPlayerSelectedToggle(playerID: number) {
@@ -105,6 +113,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       isAdjacent(playerSelected!.position)
     ) {
       dispatch(selectPlayer(playerID));
+      dispatch(unselectDoor());
     }
   }
 
@@ -126,6 +135,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     // si requiere seleccion y la puerta clickeada aplica, lo seleccionamos
     if (isAdjacentDoor(door)) {
       dispatch(setSelectedDoor(door));
+      dispatch(unselectPlayer());
     }
   }
 
@@ -186,7 +196,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       })}
 
       {doors.map((door: number) => {
-        const { x, y } = getTranslatesForPosition(
+        const { x, y } = getTranslatesForPositionDoor(
           door - (localPlayer.position as any),
           players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
         );
@@ -200,8 +210,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
             transitionDuration="1400ms"
             onClick={() => onDoorSelectedToggle(door)}
           >
-            <DoorElem isSelected={true} position={1} />
-            {/* <Text>hola</Text> */}
+            <Door isSelected={selectedDoor == door} position={door} />
           </Box>
         )
       })}
@@ -223,7 +232,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
           wordBreak="keep-all"
         >
           {localPlayer.name}
-        </Text>
+          </Text>
       </Tooltip>
 
       {/* Top */}
