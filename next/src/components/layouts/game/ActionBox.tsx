@@ -45,9 +45,8 @@ import {
 import { CardTypes as GameCardTypes } from "./GameCard";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
-import { Card } from "./GameCard";
 import { gameSocket } from "@/src/business/game/gameAPI";
-import { EventType } from "business/game/gameAPI/listener";
+import { EventType } from "@/src/business/game/gameAPI/listener";
 
 type ActionBoxProps = {};
 

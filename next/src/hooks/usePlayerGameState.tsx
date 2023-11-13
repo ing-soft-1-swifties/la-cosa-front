@@ -13,6 +13,7 @@ import { useMemo } from "react";
 
 type PlayerGameState = {
   id: number;
+  name: string;
   position: number;
   status: PlayerStatus;
   role: PlayerRole;
@@ -57,6 +58,7 @@ const usePlayerGameState: () => PlayerGameState = () => {
 
   const playerState: PlayerGameState = {
     id: playerData.playerID,
+    name: playerPublicData.name,
     position: playerPublicData.position,
     on_turn: playerPublicData.on_turn,
     on_exchange: playerPublicData.on_exchange,

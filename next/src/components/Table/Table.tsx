@@ -4,6 +4,7 @@ import {
   Flex,
   Icon,
   Text,
+  Tooltip,
   useDimensions,
 } from "@chakra-ui/react";
 import React, { FC, useEffect, useRef } from "react";
@@ -43,7 +44,7 @@ function getTranslatesForPosition(
 const Table: FC<TableProps> = ({ ...boxProps }) => {
   const localPlayer = usePlayerGameState();
   const playerID = localPlayer.id;
-  const gameDirection = useSelector((state: RootState) => state.game.direction) 
+  const gameDirection = useSelector((state: RootState) => state.game.direction);
   const players_data = useSelector((state: RootState) => state.game.players);
   const players = players_data.filter(
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
@@ -145,6 +146,27 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
           </Box>
         );
       })}
+
+      <Tooltip label={localPlayer.name} placement="bottom">
+        <Text
+          pos="absolute"
+          bottom={0}
+          transform="auto"
+          translateY="100%"
+          color="white"
+          pt="4"
+          userSelect="none"
+          textAlign="center"
+          maxW="12ch"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          wordBreak="keep-all"
+        >
+          {localPlayer.name}
+        </Text>
+      </Tooltip>
+
       {/* Top */}
       <Box
         pt="4"
@@ -154,7 +176,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
         transform="auto"
         translateX="-50%"
       >
-        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowLeft : FaArrowRight} />
+        <Icon
+          fontSize="1.2rem"
+          color="green.500"
+          as={gameDirection ? FaArrowLeft : FaArrowRight}
+        />
       </Box>
       {/* Bottom */}
       <Box
@@ -166,7 +192,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
         translateX="-50%"
         translateY="-100%"
       >
-        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowRight : FaArrowLeft} />
+        <Icon
+          fontSize="1.2rem"
+          color="green.500"
+          as={gameDirection ? FaArrowRight : FaArrowLeft}
+        />
       </Box>
       {/* Left */}
       <Box
@@ -177,7 +207,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
         transform="auto"
         translateY="-50%"
       >
-        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowDown : FaArrowUp} />
+        <Icon
+          fontSize="1.2rem"
+          color="green.500"
+          as={gameDirection ? FaArrowDown : FaArrowUp}
+        />
       </Box>
       {/* Right */}
       <Box
@@ -189,7 +223,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
         translateX="-100%"
         translateY="-50%"
       >
-        <Icon fontSize="1.2rem" color="green.500" as={gameDirection ? FaArrowUp : FaArrowDown} />
+        <Icon
+          fontSize="1.2rem"
+          color="green.500"
+          as={gameDirection ? FaArrowUp : FaArrowDown}
+        />
       </Box>
     </Box>
   );

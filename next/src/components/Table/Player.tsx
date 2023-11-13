@@ -1,4 +1,11 @@
-import { Avatar, Box, Box as Flex, Text, keyframes } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Box as Flex,
+  Text,
+  keyframes,
+  Tooltip,
+} from "@chakra-ui/react";
 import React from "react";
 import { GamePlayer } from "@/store/gameSlice";
 import Image from "@/components/utility/Image";
@@ -64,8 +71,23 @@ const Player = ({
             alt="PLAYER_DIAMOND"
           />
         </FramerMotionBox>
-        <PlayerAvatar isSelected={selected} player={player} />
-
+        <Tooltip label={player.name} placement="right">
+          <Box>
+            <PlayerAvatar isSelected={selected} player={player} />
+            <Text
+              userSelect="none"
+              color={selected ? "green.500" : "white"}
+              textAlign="center"
+              maxW="12ch"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              wordBreak="keep-all"
+            >
+              {player.name}
+            </Text>
+          </Box>
+        </Tooltip>
         <Image
           position="absolute"
           zIndex={10}
@@ -88,19 +110,6 @@ const Player = ({
           alt="DANGER_ICON"
           display={player.quarantine > 0 ? "block" : "none"}
         />
-
-        <Text
-          userSelect="none"
-          color={selected ? "green.500" : "white"}
-          textAlign="center"
-          maxW="12ch"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-          wordBreak="keep-all"
-        >
-          {player.name}
-        </Text>
       </Flex>
     </>
   );
