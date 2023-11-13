@@ -13,12 +13,14 @@ import {
   PlayerStatus,
   selectPlayer,
   setDiscardDeckDimensions,
+  setSelectedDoor,
+  unselectDoor,
   unselectPlayer,
 } from "@/store/gameSlice";
 import Player from "./Player";
+import {DoorElem} from "@/src/components/Table/Door";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
-import DOOR_ROTTEN from "@/public/game/DoorRotten.png";
 import {
   FaArrowUp,
   FaArrowDown,
@@ -46,11 +48,18 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   const playerID = localPlayer.id;
   const gameDirection = useSelector((state: RootState) => state.game.direction);
   const players_data = useSelector((state: RootState) => state.game.players);
+  const doors = useSelector((state: RootState) => state.game.doors_positions);
   const players = players_data.filter(
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
   );
 
+  console.log(
+    typeof DoorElem == "undefined"
+  )
+  console.log("sdf")
+
   const selectedPlayerID = localPlayer.selections.player;
+  const selectedDoor = localPlayer.selections.door;
 
   const dispatch = useDispatch();
 
@@ -64,6 +73,14 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       (p) => p.status == PlayerStatus.ALIVE
     ).length;
     return rest == 1 || rest == alivePlayersAmount - 1;
+  }
+
+  function isAdjacentDoor(door: number) {
+    const rest = Math.abs(localPlayer.position - door);
+    const alivePlayersAmount = players_data.filter(
+      (p) => p.status == PlayerStatus.ALIVE
+    ).length;
+    return door == playerID || rest == alivePlayersAmount - 1;
   }
 
   function onPlayerSelectedToggle(playerID: number) {
@@ -88,6 +105,27 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       isAdjacent(playerSelected!.position)
     ) {
       dispatch(selectPlayer(playerID));
+    }
+  }
+
+  function onDoorSelectedToggle(door: number) {
+    // Si la puerta esta selecionada, la des-seleccionamos
+    if (selectedDoor === door) {
+      dispatch(unselectDoor());
+      return;
+    }
+    // si la carta no requiere seleccionar jugagdor o no hay carta,
+    // no hacemos nada
+    // HARDCODEO FEO UNICA CARTA A USAR CON PUERTA ES HACHA
+    if (
+      localPlayer.selections.card === undefined ||
+      localPlayer.selections.card?.name != CardTypes.AXE
+    ) {
+      return;
+    }
+    // si requiere seleccion y la puerta clickeada aplica, lo seleccionamos
+    if (isAdjacentDoor(door)) {
+      dispatch(setSelectedDoor(door));
     }
   }
 
@@ -145,6 +183,27 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
             <Player player={player} selected={player.id === selectedPlayerID} />
           </Box>
         );
+      })}
+
+      {doors.map((door: number) => {
+        const { x, y } = getTranslatesForPosition(
+          door - (localPlayer.position as any),
+          players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
+        );
+        return (
+          <Box
+            key={door}
+            position="absolute"
+            left={`calc(50% + ${x * 62}%)`}
+            bottom={`calc(50% + ${y * 62}%)`}
+            transition="all"
+            transitionDuration="1400ms"
+            onClick={() => onDoorSelectedToggle(door)}
+          >
+            <DoorElem isSelected={true} position={1} />
+            {/* <Text>hola</Text> */}
+          </Box>
+        )
       })}
 
       <Tooltip label={localPlayer.name} placement="bottom">
@@ -248,7 +307,11 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
     >
       <Box h="11rem" mb="4" w="max-content">
         {lastPlayedCard == null ? (
-          <GameCard card_id={0} name={CardTypes.AWAY_BACK} shouldSelect={false} />
+          <GameCard
+            card_id={0}
+            name={CardTypes.AWAY_BACK}
+            shouldSelect={false}
+          />
         ) : (
           <GameCard
             card_id={lastPlayedCard.card_id}

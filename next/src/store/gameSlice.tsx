@@ -53,6 +53,7 @@ type PlayerData = {
   cards: Card[];
   role: PlayerRole;
   cardSelected: number | undefined;
+  doorSelected: number | undefined;
   playerSelected: number | undefined;
   state: PlayerTurnState;
   card_picking_amount: number;
@@ -98,6 +99,7 @@ export type GameState = {
       }
     | undefined;
   dataCardPlayed: DataCardPlayed;
+  doors_positions: number[];
   isExchanging: boolean;
   multiSelect: MultiSelectType;
 };
@@ -154,6 +156,7 @@ export const initialState: GameState = {
   status: GameStatus.WAITING,
   player_in_turn: "Yo",
   direction: true,
+  doors_positions: [2],
   players: [
     {
       name: "Otro 1",
@@ -254,8 +257,9 @@ export const initialState: GameState = {
         targetAdjacentOnly: false,
       },
     ],
-    cardSelected: 1,
     card_picking_amount: 0,
+    cardSelected: undefined,
+    doorSelected: undefined,
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
     state: PlayerTurnState.PANICKING,
@@ -282,6 +286,7 @@ export type BackendGameState = {
   playerData?: PlayerData;
   player_in_turn: string | undefined;
   direction: boolean;
+  doors_positions: number[];
 };
 
 export const gameSlice = createSlice({
@@ -301,10 +306,18 @@ export const gameSlice = createSlice({
       state.playerData = action.payload.playerData;
       state.player_in_turn = action.payload.player_in_turn;
       state.direction = action.payload.direction;
+      state.doors_positions = action.payload.doors_positions;
     },
     setSelectedCard(state, action: PayloadAction<number | undefined>) {
       state.playerData!.cardSelected = action.payload;
       state.playerData!.playerSelected = undefined;
+      state.playerData!.doorSelected = undefined;
+    },
+    setSelectedDoor(state, action: PayloadAction<number | undefined>) {
+      state.playerData!.doorSelected = action.payload;
+    },
+    unselectDoor(state) {
+      state.playerData!.doorSelected = undefined;
     },
     resetGameState(state) {
       state.config = initialState.config;
@@ -343,6 +356,8 @@ export const {
   selectPlayer,
   unselectPlayer,
   setDiscardDeckDimensions,
+  unselectDoor,
+  setSelectedDoor,
   addChatMessage,
   resetGameState,
   setLastPlayedCard,
