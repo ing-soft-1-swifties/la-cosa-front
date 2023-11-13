@@ -226,10 +226,16 @@ const GameCard: FC<CardProps> = ({
   return (
     <Box
       onClick={() => {
-        if (shouldSelect)
-          dispatch(
-            setSelectedCard(player.selections.card?.id !== id ? id : undefined)
-          );
+        
+        if (shouldSelect) {
+          // Si es una carta de pánico y puede ser seleccionada, se establece el borde violeta
+          if (card != null && card.type === CardType.PANIC) {
+            dispatch(setSelectedCard(player.selections.card?.id !== id ? id : undefined));
+          } else {
+            // Si no es una carta de pánico, se mantiene la lógica 
+            dispatch(setSelectedCard(player.selections.card?.id !== id ? id : undefined));
+          }
+        }
       }}
       backgroundColor="black"
       minH="full"
