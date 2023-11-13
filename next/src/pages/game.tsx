@@ -13,12 +13,16 @@ import ForestBGHuman from "@/public/game/froest-background-humans.jpg";
 import ForestBGInfect from "@/public/game/froest-background-infected.jpg";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import GameEnd from "@/components/layouts/game/GameEnd";
-import { addChatMessage, ChatMessageType, PlayerRole } from "@/store/gameSlice";
+import { addChatMessage, ChatMessageType, PlayerRole, setInspectingCard } from "@/store/gameSlice";
 import { Socket } from "socket.io-client";
 import { store } from "@/store/store";
 import ChatBox from "@/components/layouts/game/ChatBox";
 import { useDispatch } from "react-redux";
 import ModalShowCards from "@/components/layouts/game/ModalShowCards";
+import { FramerMotionBox } from "utils/animations";
+
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 const Page: PageWithLayout = () => {
   const toast = useToast();
@@ -28,13 +32,32 @@ const Page: PageWithLayout = () => {
   useGameNotifications(gameSocket, toast);
 
   const BG_IMG = role == PlayerRole.HUMAN ? ForestBGHuman : ForestBGInfect;
+  const InspectingCard = useSelector(
+    (state: RootState) => state.game.inspectingCard
+  );
+  const isIspecting = InspectingCard != undefined;
+  const dispatch = useDispatch();
 
   return (
     <>
       <GameEnd />
-      <ModalShowCards/>
+      <ModalShowCards />
       <Box pos="relative">
         {/* Imagen de fondo del Lobby */}
+        <Box
+          pos="absolute"
+          h="full"
+          w="100%"
+          backgroundColor= "black"
+          opacity={isIspecting ? 0.9 : 0}
+          zIndex={isIspecting ? 11 : 0}
+          transitionDuration="200ms"
+          onClick={()=>{
+            if(isIspecting){
+              dispatch(setInspectingCard(undefined));
+            }
+          }}
+        />
         <BgImage
           w="100%"
           imageProps={{
@@ -60,18 +83,18 @@ const Page: PageWithLayout = () => {
         </Flex>
         {/* <Box pos="absolute" right="0" top="0">
           <Text
-            color="white"
-            bg={player.on_turn ? "green" : "yellow.600"}
-            borderBottomLeftRadius="20px"
-            px="16"
-            py="3"
-            textTransform="uppercase"
+          color="white"
+          bg={player.on_turn ? "green" : "yellow.600"}
+          borderBottomLeftRadius="20px"
+          px="16"
+          py="3"
+          textTransform="uppercase"
             fontWeight="bold"
             fontSize="0.98rem"
-          >
+            >
             {player.on_turn ? "Es tu Turno" : "Esperando a otros jugadores..."}
-          </Text>
-        </Box> */}
+            </Text>
+          </Box> */}
       </Box>
     </>
   );

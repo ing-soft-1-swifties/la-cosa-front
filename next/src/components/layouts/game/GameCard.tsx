@@ -1,7 +1,9 @@
-import { Box, BoxProps, Text } from "@chakra-ui/react";
+import { Box, BoxProps, Text, IconButton } from "@chakra-ui/react";
+import { SearchIcon, CloseIcon } from "@chakra-ui/icons";
+import { RootState } from "@/store/store";
 import {} from "path";
 import { FC } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IMG_AWAY_BACK from "@/public/cards/AlejateBack.png";
 import IMG_ROTTEN_ROPES from "@/public/cards/CuerdasPodridas.png";
 import IMG_INFECTED from "@/public/cards/Infectado.png";
@@ -43,6 +45,11 @@ import {
 } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { Card as CardData, CardTypes as CardType } from "@/store/gameSlice";
+import { setInspectingCard, setSelectedCard } from "@/store/gameSlice";
+import usePlayerGameState from "@/src/hooks/usePlayerGameState";
+import {Card as CardData, CardTypes as CardType} from "@/store/gameSlice"
+import React, { useState } from "react";
+import { FramerMotionBox } from "utils/animations";
 
 export enum CardTypes {
   FLAMETHROWER = "Lanzallamas",
@@ -259,7 +266,17 @@ const GameCard: FC<CardProps> = ({
     }
   }
 
+  const [seeInspectCard, setSeeInspectCard] = useState(false);
+  const InspectingCard = useSelector(
+    (state: RootState) => state.game.inspectingCard
+  );
+  const variants = {
+    open: { y: -10, x: -10, zindex: 1000, heigh: "60rem", width: "100px" },
+    closed: { y: 0, x: 0, zindex: -1, heigh: "0px", width: "auto" },
+  };
+
   return (
+<<<<<<< HEAD
     <Box
       onClick={() => {
         if (shouldSelect && card != null) {
@@ -297,11 +314,18 @@ const GameCard: FC<CardProps> = ({
               }
             }
           } else {
+=======
+    <>
+      <Box
+        onClick={() => {
+          if (shouldSelect && InspectingCard==undefined) {
+>>>>>>> primera entre inspect card desde el medio
             dispatch(
               setSelectedCard(
                 player.selections.card?.id !== id ? id : undefined
               )
             );
+<<<<<<< HEAD
           }
         }
       }}
@@ -339,6 +363,71 @@ const GameCard: FC<CardProps> = ({
         </>
       )}
     </Box>
+=======
+        }}}
+        onMouseEnter={() => {
+          setSeeInspectCard(true);
+        }}
+        onMouseLeave={() => {
+          setSeeInspectCard(false);
+        }}
+        backgroundColor="black"
+        minH="full"
+        h="full"
+        w="auto"
+        minW="auto"
+        data-testid={`GAME_CARD_${id}`}
+        bgColor="black"
+        borderWidth="4px"
+        borderRadius="lg"
+        cursor="pointer"
+        {...props}
+        transform="auto"
+        _hover={
+          InspectingCard != id
+            ? {
+                scale: 1.1,
+              }
+            : {}
+        }
+        transitionDuration="300ms"
+        {...borderProps}
+      >
+        {cardData !== undefined ? (
+          <>
+            <Image
+              w="auto"
+              h="full"
+              data-testid={`GAME_CARD_IMG_${id}`}
+              src={cardData!.image}
+              alt={"Card " + name}
+              clipPath="inset(2% 4% 2% 2%)"
+            />
+            <SearchIcon
+              color="white"
+              position="absolute"
+              zIndex={1000000}
+              w="10%"
+              h="auto"
+              right="0"
+              top="0"
+              display={
+                seeInspectCard && InspectingCard != id ? "inline-block" : "none"
+              }
+              onClick={() => {
+                dispatch(setInspectingCard(id));
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <Text color="white">Carta Indefinida:</Text>
+            <Text color="white">{name}</Text>
+          </>
+        )}
+      </Box>
+    </>
+>>>>>>> primera entre inspect card desde el medio
   );
 };
 

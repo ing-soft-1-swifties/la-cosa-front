@@ -90,6 +90,7 @@ export type GameState = {
   player_in_turn: string | undefined;
   direction: boolean;
   discardDeckDimensions: BoxModel | null;
+  inspectingCard: number | undefined;
   chat: {
     messages: ChatMessage[];
   };
@@ -175,6 +176,7 @@ export const initialState: GameState = {
     state: PlayerTurnState.PANICKING,
   },
   discardDeckDimensions: null,
+  inspectingCard: undefined,
   chat: {
     messages: [],
   },
@@ -258,6 +260,9 @@ export const gameSlice = createSlice({
     setMultiSelect(state, action: PayloadAction<MultiSelectType>) {
       state.multiSelect = action.payload;
     },
+    setInspectingCard(state, action: PayloadAction<number | undefined>): void {
+      state.inspectingCard = action.payload;
+    },
   },
 });
 
@@ -273,7 +278,11 @@ export const {
   resetGameState,
   setLastPlayedCard,
   setCardsToShow,
+<<<<<<< HEAD
   setMultiSelect,
+=======
+  setInspectingCard,
+>>>>>>> primera entre inspect card desde el medio
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
