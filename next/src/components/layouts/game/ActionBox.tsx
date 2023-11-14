@@ -185,7 +185,9 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     }
     return "Seleccione la acción a realizar";
   }
-
+  if (cardSelected?.name === GameCardTypes.AXE  && !player.selections.player && !player.selections.door) {
+    popoverText = "Selecciona una persona en cuarentena o una puerta, adyacentes.";
+  }
   function canUseDefensCard() {
     if (cardSelected != undefined && lastPlayedCard != undefined) {
       return (
@@ -204,7 +206,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     setExchangeSelected(false);
   }
 
-  let cannotPlaySelectedCard =
+  let cannotPlaySelectedCard = // si no hay carta seleccionada
     cardSelectedID == undefined ||
     cardSelected?.name == GameCardTypes.THETHING ||
     cardSelected?.name == GameCardTypes.INFECTED ||
@@ -393,3 +395,4 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
 };
 
 export default ActionBox;
+//cuando tenga una hacha en la mano el mensaje digha selecciona una persona en cuarentena o puerta adyasente

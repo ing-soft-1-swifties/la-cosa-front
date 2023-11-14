@@ -28,7 +28,7 @@ type PlayerGameState = {
   selections: {
     card: Card | undefined;
     player: number | undefined;
-    door: number | undefined;
+    door: number | undefined; 
   };
   multiSelect: MultiSelectType;
   card_picking_amount: number;
