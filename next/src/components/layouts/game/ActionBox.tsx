@@ -80,6 +80,20 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   const playerSelectedPublicData = gameState.players.find(
     (player: GamePlayer) => player.id == playerSelected
   );
+
+  const getPositionOrId = (getId: boolean, num: number) => {
+    if(getId){
+      console.log("puerta numero: " + num)
+      return gameState.players.find(
+        (player: GamePlayer) => (player.position == num)
+      )!.id
+    }else{
+      return gameState.players.find(
+        (player: GamePlayer) => (player.id == num)
+      )!.position
+    }
+  }
+  // 
   
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
@@ -92,38 +106,49 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   const leastDestructiveRef = useRef(null);
 
   function isNextToDoor() {
-    const position = playerSelectedPublicData?.position;
-    const rest = Math.abs(localPlayer.position - position!);
+    const positionPlayerSelected = playerSelectedPublicData?.position;
+    const rest = Math.abs(localPlayer.position - positionPlayerSelected!);
     const alivePlayersAmount = players_data.filter(
       (p) => p.status == PlayerStatus.ALIVE
     ).length;
 
-    if(localPlayer.position == alivePlayersAmount && position == 0)
+    if(localPlayer.position==(alivePlayersAmount-1) && positionPlayerSelected==0)
       return true;
-    return localPlayer.position < position! && (localPlayer.position != 0 && position != alivePlayersAmount)
+    return localPlayer.position < positionPlayerSelected! && !(localPlayer.position==0 && positionPlayerSelected==(alivePlayersAmount-1))
   }
 
   const playCard = () => {
     let cardOptions: any = {};
-    
+    const positionPlayerSelected = playerSelectedPublicData?.position;
     if (playerSelected) cardOptions.target = playerSelected;
     if (player.card_picking_amount > 0)
       cardOptions.cards = player.multiSelect.away_selected;
   
     // control de la carta hacha
     if (player.selections.card?.name == GameCardTypes.AXE) {
-      const isQuaratine = playerSelected != undefined;
-      const target = doorSelected != undefined ? doorSelected : playerSelected;
-      cardOptions = doorSelected
-        ? { target: target, is_quaratine: isQuaratine }
-        : {};
+      const isQuarantine = playerSelected != undefined;
+      const target = isQuarantine ? playerSelected : doorSelected ;
+      cardOptions = { target: target, is_quarantine: isQuarantine }
+      console.log("paso hacha")
+    }
+    
+    if(player.selections.card?.name == GameCardTypes.LOCKED_DOOR){
+      cardOptions = {target: isNextToDoor()? player.position : positionPlayerSelected}
+      console.log("paso puerta trancada")
     }
 
-    if (player.selections.card?.name == GameCardTypes.LOCKED_DOOR && isNextToDoor()) {
-      cardOptions = {target: player.position}
+    // bugfix a ultimo segundo backed se equivoco y necesita el id no posicion
+    if((player.selections.card?.name == GameCardTypes.LOCKED_DOOR )||( player.selections.card?.name == GameCardTypes.AXE)){
+      console.log('antes cardOptions: '); 
+      console.log(cardOptions); 
+      cardOptions.target = getPositionOrId(true, cardOptions.target)
     }
+    
 
     if (cardSelectedID !== undefined) {
+      console.log('final cardOptions: '); 
+      console.log(cardOptions);
+      console.log(cardSelectedID);
       sendPlayerPlayCard(cardSelectedID, cardOptions);
       dispatch(
         setMultiSelect({
@@ -135,7 +160,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
 
   // envia el hacha apuntandose a si mismo en modo quitar cuarentena
   const playCardKillQuarantine = () => {
-    var cardOptions = { target: player.id, is_quaratine: true};
+    var cardOptions = { target: player.id, is_quarantine: true};
     if (cardSelectedID !== undefined) {
       sendPlayerPlayCard(cardSelectedID, cardOptions);
     }
@@ -299,9 +324,9 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
                         data-testid="ACTION_BOX_PLAY_BTN"
                         onClick={playCardKillQuarantine}
                         rightIcon={<GiFireAxe />}
-                        isDisabled={cardSelected?.name != GameCardTypes.AXE}
+                        isDisabled={cardSelected?.name!=GameCardTypes.AXE || player.quarantine==0}
                       >
-                        Quitar mi cuarentena
+                        Quitar mi cuarentena 
                       </Button>
                     )}
 

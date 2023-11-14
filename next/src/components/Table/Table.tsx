@@ -84,11 +84,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   }
 
   function isAdjacentDoor(door: number) {
-    const rest = Math.abs(localPlayer.position - door);
     const alivePlayersAmount = players_data.filter(
       (p) => p.status == PlayerStatus.ALIVE
-    ).length;
-    return (rest == alivePlayersAmount - 1) || (door == localPlayer.position);
+      ).length;
+    const positionLeft = (localPlayer.position-1 < 0? (alivePlayersAmount-1) : (localPlayer.position-1)) ;
+    return (door == positionLeft) || (door == localPlayer.position);
   }
 
   function onPlayerSelectedToggle(playerID: number) {
@@ -197,7 +197,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
         );
       })}
 
-      {doors.map((door: number) => {
+      {doors?.map((door: number) => {
         const { x, y } = getTranslatesForPositionDoor(
           door - (localPlayer.position as any),
           players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
