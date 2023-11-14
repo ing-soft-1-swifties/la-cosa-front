@@ -69,7 +69,7 @@ export enum CardTypes {
   HERE_IS_THE_PARY = "Es Aqui La Fiesta",
   WE_CANT_NOT_BE_FRIENDS = "No Podemos Ser Amigos",
   FORGETFUL = "Olvidadizo",
-  LET_IT_STAY_BETWEEN_US = "Que Quede Entre Nosotros",
+  LET_IT_STAY_BETWEEN_US = "Que quede entre nosotros...",
   REVELATIONS = "Revelaciones",
   THREE_FOUR = "Tres, cuatro...",
   ONE_TWO = "Uno, dos...",
@@ -223,7 +223,8 @@ const GameCard: FC<CardProps> = ({
         borderColor:
           player.selections.card?.id === id // selecciono la carta y es la misma que la que tengo
             ? "green.500" // la pongo verde
-            : player.cards.find((card) => card.id === id)?.type === CardType.PANIC // si no es la misma, es una carta de panico
+            : player.cards.find((card) => card.id === id)?.type ===
+              CardType.PANIC // si no es la misma, es una carta de panico
             ? "purple.500" // la pongo morada
             : "black", // si no es ninguna de las dos, la pongo negra
       }
@@ -231,10 +232,13 @@ const GameCard: FC<CardProps> = ({
         borderColor: "black",
       };
 
- 
   const card: CardData | undefined = player.cards.find((card) => card.id == id);
   let shouldBlur = false;
-  if (shouldSelect && player.state == PlayerTurnState.PANICKING && card != null) {
+  if (
+    shouldSelect &&
+    player.state == PlayerTurnState.PANICKING &&
+    card != null
+  ) {
     const isPanicCard = card!.type == CardType.PANIC;
     shouldBlur = card != null && card!.type != CardType.PANIC;
     if (player.card_picking_amount > 0) {
@@ -249,8 +253,8 @@ const GameCard: FC<CardProps> = ({
         };
       } else {
         borderProps = {
-          borderColor: player.selections.card?.id == id ? "pink.500" : "black"
-        }
+          borderColor: player.selections.card?.id == id ? "pink.500" : "black",
+        };
       }
     }
   }
