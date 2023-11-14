@@ -127,7 +127,6 @@ const AnimatedGameCard = React.forwardRef<
           // h="20rem"
           // alignSelf="stretch"
           // h={height ?? "auto"}
-          data-testid={"Hand_card_" + id}
           name={name}
           card_id={id}
           shouldSelect={true}

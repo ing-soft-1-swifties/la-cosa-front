@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { renderWithProviders } from "@/src/utils/test-utils";
 import PlayerCard from "@/components/PlayerCard";
-import { GamePlayer, PlayerStatus } from "store/gameSlice";
+import { GamePlayer, PlayerStatus } from "@/store/gameSlice";
 
 describe("Component Player Card", () => {
   it("has name", () => {

@@ -70,7 +70,7 @@ export enum CardTypes {
   WHISKEY = "Whisky",
   UPS = "¡Ups!",
   BLIND_DATE = "Cita a ciegas",
-  HERE_IS_THE_PARY = "Es Aqui La Fiesta",
+  HERE_IS_THE_PARY = "¿Es aqui la fiesta?",
   WE_CANT_NOT_BE_FRIENDS = "No Podemos Ser Amigos",
   FORGETFUL = "Olvidadizo",
   LET_IT_STAY_BETWEEN_US = "Que quede entre nosotros...",

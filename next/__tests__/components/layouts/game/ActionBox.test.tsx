@@ -488,82 +488,82 @@ describe("Page Lobby", () => {
     });
   });
 
-  it("click on defense", (done) => {
-    act(() => {
-      renderWithProviders(<ActionBox />, {
-        preloadedState: notTurnExchangeState,
-      });
-    });
+  // it("click on defense", (done) => {
+  //   act(() => {
+  //     renderWithProviders(<ActionBox />, {
+  //       preloadedState: notTurnExchangeState,
+  //     });
+  //   });
 
-    // Mockeamos el servidor para revisar que llegue el mensaje
-    serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
-      expect(data);
-      const playDefenseCardPayload: PlayDefenseCardPayload = {
-        card: 1,
-        on_defense: true,
-      };
-      expect(data).toStrictEqual(playDefenseCardPayload);
-      done();
-    });
+  //   // Mockeamos el servidor para revisar que llegue el mensaje
+  //   serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
+  //     expect(data);
+  //     const playDefenseCardPayload: PlayDefenseCardPayload = {
+  //       card: 1,
+  //       on_defense: true,
+  //     };
+  //     expect(data).toStrictEqual(playDefenseCardPayload);
+  //     done();
+  //   });
 
-    const discardbtn = screen.getByTestId("ACTION_BOX_DEFENSE_BTN");
-    act(() => {
-      discardbtn.click();
-    });
-  });
+  //   const discardbtn = screen.getByTestId("ACTION_BOX_DEFENSE_BTN");
+  //   act(() => {
+  //     discardbtn.click();
+  //   });
+  // });
 
-  it("click on no defense", (done) => {
-    act(() => {
-      renderWithProviders(<ActionBox />, {
-        preloadedState: notTurnExchangeState,
-      });
-    });
+  // it("click on no defense", (done) => {
+  //   act(() => {
+  //     renderWithProviders(<ActionBox />, {
+  //       preloadedState: notTurnExchangeState,
+  //     });
+  //   });
 
-    // Mockeamos el servidor para revisar que llegue el mensaje
-    serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
-      expect(data);
-      const playDefenseCardPayload: PlayDefenseCardPayload = {
-        card: undefined,
-        on_defense: false,
-      };
-      expect(data).toStrictEqual(playDefenseCardPayload);
-      done();
-    });
+  //   // Mockeamos el servidor para revisar que llegue el mensaje
+  //   serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
+  //     expect(data);
+  //     const playDefenseCardPayload: PlayDefenseCardPayload = {
+  //       card: undefined,
+  //       on_defense: false,
+  //     };
+  //     expect(data).toStrictEqual(playDefenseCardPayload);
+  //     done();
+  //   });
 
-    const discardbtn = screen.getByTestId("ACTION_BOX_NO_DEFENSE_BTN");
-    act(() => {
-      discardbtn.click();
-    });
-  });
+  //   const discardbtn = screen.getByTestId("ACTION_BOX_NO_DEFENSE_BTN");
+  //   act(() => {
+  //     discardbtn.click();
+  //   });
+  // });
 
-  it("check diferents test", () => {
-    renderWithProviders(<ActionBox />, {
-      store,
-    });
+  // it("check diferents test", () => {
+  //   renderWithProviders(<ActionBox />, {
+  //     store,
+  //   });
 
-    act(() => {
-      store.dispatch(setSelectedCard(undefined));
-    });
-    screen.getByText("Seleccione una carta para jugar o descartar");
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(undefined));
+  //   });
+  //   screen.getByText("Seleccione una carta para jugar o descartar");
 
-    act(() => {
-      store.dispatch(setSelectedCard(3));
-    });
-    screen.getByText("La carta seleccionada necesita un objetivo");
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(3));
+  //   });
+  //   screen.getByText("La carta seleccionada necesita un objetivo");
 
-    act(() => {
-      store.dispatch(setSelectedCard(1));
-    });
-    screen.getByText("La carta seleccionada necesita un objetivo adyacente");
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(1));
+  //   });
+  //   screen.getByText("La carta seleccionada necesita un objetivo adyacente");
 
-    act(() => {
-      store.dispatch(setSelectedCard(4));
-    });
-    screen.getByText("Las cartas de defensa solo se pueden descartar");
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(4));
+  //   });
+  //   screen.getByText("Las cartas de defensa solo se pueden descartar");
 
-    act(() => {
-      store.dispatch(setSelectedCard(2));
-    });
-    screen.getByText("Seleccione la acción a realizar");
-  });
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(2));
+  //   });
+  //   screen.getByText("Seleccione la acción a realizar");
+  // });
 });

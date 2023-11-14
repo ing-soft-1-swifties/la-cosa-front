@@ -11,12 +11,12 @@ import {
   setCardsToShow,
 } from "@/store/gameSlice";
 import { EventType } from "../gameAPI/listener";
-import { StandaloneToast } from "pages/_app";
+import { StandaloneToast } from "@/src/pages/_app";
 import {
   buildInfoToastOptions,
   buildSucessToastOptions,
   buildWarningToastOptions,
-} from "utils/toasts";
+} from "@/src/utils/toasts";
 
 export function setupNotificationsListeners(gameSocket: Socket) {
   gameSocket.on(EventType.ON_GAME_PLAYER_TURN, onPlayerTurn);

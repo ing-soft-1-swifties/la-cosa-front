@@ -64,7 +64,7 @@ import { EventType } from "@/src/business/game/gameAPI/listener";
 
 type ActionBoxProps = {};
 
-const ActionBox: FC<ActionBoxProps> = ({ }) => {
+const ActionBox: FC<ActionBoxProps> = ({}) => {
   const player = usePlayerGameState();
   const dispatch = useDispatch();
   const localPlayer = usePlayerGameState();
@@ -74,7 +74,9 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const playerSelected = player.selections.player;
   const doorSelected = player.selections.door;
   const on_defense = state == PlayerTurnState.DEFENDING;
-  const have_axe: boolean = player.cards.some((card)=>{return card.name == GameCardTypes.AXE});
+  const have_axe: boolean = player.cards.some((card) => {
+    return card.name == GameCardTypes.AXE;
+  });
   const players_data = useSelector((state: RootState) => state.game.players);
   const gameState = useSelector((state: RootState) => state.game);
   const playerSelectedPublicData = gameState.players.find(
@@ -82,19 +84,18 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   );
 
   const getPositionOrId = (getId: boolean, num: number) => {
-    if(getId){
-      console.log("puerta numero: " + num)
+    if (getId) {
+      console.log("puerta numero: " + num);
       return gameState.players.find(
-        (player: GamePlayer) => (player.position == num)
-      )!.id
-    }else{
-      return gameState.players.find(
-        (player: GamePlayer) => (player.id == num)
-      )!.position
+        (player: GamePlayer) => player.position == num
+      )!.id;
+    } else {
+      return gameState.players.find((player: GamePlayer) => player.id == num)!
+        .position;
     }
-  }
-  // 
-  
+  };
+  //
+
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
@@ -112,9 +113,18 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
       (p) => p.status == PlayerStatus.ALIVE
     ).length;
 
-    if(localPlayer.position==(alivePlayersAmount-1) && positionPlayerSelected==0)
+    if (
+      localPlayer.position == alivePlayersAmount - 1 &&
+      positionPlayerSelected == 0
+    )
       return true;
-    return localPlayer.position < positionPlayerSelected! && !(localPlayer.position==0 && positionPlayerSelected==(alivePlayersAmount-1))
+    return (
+      localPlayer.position < positionPlayerSelected! &&
+      !(
+        localPlayer.position == 0 &&
+        positionPlayerSelected == alivePlayersAmount - 1
+      )
+    );
   }
 
   const playCard = () => {
@@ -123,30 +133,34 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     if (playerSelected) cardOptions.target = playerSelected;
     if (player.card_picking_amount > 0)
       cardOptions.cards = player.multiSelect.away_selected;
-  
+
     // control de la carta hacha
     if (player.selections.card?.name == GameCardTypes.AXE) {
       const isQuarantine = playerSelected != undefined;
-      const target = isQuarantine ? playerSelected : doorSelected ;
-      cardOptions = { target: target, is_quarantine: isQuarantine }
-      console.log("paso hacha")
+      const target = isQuarantine ? playerSelected : doorSelected;
+      cardOptions = { target: target, is_quarantine: isQuarantine };
+      console.log("paso hacha");
     }
-    
-    if(player.selections.card?.name == GameCardTypes.LOCKED_DOOR){
-      cardOptions = {target: isNextToDoor()? player.position : positionPlayerSelected}
-      console.log("paso puerta trancada")
+
+    if (player.selections.card?.name == GameCardTypes.LOCKED_DOOR) {
+      cardOptions = {
+        target: isNextToDoor() ? player.position : positionPlayerSelected,
+      };
+      console.log("paso puerta trancada");
     }
 
     // bugfix a ultimo segundo backed se equivoco y necesita el id no posicion
-    if((player.selections.card?.name == GameCardTypes.LOCKED_DOOR )||( player.selections.card?.name == GameCardTypes.AXE)){
-      console.log('antes cardOptions: '); 
-      console.log(cardOptions); 
-      cardOptions.target = getPositionOrId(true, cardOptions.target)
+    if (
+      player.selections.card?.name == GameCardTypes.LOCKED_DOOR ||
+      player.selections.card?.name == GameCardTypes.AXE
+    ) {
+      console.log("antes cardOptions: ");
+      console.log(cardOptions);
+      cardOptions.target = getPositionOrId(true, cardOptions.target);
     }
-    
 
     if (cardSelectedID !== undefined) {
-      console.log('final cardOptions: '); 
+      console.log("final cardOptions: ");
       console.log(cardOptions);
       console.log(cardSelectedID);
       sendPlayerPlayCard(cardSelectedID, cardOptions);
@@ -160,11 +174,11 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
 
   // envia el hacha apuntandose a si mismo en modo quitar cuarentena
   const playCardKillQuarantine = () => {
-    var cardOptions = { target: player.id, is_quarantine: true};
+    var cardOptions = { target: player.id, is_quarantine: true };
     if (cardSelectedID !== undefined) {
       sendPlayerPlayCard(cardSelectedID, cardOptions);
     }
-  }
+  };
 
   const discardCard = () => {
     if (cardSelectedID !== undefined) {
@@ -246,18 +260,32 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     }
     return "Seleccione la acción a realizar";
   }
-  if (cardSelected?.name === GameCardTypes.AXE  && !player.selections.player && !player.selections.door) {
-    popoverText = "Selecciona una persona en cuarentena o una puerta, adyacentes.";
+  if (
+    cardSelected?.name === GameCardTypes.AXE &&
+    !player.selections.player &&
+    !player.selections.door
+  ) {
+    popoverText =
+      "Selecciona una persona en cuarentena o una puerta, adyacentes.";
   }
   function canUseDefensCard() {
-    if (cardSelected != undefined && lastPlayedCard != undefined) {
-      
+    if (cardSelected != undefined) {
       return (
-        (state == PlayerTurnState.RECEIVING_EXCHANGE) && [GameCardTypes.NOTHANKS, GameCardTypes.YOU_FAILED, GameCardTypes.SCARY].includes(cardSelected.name) ||
-        (cardSelected.name == GameCardTypes.NOBBQ &&
+        (state == PlayerTurnState.RECEIVING_EXCHANGE &&
+          [
+            GameCardTypes.NOTHANKS,
+            GameCardTypes.YOU_FAILED,
+            GameCardTypes.SCARY,
+          ].includes(cardSelected.name as any)) ||
+        (lastPlayedCard != null &&
+          cardSelected.name == GameCardTypes.NOBBQ &&
           lastPlayedCard.card_name == GameCardTypes.FLAMETHROWER) ||
-        (cardSelected.name == GameCardTypes.IM_FINE_HERE &&
-          [GameCardTypes.YOU_BETTER_RUN , GameCardTypes.CHANGE_OF_LOCATION].includes(lastPlayedCard.card_name))
+        (lastPlayedCard != null &&
+          cardSelected.name == GameCardTypes.IM_FINE_HERE &&
+          [
+            GameCardTypes.YOU_BETTER_RUN,
+            GameCardTypes.CHANGE_OF_LOCATION,
+          ].includes(lastPlayedCard.card_name as any))
       );
     } else {
       return false;
@@ -275,12 +303,21 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     cardSelected?.subType == CardSubTypes.DEFENSE ||
     (cardSelected?.name != GameCardTypes.AXE &&
       cardSelected?.needTarget &&
-      player.selections.player == undefined) ||
-    (cardSelected?.name == GameCardTypes.AXE &&
-      (player.selections.door == undefined ||
-      player.selections.player == undefined));
+      player.selections.player == undefined);
+  // if (cardSelected?.name == GameCardTypes.AXE) {
+  //   if(player.selections.door != null && player.selections.player != null)
+  //     cannotPlaySelectedCard = true
+  //   else {
+  //     if(player.selections.player != null) {
+  //         cannotPlaySelectedCard = cannotPlaySelectedCard || playerSelectedPublicData == null || !playerSelectedPublicData.quarantine
+  //     }
+  //   }
+  //   // cardSelected?.name == GameCardTypes.AXE &&
+  //   //   (player.selections.door == undefined &&
+  //   //   (player.selections.player == undefined || )));
+  // }
 
-  if (player.state == PlayerTurnState.PANICKING) { 
+  if (player.state == PlayerTurnState.PANICKING) {
     cannotPlaySelectedCard = cardSelected?.type != CardTypes.PANIC;
     if (
       player.card_picking_amount > 0 &&
@@ -288,10 +325,6 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
     )
       cannotPlaySelectedCard = true;
   }
-
-  cannotPlaySelectedCard = cannotPlaySelectedCard || 
-    cardSelected == null || 
-    (cardSelected.needTarget && player.selections.player == undefined);
 
   return (
     <Box mx="5" maxW="70vh" pb={player.quarantine > 0 ? 10 : 4}>
@@ -332,9 +365,12 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                         data-testid="ACTION_BOX_PLAY_BTN"
                         onClick={playCardKillQuarantine}
                         rightIcon={<GiFireAxe />}
-                        isDisabled={cardSelected?.name!=GameCardTypes.AXE || player.quarantine==0}
+                        isDisabled={
+                          cardSelected?.name != GameCardTypes.AXE ||
+                          player.quarantine == 0
+                        }
                       >
-                        Quitar mi cuarentena 
+                        Quitar mi cuarentena
                       </Button>
                     )}
 
