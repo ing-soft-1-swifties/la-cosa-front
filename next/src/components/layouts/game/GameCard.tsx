@@ -32,6 +32,8 @@ import IMG_LET_IT_STAY_BETWEEN_US from "@/public/cards/QueQuedeEntreNosotros.png
 import IMG_REVELATIONS from "@/public/cards/Revelaciones.png";
 import IMG_THREE_FOUR from "@/public/cards/TresCuatro.png";
 import IMG_ONE_TWO from "@/public/cards/UnoDos.png";
+import IMG_ROUN_AND_ROUND from "@/public/cards/VueltaYVuelta.png";
+import IMG_GET_OUT_OF_HERE from "@/public/cards/SalDeAqui.png";
 import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
 import {
@@ -73,6 +75,8 @@ export enum CardTypes {
   ONE_TWO = "Uno, dos...",
   AWAY_BACK = "Alejate Reversa",
   ROTTEN_ROPES = "Cuerdas podridas",
+  ROUN_AND_ROUND = "Vuelta y vuelta",
+  GET_OUT_OF_HERE = "¡Sal de aqui!",
 }
 
 let ReverseCard = new Map<string, keyof typeof CardTypes>();
@@ -179,7 +183,14 @@ const CardsData: CardsDataType = {
   [CardTypes.ROTTEN_ROPES]: {
     image: IMG_ROTTEN_ROPES,
   },
+  [CardTypes.ROUN_AND_ROUND]: {
+    image: IMG_ROUN_AND_ROUND,
+  },
+  [CardTypes.GET_OUT_OF_HERE]: {
+    image: IMG_GET_OUT_OF_HERE,
+  },
 };
+
 
 type CardProps = BoxProps & {
   card_id: number;
