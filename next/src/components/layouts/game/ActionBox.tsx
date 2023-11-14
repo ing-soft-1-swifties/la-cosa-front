@@ -64,7 +64,7 @@ import { EventType } from "@/src/business/game/gameAPI/listener";
 
 type ActionBoxProps = {};
 
-const ActionBox: FC<ActionBoxProps> = ({}) => {
+const ActionBox: FC<ActionBoxProps> = ({ }) => {
   const player = usePlayerGameState();
   const dispatch = useDispatch();
   const localPlayer = usePlayerGameState();
@@ -256,7 +256,7 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
           lastPlayedCard.card_name == GameCardTypes.FLAMETHROWER) ||
         (cardSelected.name == GameCardTypes.IM_FINE_HERE &&
           lastPlayedCard.card_name ==
-            (GameCardTypes.YOU_BETTER_RUN || GameCardTypes.CHANGE_OF_LOCATION))
+          (GameCardTypes.YOU_BETTER_RUN || GameCardTypes.CHANGE_OF_LOCATION))
       );
     } else {
       return false;
@@ -278,12 +278,19 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     (cardSelected?.name == GameCardTypes.AXE &&
       player.selections.door == undefined &&
       player.selections.player == undefined);
-  if (
-    player.panicCards.length > 0 &&
-    cardSelected != null &&
-    cardSelected.type != CardTypes.PANIC
-  )
-    cannotPlaySelectedCard = true;
+
+  if ((player.state = PlayerTurnState.PANICKING)) {
+    cannotPlaySelectedCard = cardSelected?.type != CardTypes.PANIC;
+    if (
+      player.card_picking_amount > 0 &&
+      player.multiSelect.away_selected.length < player.card_picking_amount
+    )
+      cannotPlaySelectedCard = true;
+  }
+
+  cannotPlaySelectedCard = cannotPlaySelectedCard || 
+    cardSelected == null || 
+    (cardSelected.needTarget && player.selections.player == undefined);
 
   return (
     <Box mx="5" maxW="70vh" pb={player.quarantine > 0 ? 10 : 4}>

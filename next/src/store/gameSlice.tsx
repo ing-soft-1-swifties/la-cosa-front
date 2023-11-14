@@ -58,6 +58,7 @@ type PlayerData = {
   playerSelected: number | undefined;
   state: PlayerTurnState;
   card_picking_amount: number;
+  selectable_players: string[];
 };
 
 // no se si poner en ingles estos nombres pero por ahora nos manejamos asi
@@ -264,6 +265,7 @@ export const initialState: GameState = {
     card_picking_amount: 0,
     cardSelected: undefined,
     doorSelected: 3,
+    selectable_players: [],
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
     state: PlayerTurnState.PANICKING,

@@ -62,6 +62,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   const gameDirection = useSelector((state: RootState) => state.game.direction);
   const players_data = useSelector((state: RootState) => state.game.players);
   const doors = useSelector((state: RootState) => state.game.doors_positions);
+  const selectablePlayers = useSelector((state: RootState) => state.game.playerData?.selectable_players)
   const players = players_data.filter(
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
   );
@@ -115,6 +116,15 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       playerSelected?.quarantine == 0
     )
       return;
+
+    // No permitir seleccion de jugadores si el back explícitamente
+    // manda la lista `selectable_players` sin ser vacía
+    if(
+      selectablePlayers != null && 
+      selectablePlayers!.length > 0 && 
+      !(selectablePlayers!.includes(playerSelected!.name))) {
+      return;
+    }
 
     // si requiere seleccion y el jugador clickeado aplica, lo seleccionamos
     if (

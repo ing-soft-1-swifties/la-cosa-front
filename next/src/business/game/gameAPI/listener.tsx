@@ -217,6 +217,7 @@ function calculateNewGameState(data: GameStateData) {
       role: data.gameState.playerData.role,
       state: data.gameState.playerData!.state,
       card_picking_amount: data.gameState.playerData!.card_picking_amount,
+      selectable_players: data.gameState.playerData!.selectable_players,
     };
   }
   return newState;
