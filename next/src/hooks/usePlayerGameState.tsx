@@ -2,6 +2,7 @@ import {
   Card,
   CardTypes,
   GamePlayer,
+  MultiSelectType,
   PlayerRole,
   PlayerStatus,
   PlayerTurnState,
@@ -28,6 +29,8 @@ type PlayerGameState = {
     card: Card | undefined;
     player: number | undefined;
   };
+  multiSelect: MultiSelectType;
+  card_picking_amount: number;
   isHost: boolean;
 };
 
@@ -73,6 +76,8 @@ const usePlayerGameState: () => PlayerGameState = () => {
       card: playerData.cards.find((card) => card.id == playerData.cardSelected),
       player: playerData.playerSelected,
     },
+    multiSelect: gameState.multiSelect,
+    card_picking_amount: playerData.card_picking_amount,
     isHost: gameState.config.host == playerPublicData.name,
   };
 

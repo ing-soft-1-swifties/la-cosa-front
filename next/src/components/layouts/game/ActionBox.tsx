@@ -41,9 +41,10 @@ import {
   PlayerRole,
   PlayerStatus,
   PlayerTurnState,
+  setMultiSelect,
 } from "@/store/gameSlice";
 import { CardTypes as GameCardTypes } from "./GameCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { gameSocket } from "@/src/business/game/gameAPI";
 import { EventType } from "@/src/business/game/gameAPI/listener";
@@ -52,6 +53,7 @@ type ActionBoxProps = {};
 
 const ActionBox: FC<ActionBoxProps> = ({}) => {
   const player = usePlayerGameState();
+  const dispatch = useDispatch();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
   const { turn, on_exchange, on_turn, state } = player;
@@ -68,9 +70,17 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   const leastDestructiveRef = useRef(null);
 
   const playCard = () => {
-    var cardOptions = playerSelected ? { target: playerSelected } : {};
+    let cardOptions: any = {};
+    if (playerSelected) cardOptions.target = playerSelected;
+    if (player.card_picking_amount > 0)
+      cardOptions.cards = player.multiSelect.away_selected;
     if (cardSelectedID !== undefined) {
       sendPlayerPlayCard(cardSelectedID, cardOptions);
+      dispatch(
+        setMultiSelect({
+          away_selected: [],
+        })
+      );
     }
   };
 
@@ -179,12 +189,15 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     cardSelected?.name == GameCardTypes.INFECTED ||
     cardSelected?.subType == CardSubTypes.DEFENSE ||
     (cardSelected?.needTarget && player.selections.player == undefined);
-  if (
-    player.panicCards.length > 0 &&
-    cardSelected != null &&
-    cardSelected.type != CardTypes.PANIC
-  )
-    cannotPlaySelectedCard = true;
+
+  if ((player.state = PlayerTurnState.PANICKING)) {
+    cannotPlaySelectedCard = cardSelected?.type != CardTypes.PANIC;
+    if (
+      player.card_picking_amount > 0 &&
+      player.multiSelect.away_selected.length < player.card_picking_amount
+    )
+      cannotPlaySelectedCard = true;
+  }
 
   return (
     <Box mx="5">
@@ -219,7 +232,8 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
                   onClick={discardCard}
                   isDisabled={
                     cardSelectedID == undefined ||
-                    cardSelected?.name == GameCardTypes.THETHING
+                    cardSelected?.name == GameCardTypes.THETHING ||
+                    cardSelected?.type == CardTypes.PANIC
                   }
                 >
                   Descartar

@@ -9,7 +9,8 @@ export enum PlayerTurnState {
   WAITING = "WAITING",
   DEFENDING = "DEFENDING",
   RECEIVING_EXCHANGE = "RECEIVING_EXCHANGE",
-  OFFERING_EXCHANGE = "OFFERING_EXCHANGE"
+  OFFERING_EXCHANGE = "OFFERING_EXCHANGE",
+  PANICKING = "PANICKING",
 }
 
 export enum GameStatus {
@@ -54,6 +55,7 @@ type PlayerData = {
   cardSelected: number | undefined;
   playerSelected: number | undefined;
   state: PlayerTurnState;
+  card_picking_amount: number;
 };
 
 // no se si poner en ingles estos nombres pero por ahora nos manejamos asi
@@ -97,6 +99,11 @@ export type GameState = {
     | undefined;
   dataCardPlayed: DataCardPlayed;
   isExchanging: boolean;
+  multiSelect: MultiSelectType;
+};
+
+export type MultiSelectType = {
+  away_selected: number[];
 };
 
 export type DataCardPlayed = {
@@ -145,7 +152,7 @@ export const initialState: GameState = {
     maxPlayers: 12,
   },
   status: GameStatus.WAITING,
-  player_in_turn: "otro2",
+  player_in_turn: "Yo",
   direction: true,
   players: [
     {
@@ -154,7 +161,7 @@ export const initialState: GameState = {
       position: 0,
       quarantine: 0,
       status: PlayerStatus.ALIVE,
-      on_turn: false,
+      on_turn: true,
       on_exchange: false,
     },
     {
@@ -204,7 +211,7 @@ export const initialState: GameState = {
     },
   ],
   playerData: {
-    playerID: 123,
+    playerID: 124 ,
     cards: [
       {
         id: 1,
@@ -238,17 +245,20 @@ export const initialState: GameState = {
         needTarget: false,
         targetAdjacentOnly: false,
       },
-      // {
-      //   id: 5,
-      //   name: "La cosa",
-      //   type: CardTypes.AWAY,
-      //   subType: CardSubTypes.ACTION,
-      // },
+      {
+        id: 5,
+        name: "ROTTEN_ROPES",
+        type: CardTypes.PANIC,
+        subType: undefined,
+        needTarget: false,
+        targetAdjacentOnly: false,
+      },
     ],
     cardSelected: 1,
+    card_picking_amount: 0,
     playerSelected: undefined,
     role: PlayerRole.INFECTED,
-    state: PlayerTurnState.PLAYING,
+    state: PlayerTurnState.PANICKING,
   },
   discardDeckDimensions: null,
   chat: {
@@ -259,6 +269,9 @@ export const initialState: GameState = {
     title: undefined,
     player: undefined,
     cardsToShow: undefined,
+  },
+  multiSelect: {
+    away_selected: [],
   },
 };
 
@@ -318,6 +331,9 @@ export const gameSlice = createSlice({
       state.dataCardPlayed.player = action.payload.player;
       state.dataCardPlayed.title = action.payload.title;
     },
+    setMultiSelect(state, action: PayloadAction<MultiSelectType>) {
+      state.multiSelect = action.payload;
+    },
   },
 });
 
@@ -331,6 +347,7 @@ export const {
   resetGameState,
   setLastPlayedCard,
   setCardsToShow,
+  setMultiSelect,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

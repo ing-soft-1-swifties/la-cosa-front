@@ -5,6 +5,8 @@ import {
   setLastPlayedCard,
   setCardsToShow,
   Card,
+  CardTypes,
+  setMultiSelect,
 } from "@/store/gameSlice";
 import { store } from "@/store/store";
 import { beginGame, cancelGame, CancelGameReason } from "./manager";
@@ -27,6 +29,7 @@ export enum EventType {
   ON_GAME_PLAYER_STEAL_CARD = "on_game_player_steal_card",
   ON_GAME_PLAYER_PLAY_CARD = "on_game_player_play_card",
   ON_GAME_PLAYER_PLAY_DEFENSE_CARD = "on_game_player_play_defense_card",
+  ON_GAME_DEFEND_WITH_SCARY = "on_game_defend_with_aterrador",
   ON_GAME_PLAYER_DISCARD_CARD = "on_game_player_discard_card",
   ON_GAME_BEGIN_EXCHANGE = "on_game_begin_exchange",
   ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
@@ -59,18 +62,29 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
 
   setupChatListeners(gameSocket);
-  setupNotificationsListeners(gameSocket)
+  setupNotificationsListeners(gameSocket);
 
   gameSocket.on("disconnect", onGameSocketDisconnect);
 
   // Estados especificos:
+  gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, onGamePlayerStealCard);
   gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, onGamePlayerPlayCard);
   gameSocket.on(
     EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD,
     onGamePlayerPlayDefenseCard
   );
+  gameSocket.on(EventType.ON_GAME_DEFEND_WITH_SCARY, onGameDefendWithScary);
   gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD, onGameDiscardCard);
 };
+
+function onGamePlayerStealCard() {
+  // Reseteamos las cartas multi-select
+  store.dispatch(
+    setMultiSelect({
+      away_selected: [],
+    })
+  );
+}
 
 type PlayCardPayload = {
   player_name: string;
@@ -103,7 +117,8 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
       player != store.getState().user.name &&
       (card == GameCardEnum.WHISKEY ||
         card == GameCardEnum.ANALYSIS ||
-        card == GameCardEnum.SUSPICION)
+        card == GameCardEnum.SUSPICION ||
+        card == GameCardEnum.SCARY)
     ) {
       if (card == GameCardEnum.WHISKEY)
         title = `${player} jugo una carta de Whisky:`;
@@ -111,6 +126,8 @@ function onGamePlayerPlayCard(payload: PlayCardPayload) {
         title = `Resultados del Analisis de ${player}:`;
       if (card == GameCardEnum.SUSPICION)
         title = `Carta aleatoria de ${player}:`;
+      if (card == GameCardEnum.SCARY)
+        title = `Carta que el jugador ${player} te quiso intercambiar:`;
       store.dispatch(
         setCardsToShow({
           cardsToShow: payload.effects.cards,
@@ -133,6 +150,26 @@ function onGamePlayerPlayDefenseCard(payload: PlayDefenseCardPayload) {
   );
 }
 
+type PlayDefenseScaryCardPayload = {
+  effects: {
+    card: Card;
+    name: string;
+  };
+};
+function onGameDefendWithScary(payload: PlayDefenseScaryCardPayload) {
+  // Dependiendo de la carta jugada actualizamos el estado correspondiente:
+  if (payload.effects != null) {
+    const title = `Carta que el jugador ${payload.effects.name} te quiso intercambiar:`;
+    store.dispatch(
+      setCardsToShow({
+        cardsToShow: [payload.effects.card],
+        player: payload.effects.name,
+        title,
+      })
+    );
+  }
+}
+
 function onGameDiscardCard() {
   store.dispatch(setLastPlayedCard(undefined));
 }
@@ -151,7 +188,7 @@ function calculateNewGameState(data: GameStateData) {
       status: player.status,
       on_turn: player.on_turn,
       on_exchange: player.on_exchange,
-      quarantine: player.quarantine
+      quarantine: player.quarantine,
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,
@@ -163,6 +200,7 @@ function calculateNewGameState(data: GameStateData) {
       playerID: data.gameState.playerData.playerID,
       role: data.gameState.playerData.role,
       state: data.gameState.playerData!.state,
+      card_picking_amount: data.gameState.playerData!.card_picking_amount,
     };
   }
   return newState;
