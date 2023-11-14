@@ -71,7 +71,7 @@ const Player = ({
             alt="PLAYER_DIAMOND"
           />
         </FramerMotionBox>
-        <Tooltip label={player.name} placement="right">
+        <Tooltip label={player.name + (player.quarantine>0? ", Cuarentena: " + player.quarantine: "")} placement="right">
           <Box>
             <PlayerAvatar isSelected={selected} player={player} />
             <Text
