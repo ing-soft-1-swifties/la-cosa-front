@@ -255,8 +255,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
         (cardSelected.name == GameCardTypes.NOBBQ &&
           lastPlayedCard.card_name == GameCardTypes.FLAMETHROWER) ||
         (cardSelected.name == GameCardTypes.IM_FINE_HERE &&
-          lastPlayedCard.card_name ==
-          (GameCardTypes.YOU_BETTER_RUN || GameCardTypes.CHANGE_OF_LOCATION))
+          [GameCardTypes.YOU_BETTER_RUN , GameCardTypes.CHANGE_OF_LOCATION].includes(lastPlayedCard.card_name))
       );
     } else {
       return false;
@@ -279,7 +278,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
       player.selections.door == undefined &&
       player.selections.player == undefined);
 
-  if ((player.state = PlayerTurnState.PANICKING)) {
+  if (player.state == PlayerTurnState.PANICKING) { 
     cannotPlaySelectedCard = cardSelected?.type != CardTypes.PANIC;
     if (
       player.card_picking_amount > 0 &&
@@ -371,7 +370,7 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
                     isDisabled={
                       cardSelectedID == undefined ||
                       cardSelected?.subType !== CardSubTypes.DEFENSE ||
-                      canUseDefensCard()
+                      !canUseDefensCard()
                     }
                   >
                     Defenderse

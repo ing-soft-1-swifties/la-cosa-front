@@ -62,7 +62,9 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
   const gameDirection = useSelector((state: RootState) => state.game.direction);
   const players_data = useSelector((state: RootState) => state.game.players);
   const doors = useSelector((state: RootState) => state.game.doors_positions);
-  const selectablePlayers = useSelector((state: RootState) => state.game.playerData?.selectable_players)
+  const selectablePlayers = useSelector(
+    (state: RootState) => state.game.playerData?.selectable_players
+  );
   const players = players_data.filter(
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
   );
@@ -119,10 +121,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
 
     // No permitir seleccion de jugadores si el back explícitamente
     // manda la lista `selectable_players` sin ser vacía
-    if(
-      selectablePlayers != null && 
-      selectablePlayers!.length > 0 && 
-      !(selectablePlayers!.includes(playerSelected!.name))) {
+    if (
+      selectablePlayers != null &&
+      selectablePlayers!.length > 0 &&
+      !selectablePlayers!.includes(playerSelected!.name)
+    ) {
       return;
     }
 
@@ -333,8 +336,8 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
       translateX="0px"
       translateY="0px"
     >
-      {lastPlayedCard != null && (
-        <>
+      <>
+        {lastPlayedCard != null && (
           <Text color="white" fontWeight="bold" textAlign="center">
             Jugada por:
             <br />
@@ -342,31 +345,31 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
               {lastPlayedCard.player_name}
             </Text>
           </Text>
+        )}
 
-          <Box h="11rem" mb="4" w="max-content">
-            {lastPlayedCard == null ? (
-              <GameCard
-                card_id={0}
-                name={CardTypes.AWAY_BACK}
-                shouldSelect={false}
-              />
-            ) : (
-              <GameCard
-                card_id={lastPlayedCard.card_id}
-                name={lastPlayedCard.card_name}
-                shouldSelect={false}
-              />
-            )}
-          </Box>
-          {lastPlayedCard.player_target && (
-            <Text color="white" fontWeight="bold" textAlign="center">
-              Sobre:
-              <br />
-              {lastPlayedCard.player_target}
-            </Text>
+        <Box h="11rem" mb="4" w="max-content">
+          {lastPlayedCard == null ? (
+            <GameCard
+              card_id={0}
+              name={CardTypes.AWAY_BACK}
+              shouldSelect={false}
+            />
+          ) : (
+            <GameCard
+              card_id={lastPlayedCard.card_id}
+              name={lastPlayedCard.card_name}
+              shouldSelect={false}
+            />
           )}
-        </>
-      )}
+        </Box>
+        {lastPlayedCard != null && lastPlayedCard.player_target && (
+          <Text color="white" fontWeight="bold" textAlign="center">
+            Sobre:
+            <br />
+            {lastPlayedCard!.player_target}
+          </Text>
+        )}
+      </>
     </Flex>
   );
 };
