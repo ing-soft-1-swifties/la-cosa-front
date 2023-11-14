@@ -90,6 +90,7 @@ export type GameState = {
   player_in_turn: string | undefined;
   direction: boolean;
   discardDeckDimensions: BoxModel | null;
+  inspectingCard: number | undefined;
   chat: {
     messages: ChatMessage[];
   };
@@ -162,23 +163,68 @@ export const initialState: GameState = {
   player_in_turn: "",
   direction: true,
   doors_positions: [],
-  players: [],
+  players: [{
+    id: 1,
+    name: "Test",
+    quarantine: 0,
+    status: PlayerStatus.ALIVE,
+    position: 1,
+    on_exchange: false,
+    on_turn: false,
+  },],
   playerData: {
-    playerID: 0 ,
-    cards: [],
+    playerID: 1 ,
+    cards: [
+      {
+          id: 1,
+          name: "Lanzallamas",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 2,
+          name: "Infectado",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 3,
+          name: "¡Nada de barbacoas!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 4,
+          name: "¡No, gracias!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },],
     card_picking_amount: 0,
     cardSelected: undefined,
     doorSelected: undefined,
     selectable_players: [],
     playerSelected: undefined,
     role: PlayerRole.HUMAN,
-    state: PlayerTurnState.PANICKING,
+    state: PlayerTurnState.PLAYING,
   },
   discardDeckDimensions: null,
+  inspectingCard: undefined,
   chat: {
     messages: [],
   },
-  lastPlayedCard: undefined,
+  lastPlayedCard: {
+    card_id: 9,
+    card_name: "¡No, gracias!",
+    player_name: "hola"
+  },
   dataCardPlayed: {
     title: undefined,
     player: undefined,
@@ -258,6 +304,9 @@ export const gameSlice = createSlice({
     setMultiSelect(state, action: PayloadAction<MultiSelectType>) {
       state.multiSelect = action.payload;
     },
+    setInspectingCard(state, action: PayloadAction<number | undefined>): void {
+      state.inspectingCard = action.payload;
+    },
   },
 });
 
@@ -274,6 +323,7 @@ export const {
   setLastPlayedCard,
   setCardsToShow,
   setMultiSelect,
+  setInspectingCard,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

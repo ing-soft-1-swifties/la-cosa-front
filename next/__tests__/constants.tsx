@@ -127,6 +127,7 @@ export const PLAYER_IN_GAME_STATE_MOCK_1: PreloadedState<RootState> = {
       ],
     },
     discardDeckDimensions: null,
+    inspectingCard: undefined,
     chat: {
       messages: [],
     },
