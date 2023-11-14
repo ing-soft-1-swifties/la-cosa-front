@@ -75,7 +75,7 @@ const AnimatedGameCard = React.forwardRef<
   const variants = {
     open: {
       y: topRel * 1.35,
-      x: "calc(14vw)",
+      x: "18.5vw",
       height: "35rem",
       width: "auto",
       display: "block",

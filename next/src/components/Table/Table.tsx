@@ -335,7 +335,7 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
   const variants2 = {
     open: {
       y: "-13vh",
-      x: "-12.5rem",
+      x: "-10rem",
       height: "35rem",
       width: "25rem",
       display: "block",

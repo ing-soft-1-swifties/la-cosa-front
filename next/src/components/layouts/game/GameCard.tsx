@@ -42,12 +42,10 @@ import {
   PlayerTurnState,
   setMultiSelect,
   setSelectedCard,
+  setInspectingCard,
 } from "@/store/gameSlice";
-import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { Card as CardData, CardTypes as CardType } from "@/store/gameSlice";
-import { setInspectingCard, setSelectedCard } from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
-import {Card as CardData, CardTypes as CardType} from "@/store/gameSlice"
 import React, { useState } from "react";
 
 export enum CardTypes {
@@ -277,7 +275,6 @@ const GameCard: FC<CardProps> = ({
   // };
 
   return (
-<<<<<<< HEAD
     <Box
       onClick={() => {
         if (shouldSelect && card != null) {
@@ -315,18 +312,11 @@ const GameCard: FC<CardProps> = ({
               }
             }
           } else {
-=======
-    <>
-      <Box
-        onClick={() => {
-          if (shouldSelect && InspectingCard==undefined) {
->>>>>>> primera entre inspect card desde el medio
             dispatch(
               setSelectedCard(
                 player.selections.card?.id !== id ? id : undefined
               )
             );
-<<<<<<< HEAD
           }
         }
       }}
@@ -342,21 +332,63 @@ const GameCard: FC<CardProps> = ({
       cursor="pointer"
       {...props}
       transform="auto"
-      _hover={{
-        scale: 1.1,
-      }}
+      _hover={
+        InspectingCard != id
+          ? {
+              scale: 1.1,
+            }
+          : {}
+      }
       transitionDuration="300ms"
       {...borderProps}
+      onMouseEnter={() => {
+        setSeeInspectCard(true);
+      }}
+      onMouseLeave={() => {
+        setSeeInspectCard(false);
+      }}
     >
       {cardData !== undefined ? (
-        <Image
-          w="auto"
-          h="full"
-          data-testid={`GAME_CARD_IMG_${id}`}
-          src={cardData!.image}
-          alt={"Card " + name}
-          clipPath="inset(2% 4% 2% 2%)"
-        />
+        <>
+          <Image
+            w="auto"
+            h="full"
+            data-testid={`GAME_CARD_IMG_${id}`}
+            src={cardData!.image}
+            alt={"Card " + name}
+            clipPath="inset(2% 4% 2% 2%)"
+          />
+          <SearchIcon
+            color="white"
+            position="absolute"
+            zIndex={1000000}
+            w="10%"
+            h="auto"
+            right="0"
+            top="0"
+            display={
+              isIspecteable && seeInspectCard && InspectingCard != id
+                ? "inline-block"
+                : "none"
+            }
+            onClick={() => {
+              dispatch(setInspectingCard(id));
+            }}
+          />
+          <CloseIcon
+            color="white"
+            position="absolute"
+            zIndex={1000000}
+            w="5%"
+            h="auto"
+            right="0"
+            top="0"
+            display={InspectingCard == id ? "inline-block" : "none"}
+            onClick={() => {
+              dispatch(setInspectingCard(undefined));
+            }}
+          />
+        </>
       ) : (
         <>
           <Text color="white">Carta Indefinida:</Text>
@@ -364,84 +396,6 @@ const GameCard: FC<CardProps> = ({
         </>
       )}
     </Box>
-=======
-        }}}
-        onMouseEnter={() => {
-          setSeeInspectCard(true);
-        }}
-        onMouseLeave={() => {
-          setSeeInspectCard(false);
-        }}
-        backgroundColor="black"
-        minH="full"
-        h="full"
-        w="auto"
-        minW="auto"
-        data-testid={`GAME_CARD_${id}`}
-        bgColor="black"
-        borderWidth="4px"
-        borderRadius="lg"
-        cursor="pointer"
-        {...props}
-        transform="auto"
-        _hover={
-          InspectingCard != id
-            ? {
-                scale: 1.1,
-              }
-            : {}
-        }
-        transitionDuration="300ms"
-        {...borderProps}
-      >
-        {cardData !== undefined ? (
-          <>
-            <Image
-              w="auto"
-              h="full"
-              data-testid={`GAME_CARD_IMG_${id}`}
-              src={cardData!.image}
-              alt={"Card " + name}
-              clipPath="inset(2% 4% 2% 2%)"
-            />
-            <SearchIcon
-              color="white"
-              position="absolute"
-              zIndex={1000000}
-              w="10%"
-              h="auto"
-              right="0"
-              top="0"
-              display={
-                isIspecteable && seeInspectCard && InspectingCard != id ? "inline-block" : "none"
-              }
-              onClick={() => {
-                dispatch(setInspectingCard(id));
-              }}
-            />
-            <CloseIcon
-              color="white"
-              position="absolute"
-              zIndex={1000000}
-              w="5%"
-              h="auto"
-              right="0"
-              top="0"
-              display={InspectingCard == id ? "inline-block" : "none"}
-              onClick={() => {
-                dispatch(setInspectingCard(undefined));
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <Text color="white">Carta Indefinida:</Text>
-            <Text color="white">{name}</Text>
-          </>
-        )}
-      </Box>
-    </>
->>>>>>> primera entre inspect card desde el medio
   );
 };
 

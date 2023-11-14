@@ -163,17 +163,57 @@ export const initialState: GameState = {
   player_in_turn: "",
   direction: true,
   doors_positions: [],
-  players: [],
+  players: [{
+    id: 1,
+    name: "Test",
+    quarantine: 0,
+    status: PlayerStatus.ALIVE,
+    position: 1,
+    on_exchange: false,
+    on_turn: false,
+  },],
   playerData: {
-    playerID: 0 ,
-    cards: [],
+    playerID: 1 ,
+    cards: [
+      {
+          id: 1,
+          name: "Lanzallamas",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 2,
+          name: "Infectado",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 3,
+          name: "¡Nada de barbacoas!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 4,
+          name: "¡No, gracias!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },],
     card_picking_amount: 0,
     cardSelected: undefined,
     doorSelected: undefined,
     selectable_players: [],
     playerSelected: undefined,
     role: PlayerRole.HUMAN,
-    state: PlayerTurnState.PANICKING,
+    state: PlayerTurnState.PLAYING,
   },
   discardDeckDimensions: null,
   inspectingCard: undefined,
@@ -282,11 +322,8 @@ export const {
   resetGameState,
   setLastPlayedCard,
   setCardsToShow,
-<<<<<<< HEAD
   setMultiSelect,
-=======
   setInspectingCard,
->>>>>>> primera entre inspect card desde el medio
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

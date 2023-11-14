@@ -175,5 +175,5 @@ function useGameNotifications(gameSocket: Socket, toast: any) {
 export default Page;
 
 Page.authConfig = {
-  gameAuthProtected: true,
+  gameAuthProtected: false,
 };
