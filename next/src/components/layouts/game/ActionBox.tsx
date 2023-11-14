@@ -251,7 +251,9 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
   }
   function canUseDefensCard() {
     if (cardSelected != undefined && lastPlayedCard != undefined) {
+      
       return (
+        (state == PlayerTurnState.RECEIVING_EXCHANGE) && [GameCardTypes.NOTHANKS, GameCardTypes.YOU_FAILED, GameCardTypes.SCARY].includes(cardSelected.name) ||
         (cardSelected.name == GameCardTypes.NOBBQ &&
           lastPlayedCard.card_name == GameCardTypes.FLAMETHROWER) ||
         (cardSelected.name == GameCardTypes.IM_FINE_HERE &&
