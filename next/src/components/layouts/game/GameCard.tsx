@@ -209,11 +209,18 @@ const GameCard: FC<CardProps> = ({
 
   let borderProps: BoxProps = shouldSelect
     ? {
-        borderColor: player.selections.card?.id == id ? "green.500" : "black",
+        borderColor:
+          player.selections.card?.id === id // selecciono la carta y es la misma que la que tengo
+            ? "green.500" // la pongo verde
+            : player.cards.find((card) => card.id === id)?.type === CardType.PANIC // si no es la misma, es una carta de panico
+            ? "purple.500" // la pongo morada
+            : "black", // si no es ninguna de las dos, la pongo negra
       }
     : {
         borderColor: "black",
       };
+
+ 
   const card: CardData | undefined = player.cards.find((card) => card.id == id);
   let shouldBlur = false;
   if (shouldSelect && player.state == PlayerTurnState.PANICKING && card != null) {
@@ -299,7 +306,6 @@ const GameCard: FC<CardProps> = ({
         scale: 1.1,
       }}
       transitionDuration="300ms"
-      opacity={shouldBlur ? "0.4" : "1"}
       {...borderProps}
     >
       {cardData !== undefined ? (
