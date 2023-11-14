@@ -32,7 +32,7 @@ import IMG_LET_IT_STAY_BETWEEN_US from "@/public/cards/QueQuedeEntreNosotros.png
 import IMG_REVELATIONS from "@/public/cards/Revelaciones.png";
 import IMG_THREE_FOUR from "@/public/cards/TresCuatro.png";
 import IMG_ONE_TWO from "@/public/cards/UnoDos.png";
-import IMG_ROUN_AND_ROUND from "@/public/cards/VueltaYVuelta.png";
+import IMG_ROUN_AND_ROUND from "@/public/cards/VueltayVuelta.png";
 import IMG_GET_OUT_OF_HERE from "@/public/cards/SalDeAqui.png";
 import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
