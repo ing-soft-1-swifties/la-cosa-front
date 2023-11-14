@@ -7,8 +7,9 @@ import {
   Card,
   CardTypes,
   setMultiSelect,
+  GamePlayer,
 } from "@/store/gameSlice";
-import { store } from "@/store/store";
+import { RootState, store } from "@/store/store";
 import { beginGame, cancelGame, CancelGameReason } from "./manager";
 import { StandaloneToast } from "@/src/pages/_app";
 import { buildErrorToastOptions } from "@/src/utils/toasts";
@@ -16,6 +17,7 @@ import { setupChatListeners } from "../chat";
 import GameCard, {
   CardTypes as GameCardEnum,
 } from "@/components/layouts/game/GameCard";
+import { useDispatch, useSelector } from "react-redux";
 import { setupNotificationsListeners } from "../notifications";
 
 export enum EventType {
@@ -178,6 +180,19 @@ export type GameStateData = {
   gameState: GameState;
 };
 
+const getPositionOrId = (getId: boolean, num: number) => {
+  const gameState = useSelector((state: RootState) => state.game);
+  if(getId){
+    return gameState.players.find(
+      (player: GamePlayer) => (player.id == num)
+    )!.position
+  }else{
+    return gameState.players.find(
+      (player: GamePlayer) => (player.position == num)
+    )!.id
+  }
+}
+
 function calculateNewGameState(data: GameStateData) {
   const newState: any = {
     config: data.gameState.config,
@@ -193,6 +208,7 @@ function calculateNewGameState(data: GameStateData) {
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,
     direction: data.gameState.direction,
+    doors_positions: data.gameState.doors_positions,
   };
   if (data.gameState.playerData != null) {
     newState.playerData = {

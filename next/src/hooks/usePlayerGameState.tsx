@@ -28,6 +28,7 @@ type PlayerGameState = {
   selections: {
     card: Card | undefined;
     player: number | undefined;
+    door: number | undefined; 
   };
   multiSelect: MultiSelectType;
   card_picking_amount: number;
@@ -75,6 +76,7 @@ const usePlayerGameState: () => PlayerGameState = () => {
     selections: {
       card: playerData.cards.find((card) => card.id == playerData.cardSelected),
       player: playerData.playerSelected,
+      door: playerData.doorSelected,
     },
     multiSelect: gameState.multiSelect,
     card_picking_amount: playerData.card_picking_amount,

@@ -13,12 +13,14 @@ import {
   PlayerStatus,
   selectPlayer,
   setDiscardDeckDimensions,
+  setSelectedDoor,
+  unselectDoor,
   unselectPlayer,
 } from "@/store/gameSlice";
 import Player from "./Player";
+import Door from "@/components/Table/Door";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import { RootState } from "@/store/store";
-import DOOR_ROTTEN from "@/public/game/DoorRotten.png";
 import {
   FaArrowUp,
   FaArrowDown,
@@ -41,16 +43,31 @@ function getTranslatesForPosition(
   return { x: Math.cos(angle), y: Math.sin(angle) };
 }
 
+function getTranslatesForPositionDoor(
+  position: number,
+  playerAmount: number
+): { x: number; y: number } {
+  // Obtenemos el angulo para la posicion del jugador
+  let angle = position * ((2 * Math.PI) / playerAmount);
+  angle -= Math.PI / 2;
+  angle += Math.PI / playerAmount
+
+  // Devolvemos sus coordenadas en el círculo trigonométrico
+  return { x: Math.cos(angle), y: Math.sin(angle) };
+}
+
 const Table: FC<TableProps> = ({ ...boxProps }) => {
   const localPlayer = usePlayerGameState();
   const playerID = localPlayer.id;
   const gameDirection = useSelector((state: RootState) => state.game.direction);
   const players_data = useSelector((state: RootState) => state.game.players);
+  const doors = useSelector((state: RootState) => state.game.doors_positions);
   const players = players_data.filter(
     (p) => p.id !== playerID && p.status != PlayerStatus.DEATH
   );
 
   const selectedPlayerID = localPlayer.selections.player;
+  const selectedDoor = localPlayer.selections.door;
 
   const dispatch = useDispatch();
 
@@ -66,6 +83,14 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     return rest == 1 || rest == alivePlayersAmount - 1;
   }
 
+  function isAdjacentDoor(door: number) {
+    const alivePlayersAmount = players_data.filter(
+      (p) => p.status == PlayerStatus.ALIVE
+      ).length;
+    const positionLeft = (localPlayer.position-1 < 0? (alivePlayersAmount-1) : (localPlayer.position-1)) ;
+    return (door == positionLeft) || (door == localPlayer.position);
+  }
+
   function onPlayerSelectedToggle(playerID: number) {
     const playerSelected = players_data.find((p) => p.id == playerID);
     // Si el jugador esta selecionado, lo des-seleccionamos
@@ -78,9 +103,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     if (
       localPlayer.selections.card === undefined ||
       !localPlayer.selections.card?.needTarget
-    ) {
+    ) return;
+    
+    // si la carta es hacha no se puede seleccionar a alguien q no este en cuarentena
+    if(localPlayer.selections.card.name == CardTypes.AXE && playerSelected?.quarantine == 0)
       return;
-    }
 
     // si requiere seleccion y el jugador clickeado aplica, lo seleccionamos
     if (
@@ -88,6 +115,29 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
       isAdjacent(playerSelected!.position)
     ) {
       dispatch(selectPlayer(playerID));
+      dispatch(unselectDoor());
+    }
+  }
+
+  function onDoorSelectedToggle(door: number) {
+    // Si la puerta esta selecionada, la des-seleccionamos
+    if (selectedDoor === door) {
+      dispatch(unselectDoor());
+      return;
+    }
+    // si la carta no requiere seleccionar jugagdor o no hay carta,
+    // no hacemos nada
+    // HARDCODEO FEO UNICA CARTA A USAR CON PUERTA ES HACHA
+    if (
+      localPlayer.selections.card === undefined ||
+      localPlayer.selections.card?.name != CardTypes.AXE
+    ) {
+      return;
+    }
+    // si requiere seleccion y la puerta clickeada aplica, lo seleccionamos
+    if (isAdjacentDoor(door)) {
+      dispatch(setSelectedDoor(door));
+      dispatch(unselectPlayer());
     }
   }
 
@@ -147,6 +197,26 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
         );
       })}
 
+      {doors?.map((door: number) => {
+        const { x, y } = getTranslatesForPositionDoor(
+          door - (localPlayer.position as any),
+          players.length + (localPlayer.status == PlayerStatus.ALIVE ? 1 : 0)
+        );
+        return (
+          <Box
+            key={door}
+            position="absolute"
+            left={`calc(50% + ${x * 62}%)`}
+            bottom={`calc(50% + ${y * 62}%)`}
+            transition="all"
+            transitionDuration="1400ms"
+            onClick={() => onDoorSelectedToggle(door)}
+          >
+            <Door isSelected={selectedDoor == door} position={door} />
+          </Box>
+        )
+      })}
+
       <Tooltip label={localPlayer.name} placement="bottom">
         <Text
           pos="absolute"
@@ -164,7 +234,7 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
           wordBreak="keep-all"
         >
           {localPlayer.name}
-        </Text>
+          </Text>
       </Tooltip>
 
       {/* Top */}
@@ -248,7 +318,11 @@ const LastPlayedCard: FC<LastPlayedCardProps> = () => {
     >
       <Box h="11rem" mb="4" w="max-content">
         {lastPlayedCard == null ? (
-          <GameCard card_id={0} name={CardTypes.AWAY_BACK} shouldSelect={false} />
+          <GameCard
+            card_id={0}
+            name={CardTypes.AWAY_BACK}
+            shouldSelect={false}
+          />
         ) : (
           <GameCard
             card_id={lastPlayedCard.card_id}

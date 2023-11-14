@@ -28,6 +28,7 @@ export function isGameHost() {
 
 export type CardOptions = {
   target?: number;
+  is_quarantine?: boolean;
 };
 export type PlayCardPayload = {
   card: number;
@@ -41,6 +42,8 @@ export async function sendPlayerPlayCard(
     card: card,
     card_options: card_options,
   };
+  console.log("lo q le mando si o si")
+  console.log(card_options);
   await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload);
 }
 
