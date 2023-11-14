@@ -277,8 +277,8 @@ const ActionBox: FC<ActionBoxProps> = ({ }) => {
       cardSelected?.needTarget &&
       player.selections.player == undefined) ||
     (cardSelected?.name == GameCardTypes.AXE &&
-      player.selections.door == undefined &&
-      player.selections.player == undefined);
+      (player.selections.door == undefined ||
+      player.selections.player == undefined));
 
   if (player.state == PlayerTurnState.PANICKING) { 
     cannotPlaySelectedCard = cardSelected?.type != CardTypes.PANIC;

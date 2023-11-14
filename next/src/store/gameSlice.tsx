@@ -162,7 +162,7 @@ export const initialState: GameState = {
   status: GameStatus.WAITING,
   player_in_turn: "",
   direction: true,
-  doors_positions: [],
+  doors_positions: [1],
   players: [{
     id: 1,
     name: "Test",

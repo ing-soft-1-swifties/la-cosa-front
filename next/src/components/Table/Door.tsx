@@ -30,7 +30,7 @@ const Door: FC<DoorProps> = ({ position, isSelected }) => {
         justifyContent="center"
         alignItems="center"
         position="relative"
-        zIndex={30}
+        zIndex={10}
         w="60px"
         // borderColor={isSelected ? "green.500" : "transparent"}
         borderColor={isSelected ? "red" : "transparent"}
