@@ -33,7 +33,7 @@ const Door: FC<DoorProps> = ({ position, isSelected }) => {
         zIndex={30}
         w="60px"
         // borderColor={isSelected ? "green.500" : "transparent"}
-        borderColor={isSelected ? "red.500": "transparent" }
+        borderColor={isSelected ? "red" : "transparent"}
         borderRadius={10}
         borderWidth="3px"
         // backgroundColor="green"
@@ -50,9 +50,17 @@ const Door: FC<DoorProps> = ({ position, isSelected }) => {
           src={IMG_DOOR}
           alt={"DOOR_ICON_" + position}
         />
-        <Box position="absolute">
-          <PiCrosshairBold />
-        </Box>
+        {isSelected && (
+          <Box
+            position="absolute"
+            zIndex={9999}
+            top="20px"
+            left="9px"
+            color="red"
+          >
+            <PiCrosshairBold size={30} />
+          </Box>
+        )}
       </Flex>
     </>
   );

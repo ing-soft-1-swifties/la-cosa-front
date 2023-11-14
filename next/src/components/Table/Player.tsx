@@ -76,7 +76,7 @@ const Player = ({
             <PlayerAvatar isSelected={selected} player={player} />
             <Text
               userSelect="none"
-              color={selected ? "green.500" : "white"}
+              color={selected ? "red" : "white"}
               textAlign="center"
               maxW="12ch"
               overflow="hidden"

@@ -103,9 +103,11 @@ const Table: FC<TableProps> = ({ ...boxProps }) => {
     if (
       localPlayer.selections.card === undefined ||
       !localPlayer.selections.card?.needTarget
-    ) {
+    ) return;
+    
+    // si la carta es hacha no se puede seleccionar a alguien q no este en cuarentena
+    if(localPlayer.selections.card.name == CardTypes.AXE && playerSelected?.quarantine == 0)
       return;
-    }
 
     // si requiere seleccion y el jugador clickeado aplica, lo seleccionamos
     if (

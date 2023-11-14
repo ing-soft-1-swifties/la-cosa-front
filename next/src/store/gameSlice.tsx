@@ -247,7 +247,7 @@ export const initialState: GameState = {
         type: CardTypes.AWAY,
         subType: CardSubTypes.ACTION,
         needTarget: true,
-        targetAdjacentOnly: false,
+        targetAdjacentOnly: true,
       },
       {
         id: 5,

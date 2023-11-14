@@ -35,6 +35,7 @@ import {
   GiChaliceDrops,
   GiSharpedTeethSkull,
   GiGasMask,
+  GiFireAxe,
 } from "react-icons/gi";
 import {
   sendFinishGame,
@@ -49,6 +50,7 @@ import usePlayerGameState from "@/src/hooks/usePlayerGameState";
 import {
   CardSubTypes,
   CardTypes,
+  GamePlayer,
   PlayerRole,
   PlayerStatus,
   PlayerTurnState,
@@ -65,12 +67,20 @@ type ActionBoxProps = {};
 const ActionBox: FC<ActionBoxProps> = ({}) => {
   const player = usePlayerGameState();
   const dispatch = useDispatch();
+  const localPlayer = usePlayerGameState();
   const cardSelected = player.selections.card;
   const cardSelectedID = cardSelected?.id;
   const { turn, on_exchange, on_turn, state } = player;
   const playerSelected = player.selections.player;
   const doorSelected = player.selections.door;
   const on_defense = state == PlayerTurnState.DEFENDING;
+  const have_axe: boolean = player.cards.some((card)=>{return card.name == GameCardTypes.AXE});
+  const players_data = useSelector((state: RootState) => state.game.players);
+  const gameState = useSelector((state: RootState) => state.game);
+  const playerSelectedPublicData = gameState.players.find(
+    (player: GamePlayer) => player.id == playerSelected
+  );
+  
   const lastPlayedCard = useSelector(
     (state: RootState) => state.game.lastPlayedCard
   );
@@ -81,6 +91,18 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   } = useDisclosure();
   const leastDestructiveRef = useRef(null);
 
+  function isNextToDoor() {
+    const position = playerSelectedPublicData?.position;
+    const rest = Math.abs(localPlayer.position - position!);
+    const alivePlayersAmount = players_data.filter(
+      (p) => p.status == PlayerStatus.ALIVE
+    ).length;
+
+    if(localPlayer.position == alivePlayersAmount && position == 0)
+      return true;
+    return localPlayer.position < position! && (localPlayer.position != 0 && position != alivePlayersAmount)
+  }
+
   const playCard = () => {
     let cardOptions: any = {};
     
@@ -90,9 +112,15 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
   
     // control de la carta hacha
     if (player.selections.card?.name == GameCardTypes.AXE) {
-      const isQuaratine = playerSelected != undefined
-      const target = doorSelected != undefined ? doorSelected : playerSelected
-      cardOptions = doorSelected ? { target: target, is_quaratine: isQuaratine} : {};
+      const isQuaratine = playerSelected != undefined;
+      const target = doorSelected != undefined ? doorSelected : playerSelected;
+      cardOptions = doorSelected
+        ? { target: target, is_quaratine: isQuaratine }
+        : {};
+    }
+
+    if (player.selections.card?.name == GameCardTypes.LOCKED_DOOR && isNextToDoor()) {
+      cardOptions = {target: player.position}
     }
 
     if (cardSelectedID !== undefined) {
@@ -104,6 +132,14 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
       );
     }
   };
+
+  // envia el hacha apuntandose a si mismo en modo quitar cuarentena
+  const playCardKillQuarantine = () => {
+    var cardOptions = { target: player.id, is_quaratine: true};
+    if (cardSelectedID !== undefined) {
+      sendPlayerPlayCard(cardSelectedID, cardOptions);
+    }
+  }
 
   const discardCard = () => {
     if (cardSelectedID !== undefined) {
@@ -211,9 +247,12 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
     cardSelected?.name == GameCardTypes.THETHING ||
     cardSelected?.name == GameCardTypes.INFECTED ||
     cardSelected?.subType == CardSubTypes.DEFENSE ||
-    (cardSelected?.needTarget && player.selections.player == undefined) ||
+    (cardSelected?.name != GameCardTypes.AXE &&
+      cardSelected?.needTarget &&
+      player.selections.player == undefined) ||
     (cardSelected?.name == GameCardTypes.AXE &&
-      player.selections.door == undefined);
+      player.selections.door == undefined &&
+      player.selections.player == undefined);
   if (
     player.panicCards.length > 0 &&
     cardSelected != null &&
@@ -254,6 +293,18 @@ const ActionBox: FC<ActionBoxProps> = ({}) => {
               <Stack data-testid={`HAND`} justify="center">
                 {on_turn && !on_exchange && (
                   <>
+                    {have_axe && (
+                      <Button
+                        colorScheme="whiteAlpha"
+                        data-testid="ACTION_BOX_PLAY_BTN"
+                        onClick={playCardKillQuarantine}
+                        rightIcon={<GiFireAxe />}
+                        isDisabled={cardSelected?.name != GameCardTypes.AXE}
+                      >
+                        Quitar mi cuarentena
+                      </Button>
+                    )}
+
                     <Button
                       colorScheme="whiteAlpha"
                       data-testid="ACTION_BOX_PLAY_BTN"
