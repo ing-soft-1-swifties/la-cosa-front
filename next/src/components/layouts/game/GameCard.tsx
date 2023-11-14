@@ -34,9 +34,13 @@ import IMG_THREE_FOUR from "@/public/cards/TresCuatro.png";
 import IMG_ONE_TWO from "@/public/cards/UnoDos.png";
 import { StaticImageData } from "next/image";
 import Image from "@/components/utility/Image";
-import { setSelectedCard } from "@/store/gameSlice";
+import {
+  PlayerTurnState,
+  setMultiSelect,
+  setSelectedCard,
+} from "@/store/gameSlice";
 import usePlayerGameState from "@/src/hooks/usePlayerGameState";
-import {Card as CardData, CardTypes as CardType} from "@/store/gameSlice"
+import { Card as CardData, CardTypes as CardType } from "@/store/gameSlice";
 
 export enum CardTypes {
   FLAMETHROWER = "Lanzallamas",
@@ -68,7 +72,7 @@ export enum CardTypes {
   THREE_FOUR = "Tres, cuatro...",
   ONE_TWO = "Uno, dos...",
   AWAY_BACK = "Alejate Reversa",
-  ROTTEN_ROPES = "Cuerdas podridas"
+  ROTTEN_ROPES = "Cuerdas podridas",
 }
 
 let ReverseCard = new Map<string, keyof typeof CardTypes>();
@@ -142,38 +146,38 @@ const CardsData: CardsDataType = {
   [CardTypes.WHISKEY]: {
     image: IMG_WHISKEY,
   },
-  [CardTypes.UPS]:{
-    image:IMG_UPS,
+  [CardTypes.UPS]: {
+    image: IMG_UPS,
   },
-  [CardTypes.BLIND_DATE]:{
-    image:IMG_BLIND_DATE,
+  [CardTypes.BLIND_DATE]: {
+    image: IMG_BLIND_DATE,
   },
-  [CardTypes.HERE_IS_THE_PARY]:{
-    image:IMG_HERE_IS_THE_PARY,
+  [CardTypes.HERE_IS_THE_PARY]: {
+    image: IMG_HERE_IS_THE_PARY,
   },
-  [CardTypes.WE_CANT_NOT_BE_FRIENDS]:{
-    image:IMG_WE_CANT_NOT_BE_FRIENDS,
+  [CardTypes.WE_CANT_NOT_BE_FRIENDS]: {
+    image: IMG_WE_CANT_NOT_BE_FRIENDS,
   },
-  [CardTypes.FORGETFUL]:{
-    image:IMG_FORGETFUL,
+  [CardTypes.FORGETFUL]: {
+    image: IMG_FORGETFUL,
   },
-  [CardTypes.LET_IT_STAY_BETWEEN_US]:{
-    image:IMG_LET_IT_STAY_BETWEEN_US,
+  [CardTypes.LET_IT_STAY_BETWEEN_US]: {
+    image: IMG_LET_IT_STAY_BETWEEN_US,
   },
-  [CardTypes.REVELATIONS]:{
-    image:IMG_REVELATIONS,
+  [CardTypes.REVELATIONS]: {
+    image: IMG_REVELATIONS,
   },
-  [CardTypes.THREE_FOUR]:{
-    image:IMG_THREE_FOUR,
+  [CardTypes.THREE_FOUR]: {
+    image: IMG_THREE_FOUR,
   },
-  [CardTypes.ONE_TWO]:{
-    image:IMG_ONE_TWO,
+  [CardTypes.ONE_TWO]: {
+    image: IMG_ONE_TWO,
   },
   [CardTypes.AWAY_BACK]: {
     image: IMG_AWAY_BACK,
   },
   [CardTypes.ROTTEN_ROPES]: {
-    image: IMG_ROTTEN_ROPES
+    image: IMG_ROTTEN_ROPES,
   },
 };
 
@@ -196,13 +200,14 @@ const GameCard: FC<CardProps> = ({
   // var IMG_LOADED = false;
   var cardData = undefined;
   if (card_key == null) {
-  } else { //sino se me rompe el linter
+  } else {
+    //sino se me rompe el linter
     const card = CardTypes[card_key];
     cardData = CardsData[card];
     // IMG_LOADED = true;
   }
 
-  const borderProps: BoxProps = shouldSelect
+  let borderProps: BoxProps = shouldSelect
     ? {
         borderColor: player.selections.card?.id == id ? "green.500" : "black",
       }
@@ -210,18 +215,73 @@ const GameCard: FC<CardProps> = ({
         borderColor: "black",
       };
   const card: CardData | undefined = player.cards.find((card) => card.id == id);
-  const shouldBlur =
-    shouldSelect &&
-    card != null &&
-    player.panicCards.length > 0 && card.type != CardType.PANIC;
+  let shouldBlur = false;
+  if (shouldSelect && player.state == PlayerTurnState.PANICKING && card != null) {
+    const isPanicCard = card!.type == CardType.PANIC;
+    shouldBlur = card != null && card!.type != CardType.PANIC;
+    if (player.card_picking_amount > 0) {
+      shouldBlur = false;
+      if (!isPanicCard) {
+        const isSelected =
+          player.multiSelect.away_selected.find(
+            (card_id) => card_id == card!.id
+          ) != null;
+        borderProps = {
+          borderColor: isSelected ? "green.500" : "black",
+        };
+      } else {
+        borderProps = {
+          borderColor: player.selections.card?.id == id ? "pink.500" : "black"
+        }
+      }
+    }
+  }
 
   return (
     <Box
       onClick={() => {
-        if (shouldSelect)
-          dispatch(
-            setSelectedCard(player.selections.card?.id !== id ? id : undefined)
-          );
+        if (shouldSelect && card != null) {
+          if (player.state == PlayerTurnState.PANICKING) {
+            if (card!.type == CardType.PANIC) {
+              // Select de la carta de Panico
+              dispatch(
+                setSelectedCard(
+                  player.selections.card?.id !== id ? id : undefined
+                )
+              );
+            } else {
+              // Select de las cartas de Alejate
+              if (player.multiSelect) {
+                // Si estamos en multiSelect:
+                const isMultiSelected =
+                  player.multiSelect.away_selected.find(
+                    (card_id) => card_id == card!.id
+                  ) != null;
+                let multiSelectState = {
+                  ...player.multiSelect,
+                };
+                if (isMultiSelected)
+                  multiSelectState.away_selected =
+                    player.multiSelect.away_selected.filter(
+                      (card_id) => card_id != card!.id
+                    );
+                else if (
+                  player.multiSelect.away_selected.length <
+                  player.card_picking_amount
+                )
+                  multiSelectState.away_selected =
+                    player.multiSelect.away_selected.concat([card!.id]);
+                dispatch(setMultiSelect(multiSelectState));
+              }
+            }
+          } else {
+            dispatch(
+              setSelectedCard(
+                player.selections.card?.id !== id ? id : undefined
+              )
+            );
+          }
+        }
       }}
       backgroundColor="black"
       minH="full"
