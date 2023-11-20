@@ -1,10 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BoxModel } from "@chakra-ui/utils";
-
+import { G } from "msw/lib/glossary-de6278a9";
+import GameCard from "components/layouts/game/GameCard";
+import { GameStateData } from "business/game/gameAPI/listener";
+import {CardTypes as CardNames} from "@/components/layouts/game/GameCard"
 
 export enum PlayerTurnState {
-  PLAY_OR_DISCARD = "play_or_discard",
-  SELECT_EXCHANGE_CARD = "select_exchange_Card",
+  PLAYING = "PLAYING",
+  WAITING = "WAITING",
+  DEFENDING = "DEFENDING",
+  RECEIVING_EXCHANGE = "RECEIVING_EXCHANGE",
+  OFFERING_EXCHANGE = "OFFERING_EXCHANGE",
+  PANICKING = "PANICKING",
 }
 
 export enum GameStatus {
@@ -28,7 +35,7 @@ export type GamePlayer = {
   name: string;
   id: number;
   status: PlayerStatus;
-  in_quarantine: boolean;
+  quarantine: number;
   position: number;
   on_turn: boolean;
   on_exchange: boolean;
@@ -47,7 +54,11 @@ type PlayerData = {
   cards: Card[];
   role: PlayerRole;
   cardSelected: number | undefined;
+  doorSelected: number | undefined;
   playerSelected: number | undefined;
+  state: PlayerTurnState;
+  card_picking_amount: number;
+  selectable_players: string[];
 };
 
 // no se si poner en ingles estos nombres pero por ahora nos manejamos asi
@@ -77,7 +88,67 @@ export type GameState = {
   players: GamePlayer[];
   playerData?: PlayerData;
   player_in_turn: string | undefined;
+  direction: boolean;
   discardDeckDimensions: BoxModel | null;
+  inspectingCard: number | undefined;
+  chat: {
+    messages: ChatMessage[];
+  };
+  lastPlayedCard:
+    | {
+        player_name: string;
+        card_id: number;
+        card_name: string;
+        //objetivo de la ultima carta jugada
+        player_target?: string;
+      }
+    | undefined;
+  
+  dataCardPlayed: DataCardPlayed;
+  doors_positions: number[];
+  isExchanging: boolean;
+  multiSelect: MultiSelectType;
+};
+
+export type MultiSelectType = {
+  away_selected: number[];
+};
+
+export type DataCardPlayed = {
+  title: string | undefined;
+  cardsToShow: Card[] | undefined;
+  player: string | undefined;
+};
+
+export enum ChatMessageType {
+  PLAYER_MESSAGE = "player_message",
+  GAME_MESSAGE = "game_message",
+}
+
+export enum ChatMessageSeverity {
+  NORMAL = "normal",
+  INFO = "info",
+  WARNING = "warning",
+  CRITICAL = "critical",
+}
+
+export type ChatMessage = {
+  type: ChatMessageType;
+  severity?: ChatMessageSeverity;
+  player_name?: string;
+  message: string;
+};
+
+export type OnPlayedCardData = {
+  gameState: GameStateData;
+  card_id: number;
+  card_name: string;
+  card_options: any;
+  player_name: string;
+  effects: {
+    player: string;
+    cardsToShow: Card[];
+  };
 };
 
 export const initialState: GameState = {
@@ -89,70 +160,90 @@ export const initialState: GameState = {
     maxPlayers: 12,
   },
   status: GameStatus.WAITING,
-  player_in_turn: 'otro2',
-  players: [
-    { name: "Yo", id: 123, position: 0, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false},
-    { name: "otro1", id: 124, position: 1, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: true, on_exchange: false },
-    { name: "otro2", id: 125, position: 2, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-    { name: "otro3", id: 126, position: 3, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-    { name: "otro4", id: 127, position: 4, in_quarantine: false, status: PlayerStatus.ALIVE, on_turn: false, on_exchange: false },
-    { name: "otro5", id: 128, position: 5, in_quarantine: false, status: PlayerStatus.DEATH, on_turn: false, on_exchange: false },
-  ],
+  player_in_turn: "",
+  direction: true,
+  doors_positions: [1],
+  players: [{
+    id: 1,
+    name: "Test",
+    quarantine: 0,
+    status: PlayerStatus.ALIVE,
+    position: 1,
+    on_exchange: false,
+    on_turn: false,
+  },],
   playerData: {
-    playerID: 123,
+    playerID: 1 ,
     cards: [
       {
-        id: 1,
-        name: "Lanzallamas",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: true,
-        targetAdjacentOnly: true,
-      },
-      {
-        id: 2,
-        name: "Infectado",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: false,
-        targetAdjacentOnly: false,
-      },
-      {
-        id: 3,
-        name: "¡Nada de barbacoas!",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: true,
-        targetAdjacentOnly: false,
-      },
-      {
-        id: 4,
-        name: "¡No, gracias!",
-        type: CardTypes.AWAY,
-        subType: CardSubTypes.ACTION,
-        needTarget: true,
-        targetAdjacentOnly: true,
-      },
-      // {
-      //   id: 5,
-      //   name: "La cosa",
-      //   type: CardTypes.AWAY,
-      //   subType: CardSubTypes.ACTION,
-      // },
-    ],
-    cardSelected: 1,
+          id: 1,
+          name: "Lanzallamas",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 2,
+          name: "Infectado",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 3,
+          name: "¡Nada de barbacoas!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 4,
+          name: "¡No, gracias!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },],
+    card_picking_amount: 0,
+    cardSelected: undefined,
+    doorSelected: undefined,
+    selectable_players: [],
     playerSelected: undefined,
-    role: PlayerRole.INFECTED,
+    role: PlayerRole.HUMAN,
+    state: PlayerTurnState.PLAYING,
   },
-  discardDeckDimensions: null
+  discardDeckDimensions: null,
+  inspectingCard: undefined,
+  chat: {
+    messages: [],
+  },
+  lastPlayedCard: {
+    card_id: 9,
+    card_name: "¡No, gracias!",
+    player_name: "hola"
+  },
+  dataCardPlayed: {
+    title: undefined,
+    player: undefined,
+    cardsToShow: undefined,
+  },
+  multiSelect: {
+    away_selected: [],
+  },
+  isExchanging: false
 };
 
 export type BackendGameState = {
   config: GameConfig;
   status: GameStatus;
   players: GamePlayer[];
-  playerData: PlayerData;
+  playerData?: PlayerData;
   player_in_turn: string | undefined;
+  direction: boolean;
+  doors_positions: number[];
 };
 
 export const gameSlice = createSlice({
@@ -171,23 +262,68 @@ export const gameSlice = createSlice({
       state.status = action.payload.status;
       state.playerData = action.payload.playerData;
       state.player_in_turn = action.payload.player_in_turn;
+      state.direction = action.payload.direction;
+      state.doors_positions = action.payload.doors_positions;
     },
     setSelectedCard(state, action: PayloadAction<number | undefined>) {
       state.playerData!.cardSelected = action.payload;
       state.playerData!.playerSelected = undefined;
+      state.playerData!.doorSelected = undefined;
+    },
+    setSelectedDoor(state, action: PayloadAction<number | undefined>) {
+      state.playerData!.doorSelected = action.payload;
+    },
+    unselectDoor(state) {
+      state.playerData!.doorSelected = undefined;
     },
     resetGameState(state) {
       state.config = initialState.config;
       state.status = initialState.status;
       state.players = initialState.players;
+      state.chat = initialState.chat;
     },
     setDiscardDeckDimensions(state, action: PayloadAction<BoxModel>) {
       state.discardDeckDimensions = action.payload;
     },
+    addChatMessage(state, action: PayloadAction<ChatMessage>) {
+      state.chat.messages = state.chat.messages.concat(action.payload);
+    },
+    setLastPlayedCard(
+      state,
+      action: PayloadAction<
+        { player_name: string; card_id: number; card_name: string } | undefined
+      >
+    ) {
+      state.lastPlayedCard = action.payload;
+    },
+    setCardsToShow(state, action: PayloadAction<DataCardPlayed>) {
+      state.dataCardPlayed.cardsToShow = action.payload.cardsToShow;
+      state.dataCardPlayed.player = action.payload.player;
+      state.dataCardPlayed.title = action.payload.title;
+    },
+    setMultiSelect(state, action: PayloadAction<MultiSelectType>) {
+      state.multiSelect = action.payload;
+    },
+    setInspectingCard(state, action: PayloadAction<number | undefined>): void {
+      state.inspectingCard = action.payload;
+    },
   },
 });
 
-export const { setGameState, setSelectedCard, selectPlayer, unselectPlayer, setDiscardDeckDimensions   } =
-  gameSlice.actions;
+export const {
+  setGameState,
+  setSelectedCard,
+  selectPlayer,
+  unselectPlayer,
+  setDiscardDeckDimensions,
+  unselectDoor,
+  setSelectedDoor,
+  addChatMessage,
+  resetGameState,
+  setLastPlayedCard,
+  setCardsToShow,
+  setMultiSelect,
+  setInspectingCard,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;

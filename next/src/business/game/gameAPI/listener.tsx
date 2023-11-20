@@ -1,9 +1,24 @@
 import { Socket } from "socket.io-client";
-import { GameState, setGameState } from "@/store/gameSlice";
-import { store } from "@/store/store";
+import {
+  GameState,
+  setGameState,
+  setLastPlayedCard,
+  setCardsToShow,
+  Card,
+  CardTypes,
+  setMultiSelect,
+  GamePlayer,
+} from "@/store/gameSlice";
+import { RootState, store } from "@/store/store";
 import { beginGame, cancelGame, CancelGameReason } from "./manager";
 import { StandaloneToast } from "@/src/pages/_app";
 import { buildErrorToastOptions } from "@/src/utils/toasts";
+import { setupChatListeners } from "../chat";
+import GameCard, {
+  CardTypes as GameCardEnum,
+} from "@/components/layouts/game/GameCard";
+import { useDispatch, useSelector } from "react-redux";
+import { setupNotificationsListeners } from "../notifications";
 
 export enum EventType {
   ON_ROOM_NEW_PLAYER = "on_room_new_player",
@@ -16,6 +31,7 @@ export enum EventType {
   ON_GAME_PLAYER_STEAL_CARD = "on_game_player_steal_card",
   ON_GAME_PLAYER_PLAY_CARD = "on_game_player_play_card",
   ON_GAME_PLAYER_PLAY_DEFENSE_CARD = "on_game_player_play_defense_card",
+  ON_GAME_DEFEND_WITH_SCARY = "on_game_defend_with_aterrador",
   ON_GAME_PLAYER_DISCARD_CARD = "on_game_player_discard_card",
   ON_GAME_BEGIN_EXCHANGE = "on_game_begin_exchange",
   ON_GAME_FINISH_EXCHANGE = "on_game_finish_exchange",
@@ -26,9 +42,9 @@ export enum EventType {
 
 export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.onAny((ev, ...args) => {
-    console.log(`${ev}`)
-    console.log(args)
-  })
+    console.log(`${ev}`);
+    console.log(args);
+  });
   gameSocket.on(EventType.ON_ROOM_NEW_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_LEFT_PLAYER, updateGameState);
   gameSocket.on(EventType.ON_ROOM_START_GAME, updateGameState);
@@ -40,7 +56,6 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   gameSocket.on(EventType.ON_GAME_BEGIN_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_FINISH_EXCHANGE, updateGameState);
   gameSocket.on(EventType.ON_GAME_PLAYER_DEATH, updateGameState);
-  // gameSocket.on(EventType.ON_GAME_END, updateGameState);
 
   gameSocket.on(EventType.ON_ROOM_CANCELLED_GAME, onRoomCancelledGame);
   gameSocket.on(EventType.ON_ROOM_START_GAME, onRoomStartGame);
@@ -48,12 +63,135 @@ export const setupGameSocketListeners = (gameSocket: Socket) => {
   // TODO! Hay que ver si esto lo dejamos o es temporal
   gameSocket.on(EventType.ON_GAME_INVALID_ACTION, onGameInvalidAction);
 
+  setupChatListeners(gameSocket);
+  setupNotificationsListeners(gameSocket);
+
   gameSocket.on("disconnect", onGameSocketDisconnect);
+
+  // Estados especificos:
+  gameSocket.on(EventType.ON_GAME_PLAYER_STEAL_CARD, onGamePlayerStealCard);
+  gameSocket.on(EventType.ON_GAME_PLAYER_PLAY_CARD, onGamePlayerPlayCard);
+  gameSocket.on(
+    EventType.ON_GAME_PLAYER_PLAY_DEFENSE_CARD,
+    onGamePlayerPlayDefenseCard
+  );
+  gameSocket.on(EventType.ON_GAME_DEFEND_WITH_SCARY, onGameDefendWithScary);
+  gameSocket.on(EventType.ON_GAME_PLAYER_DISCARD_CARD, onGameDiscardCard);
 };
+
+function onGamePlayerStealCard() {
+  // Reseteamos las cartas multi-select
+  store.dispatch(
+    setMultiSelect({
+      away_selected: [],
+    })
+  );
+}
+
+type PlayCardPayload = {
+  player_name: string;
+  card_id: number;
+  card_name: string;
+  card_options: {
+    target?: string;
+  };
+  effects?: {
+    player: string;
+    cards: Card[];
+  };
+};
+function onGamePlayerPlayCard(payload: PlayCardPayload) {
+  // Mostramos la ultima carta jugada:
+  store.dispatch(
+    setLastPlayedCard({
+      player_name: payload.player_name,
+      card_id: payload.card_id,
+      card_name: payload.card_name,
+    })
+  );
+
+  // Dependiendo de la carta jugada actualizamos el estado correspondiente:
+  if (payload.effects != null) {
+    const card = payload.card_name;
+    const player = payload.effects.player;
+    let title = "";
+    if (
+      player != store.getState().user.name &&
+      (card == GameCardEnum.WHISKEY ||
+        card == GameCardEnum.ANALYSIS ||
+        card == GameCardEnum.SUSPICION ||
+        card == GameCardEnum.SCARY)
+    ) {
+      if (card == GameCardEnum.WHISKEY)
+        title = `${player} jugo una carta de Whisky:`;
+      if (card == GameCardEnum.ANALYSIS)
+        title = `Resultados del Analisis de ${player}:`;
+      if (card == GameCardEnum.SUSPICION)
+        title = `Carta aleatoria de ${player}:`;
+      if (card == GameCardEnum.SCARY)
+        title = `Carta que el jugador ${player} te quiso intercambiar:`;
+      store.dispatch(
+        setCardsToShow({
+          cardsToShow: payload.effects.cards,
+          player,
+          title,
+        })
+      );
+    }
+  }
+}
+
+type PlayDefenseCardPayload = PlayCardPayload;
+function onGamePlayerPlayDefenseCard(payload: PlayDefenseCardPayload) {
+  store.dispatch(
+    setLastPlayedCard({
+      player_name: payload.player_name,
+      card_id: payload.card_id,
+      card_name: payload.card_name,
+    })
+  );
+}
+
+type PlayDefenseScaryCardPayload = {
+  effects: {
+    card: Card;
+    name: string;
+  };
+};
+function onGameDefendWithScary(payload: PlayDefenseScaryCardPayload) {
+  // Dependiendo de la carta jugada actualizamos el estado correspondiente:
+  if (payload.effects != null) {
+    const title = `Carta que el jugador ${payload.effects.name} te quiso intercambiar:`;
+    store.dispatch(
+      setCardsToShow({
+        cardsToShow: [payload.effects.card],
+        player: payload.effects.name,
+        title,
+      })
+    );
+  }
+}
+
+function onGameDiscardCard() {
+  store.dispatch(setLastPlayedCard(undefined));
+}
 
 export type GameStateData = {
   gameState: GameState;
 };
+
+const getPositionOrId = (getId: boolean, num: number) => {
+  const gameState = useSelector((state: RootState) => state.game);
+  if(getId){
+    return gameState.players.find(
+      (player: GamePlayer) => (player.id == num)
+    )!.position
+  }else{
+    return gameState.players.find(
+      (player: GamePlayer) => (player.position == num)
+    )!.id
+  }
+}
 
 function calculateNewGameState(data: GameStateData) {
   const newState: any = {
@@ -65,16 +203,21 @@ function calculateNewGameState(data: GameStateData) {
       status: player.status,
       on_turn: player.on_turn,
       on_exchange: player.on_exchange,
+      quarantine: player.quarantine,
     })),
     status: data.gameState.status,
     player_in_turn: data.gameState.player_in_turn,
-
+    direction: data.gameState.direction,
+    doors_positions: data.gameState.doors_positions,
   };
   if (data.gameState.playerData != null) {
     newState.playerData = {
       cards: data.gameState.playerData.cards,
       playerID: data.gameState.playerData.playerID,
       role: data.gameState.playerData.role,
+      state: data.gameState.playerData!.state,
+      card_picking_amount: data.gameState.playerData!.card_picking_amount,
+      selectable_players: data.gameState.playerData!.selectable_players,
     };
   }
   return newState;

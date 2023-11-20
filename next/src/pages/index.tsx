@@ -6,6 +6,7 @@ import BgImage from "@/components/utility/BgImage";
 import FormJoinLobby from "@/components/layouts/home/FormJoinLobby";
 import NewGameModal from "@/components/modalCrearPartida";
 import { useDisclosure } from "@chakra-ui/react";
+import RULES from '@/public/index/rulesGame.pdf';
 
 const Page: PageWithLayout = () => {
   const disclouseModal = useDisclosure();
@@ -41,19 +42,21 @@ const Page: PageWithLayout = () => {
               bg="rgba(30, 30, 30, 0.7)"
               borderTopRightRadius="3xl"
               borderBottomRightRadius="3xl"
-              pt={24}
+              justifyContent="space-between"
+
+              pt={10}
               pb={10}
             >
               <Flex
-                p={3}
+                p={2}
                 rowGap={4}
                 justifyContent="center"
                 flexWrap="wrap"
                 columnGap={6}
                 justify="space-between"
               >
-                <FormJoinLobby />
 
+                <FormJoinLobby />
                 <Box>
                   <NewGameModal disclouse={disclouseModal} />
                   <Button
@@ -65,11 +68,23 @@ const Page: PageWithLayout = () => {
                   </Button>
                 </Box>
               </Flex>
-            </Box>
-          </Flex>
+              <Flex
+                justifyContent="center"
+                flexWrap="wrap"
+                pt={15}
+                >
+                <Button
+                  colorScheme="blue"
+                  onClick={() => window.open("rulesGame.pdf")}
+                >
+                  Reglas
+                </Button>
+            </Flex>
+          </Box>
         </Flex>
-      </Container>
-    </Box>
+      </Flex>
+    </Container>
+    </Box >
   );
 };
 

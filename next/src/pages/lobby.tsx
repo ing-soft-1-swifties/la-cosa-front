@@ -76,7 +76,7 @@ const Page: PageWithLayout = () => {
                 {game.players.map((player) => {
                   return (
                     <Box key={player.name} flexBasis="48%">
-                      <PlayerCard name={player.name} />
+                      <PlayerCard player={player} />
                     </Box>
                   );
                 })}

@@ -22,7 +22,9 @@ export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
     reducer: rootReducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(gameApi.middleware),
+      getDefaultMiddleware({
+        serializableCheck: false
+      }).concat(gameApi.middleware),
   });
 };
 

@@ -201,6 +201,7 @@ function NewGameModal({ disclouse }: NewGameModalProps) {
                         Crear Partida
                       </Button>
                     </Flex>
+                    
                   </form>
                 );
               }}

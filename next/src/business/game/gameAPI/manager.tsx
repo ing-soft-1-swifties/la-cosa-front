@@ -9,12 +9,13 @@ import {
   buildSucessToastOptions,
   buildWarningToastOptions,
 } from "@/src/utils/toasts";
+import { resetGameState } from "@/store/gameSlice";
 
 export enum MessageType {
   GET_GAME_STATE = "get_game_state",
   ROOM_START_GAME = "room_start_game",
   ROOM_QUIT_GAME = "room_quit_game",
-
+  FINISH_GAME = "game_thething_finish_game",
   GAME_PLAY_CARD = "game_play_card",
   GAME_PLAY_DEFENSE_CARD = "game_play_defense_card",
   GAME_DISCARD_CARD = "game_discard_card",
@@ -27,6 +28,7 @@ export function isGameHost() {
 
 export type CardOptions = {
   target?: number;
+  is_quarantine?: boolean;
 };
 export type PlayCardPayload = {
   card: number;
@@ -40,19 +42,29 @@ export async function sendPlayerPlayCard(
     card: card,
     card_options: card_options,
   };
+  console.log("lo q le mando si o si")
+  console.log(card_options);
   await gameSocket.emitWithAck(MessageType.GAME_PLAY_CARD, playCardPayload);
 }
 
-type PlayDefenseCardPayload = PlayCardPayload;
+export type PlayDefenseCardPayload = {card: number | undefined, on_defense: boolean};
 export async function sendPlayerPlayDefenseCard(
-  target_player: number,
   card: number
 ) {
   const playDefenseCardPayload: PlayDefenseCardPayload = {
     card: card,
-    card_options: {
-      target: target_player,
-    },
+    on_defense: true,
+  };
+  await gameSocket.emitWithAck(
+    MessageType.GAME_PLAY_DEFENSE_CARD,
+    playDefenseCardPayload
+  );
+}
+
+export async function sendPlayerPlayNoDefense() {
+  const playDefenseCardPayload: PlayDefenseCardPayload = {
+    card: undefined,
+    on_defense: false,
   };
   await gameSocket.emitWithAck(
     MessageType.GAME_PLAY_DEFENSE_CARD,
@@ -73,6 +85,10 @@ export async function sendPlayerDiscardCard(card: number) {
   );
 }
 
+export function sendFinishGame() {
+  gameSocket.emit(MessageType.FINISH_GAME);
+}
+
 export type SelectExchangeCardPayload = {
   card: number;
   on_defense: boolean;
@@ -89,7 +105,7 @@ export async function sendPlayerSelectExchangeCard(card: number) {
   );
 }
 
-export async function sendPlayerSelectDefenseCard(card: number) {
+export async function sendPlayerSelectDefenseCardOnExchange(card: number) {
   const selectExchangeCardPayload: SelectExchangeCardPayload = {
     card: card,
     on_defense: true,
@@ -107,13 +123,14 @@ export function joinPlayerToGame(
 ) {
   store.dispatch(setUserName(playerName));
   store.dispatch(setGameConnectionToken(connectionToken));
+  store.dispatch(resetGameState());
   router.push("/lobby");
 }
 
 export function finishGame() {
+  Router.push("/");
   store.dispatch(setUserName(undefined));
   store.dispatch(setGameConnectionToken(undefined));
-  Router.push("/");
 }
 
 export enum CancelGameReason {

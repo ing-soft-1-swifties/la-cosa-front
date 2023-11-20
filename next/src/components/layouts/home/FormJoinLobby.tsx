@@ -10,10 +10,11 @@ import {
 import { joinPlayerToGame } from "@/src/business/game/gameAPI/manager";
 import { Field, Formik } from "formik";
 import router from "next/router";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { SERVER_API_URL } from "@/src/config";
+import { setLobbyFormFieldSetter } from "@/store/userSlice";
 
 const formSchema = Yup.object({
   room_id: Yup.number().required("Este campo es requerido"),
@@ -25,7 +26,7 @@ const formSchema = Yup.object({
 
 export default function FormJoinLobby() {
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
-
+  const dispatch = useDispatch();
   return (
     <>
       <Box
@@ -84,7 +85,8 @@ export default function FormJoinLobby() {
           }}
           validationSchema={formSchema}
         >
-          {({ errors, touched, handleSubmit }) => {
+          {({ errors, touched, handleSubmit, setFieldValue }) => {
+            dispatch(setLobbyFormFieldSetter(setFieldValue));
             return (
               <form onSubmit={handleSubmit}>
                 {/* input name jugador  */}
@@ -122,7 +124,13 @@ export default function FormJoinLobby() {
                 <FormControl isInvalid={submitError != null}>
                   <FormErrorMessage>{submitError}</FormErrorMessage>
                 </FormControl>
-                <Button colorScheme="blue" type="submit" mt={4} mr={3}>
+                <Button
+                  id="join_lobby_button"
+                  colorScheme="blue"
+                  type="submit"
+                  mt={4}
+                  mr={3}
+                >
                   Entrar Partida
                 </Button>
               </form>

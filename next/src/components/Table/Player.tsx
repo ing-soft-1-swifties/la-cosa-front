@@ -1,4 +1,11 @@
-import { Avatar, Box, Box as Flex, Text, keyframes } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Box as Flex,
+  Text,
+  keyframes,
+  Tooltip,
+} from "@chakra-ui/react";
 import React from "react";
 import { GamePlayer } from "@/store/gameSlice";
 import Image from "@/components/utility/Image";
@@ -7,6 +14,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { motion } from "framer-motion";
 import { FramerMotionBox } from "@/src/utils/animations";
+import MASK_ICON from "@/public/game/ToxicMask.webp";
+import DANGER_ICON from "@/public/game/DangerCuarentine.webp";
+import PlayerAvatar from "@/components/utility/PlayerAvatar";
 
 const Player = ({
   player,
@@ -40,12 +50,11 @@ const Player = ({
       >
         <FramerMotionBox
           position="absolute"
-          top='-40px'
+          top="-40px"
           display={player.on_turn ? "block" : "none"}
           zIndex={10}
-
           key="diamondTurn"
-          animate={{ y: [10,0,10] }}
+          animate={{ y: [10, 0, 10] }}
           initial={{ y: 0 }}
           transition={{
             duration: 2,
@@ -55,7 +64,6 @@ const Player = ({
           }}
         >
           <Image
-            
             w="auto"
             h="30px"
             data-testid={`PLAYER_DIAMOND_IMG_`}
@@ -63,18 +71,45 @@ const Player = ({
             alt="PLAYER_DIAMOND"
           />
         </FramerMotionBox>
-        <Avatar
-          borderWidth="4px"
-          borderColor={selected ? "green.500" : "transparent"}
-          name={player.name}
+        <Tooltip label={player.name + (player.quarantine>0? ", Cuarentena: " + player.quarantine: "")} placement="right">
+          <Box>
+            <PlayerAvatar isSelected={selected} player={player} />
+            <Text
+              userSelect="none"
+              color={selected ? "red" : "white"}
+              textAlign="center"
+              maxW="12ch"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              wordBreak="keep-all"
+            >
+              {player.name}
+            </Text>
+          </Box>
+        </Tooltip>
+        <Image
+          position="absolute"
+          zIndex={10}
+          w="70px"
+          h="auto"
+          top="-3px"
+          src={MASK_ICON}
+          alt="MASK_ICON"
+          display={player.quarantine > 0 ? "block" : "none"}
         />
-        <Text
-          userSelect="none"
-          color={selected ? "green.500" : "white"}
-          textAlign="center"
-        >
-          {player.name}
-        </Text>
+
+        <Image
+          position="absolute"
+          zIndex={100}
+          w="35px"
+          h="auto"
+          left="calc(50% + 10px)"
+          top="0px"
+          src={DANGER_ICON}
+          alt="DANGER_ICON"
+          display={player.quarantine > 0 ? "block" : "none"}
+        />
       </Flex>
     </>
   );

@@ -10,8 +10,10 @@ import {
   GameStatus,
   PlayerRole,
   PlayerStatus,
+  PlayerTurnState,
   initialState,
   setGameState,
+  setSelectedCard,
 } from "@/store/gameSlice";
 import mockRouter from "next-router-mock";
 import { act } from "react-dom/test-utils";
@@ -27,6 +29,7 @@ import {
   DiscardCardPayload,
   MessageType,
   PlayCardPayload,
+  PlayDefenseCardPayload,
   SelectExchangeCardPayload,
 } from "@/src/business/game/gameAPI/manager";
 import { Socket } from "socket.io-client";
@@ -38,6 +41,7 @@ import {
 } from "@/src/business/game/gameAPI/listener";
 import { gameSocket } from "@/src/business/game/gameAPI";
 import ActionBox from "@/components/layouts/game/ActionBox";
+import { useDispatch } from "react-redux";
 
 // Mock Next Router for all tests.
 jest.mock("next/router", () => jest.requireActual("next-router-mock"));
@@ -59,22 +63,23 @@ const notTurnExchangeState: PreloadedState<RootState> = {
         id: 1,
         name: "Pepito",
         position: 1,
-        in_quarantine: false,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: true
+        on_exchange: true,
       },
       {
         id: 2,
         name: "Juanito",
         position: 2,
-        in_quarantine: false,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: false
+        on_exchange: false,
       },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
@@ -82,7 +87,7 @@ const notTurnExchangeState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: true
+          targetAdjacentOnly: true,
         },
       ],
       cardSelected: 1,
@@ -112,22 +117,23 @@ const onTurnExchangeState: PreloadedState<RootState> = {
         id: 1,
         name: "Pepito",
         position: 1,
-        in_quarantine: false,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
         on_turn: true,
-        on_exchange: true
+        on_exchange: true,
       },
       {
         id: 2,
         name: "Juanito",
         position: 2,
-        in_quarantine: false,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: false
+        on_exchange: false,
       },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
@@ -135,7 +141,7 @@ const onTurnExchangeState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: true
+          targetAdjacentOnly: true,
         },
       ],
       cardSelected: 1,
@@ -165,22 +171,23 @@ const onTurnState: PreloadedState<RootState> = {
         id: 1,
         name: "Pepito",
         position: 1,
-        in_quarantine: false,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
         on_turn: true,
-        on_exchange: false
+        on_exchange: false,
       },
       {
         id: 2,
         name: "Juanito",
         position: 2,
-        in_quarantine: false,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
         on_turn: false,
-        on_exchange: false
+        on_exchange: false,
       },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
@@ -188,7 +195,7 @@ const onTurnState: PreloadedState<RootState> = {
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
           needTarget: true,
-          targetAdjacentOnly: true
+          targetAdjacentOnly: true,
         },
       ],
       cardSelected: 1,
@@ -212,35 +219,110 @@ const InGameAppState: PreloadedState<RootState> = {
       minPlayers: 4,
       maxPlayers: 12,
     },
-    status: GameStatus.WAITING,
+    status: GameStatus.PLAYING,
     players: [
       {
-        id: 1,
-        name: "Pepito",
-        position: 1,
-        in_quarantine: false,
+        name: "Yo",
+        id: 123,
+        position: 0,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
       },
       {
-        id: 2,
-        name: "Juanito",
-        position: 2,
-        in_quarantine: false,
+        name: "otro1",
+        id: 124,
+        position: 1,
+        quarantine: 0,
         status: PlayerStatus.ALIVE,
+        on_turn: true,
+        on_exchange: false,
+      },
+      {
+        name: "otro2",
+        id: 125,
+        position: 2,
+        quarantine: 0,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
+      },
+      {
+        name: "otro3",
+        id: 126,
+        position: 3,
+        quarantine: 0,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
+      },
+      {
+        name: "otro4",
+        id: 127,
+        position: 4,
+        quarantine: 0,
+        status: PlayerStatus.ALIVE,
+        on_turn: false,
+        on_exchange: false,
+      },
+      {
+        name: "otro5",
+        id: 128,
+        position: 5,
+        quarantine: 0,
+        status: PlayerStatus.DEATH,
+        on_turn: false,
+        on_exchange: false,
       },
     ],
     playerData: {
+      state: PlayerTurnState.DEFENDING,
       cards: [
         {
           id: 1,
           name: "Lanzallamas",
           type: CardTypes.AWAY,
           subType: CardSubTypes.ACTION,
+          needTarget: true,
+          targetAdjacentOnly: true,
+        },
+        {
+          id: 2,
+          name: "Infectado",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 3,
+          name: "¡Nada de barbacoas!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: true,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 4,
+          name: "¡No, gracias!",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.DEFENSE,
+          needTarget: false,
+          targetAdjacentOnly: false,
+        },
+        {
+          id: 5,
+          name: "La cosa",
+          type: CardTypes.AWAY,
+          subType: CardSubTypes.ACTION,
+          needTarget: false,
+          targetAdjacentOnly: false,
         },
       ],
       cardSelected: 1,
       playerID: 1,
-      playerSelected: 2,
+      playerSelected: undefined,
       role: PlayerRole.INFECTED,
     },
   },
@@ -325,7 +407,7 @@ describe("Page Lobby", () => {
     const defenseBTN = screen.getByTestId("ACTION_BOX_DEFENSE_BTN");
     expect(defenseBTN).toHaveTextContent("Defenderse");
   });
-  
+
   it("renders exchange button when offering an exchange", () => {
     renderWithProviders(<ActionBox />, {
       preloadedState: onTurnExchangeState,
@@ -370,7 +452,7 @@ describe("Page Lobby", () => {
     serverSocket.once(MessageType.GAME_DISCARD_CARD, (data) => {
       expect(data);
       const discardCardPayload: DiscardCardPayload = {
-        card: 1
+        card: 1,
       };
       expect(data).toStrictEqual(discardCardPayload);
       done();
@@ -381,7 +463,6 @@ describe("Page Lobby", () => {
       discardbtn.click();
     });
   });
-
 
   it("click on swap", (done) => {
     act(() => {
@@ -395,7 +476,7 @@ describe("Page Lobby", () => {
       expect(data);
       const selectExchangeCardPayload: SelectExchangeCardPayload = {
         on_defense: false,
-        card: 1
+        card: 1,
       };
       expect(data).toStrictEqual(selectExchangeCardPayload);
       done();
@@ -406,4 +487,83 @@ describe("Page Lobby", () => {
       discardbtn.click();
     });
   });
+
+  // it("click on defense", (done) => {
+  //   act(() => {
+  //     renderWithProviders(<ActionBox />, {
+  //       preloadedState: notTurnExchangeState,
+  //     });
+  //   });
+
+  //   // Mockeamos el servidor para revisar que llegue el mensaje
+  //   serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
+  //     expect(data);
+  //     const playDefenseCardPayload: PlayDefenseCardPayload = {
+  //       card: 1,
+  //       on_defense: true,
+  //     };
+  //     expect(data).toStrictEqual(playDefenseCardPayload);
+  //     done();
+  //   });
+
+  //   const discardbtn = screen.getByTestId("ACTION_BOX_DEFENSE_BTN");
+  //   act(() => {
+  //     discardbtn.click();
+  //   });
+  // });
+
+  // it("click on no defense", (done) => {
+  //   act(() => {
+  //     renderWithProviders(<ActionBox />, {
+  //       preloadedState: notTurnExchangeState,
+  //     });
+  //   });
+
+  //   // Mockeamos el servidor para revisar que llegue el mensaje
+  //   serverSocket.once(MessageType.GAME_PLAY_DEFENSE_CARD, (data) => {
+  //     expect(data);
+  //     const playDefenseCardPayload: PlayDefenseCardPayload = {
+  //       card: undefined,
+  //       on_defense: false,
+  //     };
+  //     expect(data).toStrictEqual(playDefenseCardPayload);
+  //     done();
+  //   });
+
+  //   const discardbtn = screen.getByTestId("ACTION_BOX_NO_DEFENSE_BTN");
+  //   act(() => {
+  //     discardbtn.click();
+  //   });
+  // });
+
+  // it("check diferents test", () => {
+  //   renderWithProviders(<ActionBox />, {
+  //     store,
+  //   });
+
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(undefined));
+  //   });
+  //   screen.getByText("Seleccione una carta para jugar o descartar");
+
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(3));
+  //   });
+  //   screen.getByText("La carta seleccionada necesita un objetivo");
+
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(1));
+  //   });
+  //   screen.getByText("La carta seleccionada necesita un objetivo adyacente");
+
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(4));
+  //   });
+  //   screen.getByText("Las cartas de defensa solo se pueden descartar");
+
+  //   act(() => {
+  //     store.dispatch(setSelectedCard(2));
+  //   });
+  //   screen.getByText("Seleccione la acción a realizar");
+  // });
 });
