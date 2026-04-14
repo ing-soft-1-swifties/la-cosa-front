@@ -1,0 +1,882 @@
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/business/chat/[22m[1mindex.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      __tests__/business/chat/index.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/business/chat/index.test.tsx[39m[0m[2m:17:19)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2m__tests__/components/[22m[1mDefaultLayout.test.tsx[22m
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/components/[22m[1mPlayerCard.test.tsx[22m
+  [1m● [22mConsole
+
+    [2m[31mconsole.error[39m[22m
+[31m      Error: Uncaught [TypeError: Cannot read properties of undefined (reading 'name')][39m
+[31m          at reportException (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/helpers/runtime-script-errors.js:66:24)[39m
+[31m          at innerInvokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:353:9)[39m
+[31m          at invokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)[39m
+[31m          at HTMLUnknownElementImpl._dispatch (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)[39m
+[31m          at HTMLUnknownElementImpl.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:104:17)[39m
+[31m          at HTMLUnknownElement.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:241:34)[39m
+[31m          at Object.invokeGuardedCallbackDev (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4213:16)[39m
+[31m          at invokeGuardedCallback (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4277:31)[39m
+[31m          at beginWork$1 (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:27451:7)[39m
+[31m          at performUnitOfWork (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26560:12)[39m
+[31m          at workLoopSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26466:5)[39m
+[31m          at renderRootSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26434:7)[39m
+[31m          at performConcurrentWorkOnRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:25738:74)[39m
+[31m          at flushActQueue (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2667:24)[39m
+[31m          at act (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2582:11)[39m
+[31m          at /home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/act-compat.js:46:25[39m
+[31m          at renderRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:161:26)[39m
+[31m          at render (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:247:10)[39m
+[31m          at renderWithProviders (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/utils/test-utils.tsx:37:28)[39m
+[31m          at Object.<anonymous> (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/__tests__/components/PlayerCard.test.tsx:10:24)[39m
+[31m          at Promise.then.completed (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:298:28)[39m
+[31m          at new Promise (<anonymous>)[39m
+[31m          at callAsyncCircusFn (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:231:10)[39m
+[31m          at _callCircusTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:316:40)[39m
+[31m          at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+[31m          at _runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:252:3)[39m
+[31m          at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:126:9)[39m
+[31m          at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:121:9)[39m
+[31m          at run (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:71:3)[39m
+[31m          at runAndTransformResultsToJestFormat (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)[39m
+[31m          at jestAdapter (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)[39m
+[31m          at runTestInternal (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:367:16)[39m
+[31m          at runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:444:34)[39m
+[31m          at Object.worker (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/testWorker.js:108:12) {[39m
+[31m        detail: TypeError: Cannot read properties of undefined (reading 'name')[39m
+[31m            at name (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/components/PlayerCard.tsx:18:25)[39m
+[31m            at renderWithHooks (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:16305:18)[39m
+[31m            at mountIndeterminateComponent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:20074:13)[39m
+[31m            at beginWork (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:21587:16)[39m
+[31m            at HTMLUnknownElement.callCallback (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4164:14)[39m
+[31m            at HTMLUnknownElement.callTheUserObjectsOperation (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)[39m
+[31m            at innerInvokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)[39m
+[31m            at invokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)[39m
+[31m            at HTMLUnknownElementImpl._dispatch (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)[39m
+[31m            at HTMLUnknownElementImpl.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:104:17)[39m
+[31m            at HTMLUnknownElement.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:241:34)[39m
+[31m            at Object.invokeGuardedCallbackDev (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4213:16)[39m
+[31m            at invokeGuardedCallback (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4277:31)[39m
+[31m            at beginWork$1 (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:27451:7)[39m
+[31m            at performUnitOfWork (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26560:12)[39m
+[31m            at workLoopSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26466:5)[39m
+[31m            at renderRootSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26434:7)[39m
+[31m            at performConcurrentWorkOnRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:25738:74)[39m
+[31m            at flushActQueue (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2667:24)[39m
+[31m            at act (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2582:11)[39m
+[31m            at /home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/act-compat.js:46:25[39m
+[31m            at renderRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:161:26)[39m
+[31m            at render (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:247:10)[39m
+[31m            at renderWithProviders (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/utils/test-utils.tsx:37:28)[39m
+[31m            at Object.<anonymous> (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/__tests__/components/PlayerCard.test.tsx:10:24)[39m
+[31m            at Promise.then.completed (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:298:28)[39m
+[31m            at new Promise (<anonymous>)[39m
+[31m            at callAsyncCircusFn (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:231:10)[39m
+[31m            at _callCircusTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:316:40)[39m
+[31m            at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+[31m            at _runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:252:3)[39m
+[31m            at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:126:9)[39m
+[31m            at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:121:9)[39m
+[31m            at run (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:71:3)[39m
+[31m            at runAndTransformResultsToJestFormat (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)[39m
+[31m            at jestAdapter (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)[39m
+[31m            at runTestInternal (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:367:16)[39m
+[31m            at runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:444:34)[39m
+[31m            at Object.worker (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/testWorker.js:108:12),[39m
+[31m        type: 'unhandled exception'[39m
+[31m      }[39m
+[2m[22m
+[2m    [0m [90m 35 |[39m     )[33m;[39m[0m[22m
+[2m    [0m [90m 36 |[39m   }[0m[22m
+[2m    [0m[31m[1m>[22m[2m[39m[90m 37 |[39m   [36mreturn[39m { store[33m,[39m [33m...[39mrender(ui[33m,[39m { wrapper[33m:[39m [33mWrapper[39m[33m,[39m [33m...[39mrenderOptions }) }[33m;[39m[0m[22m
+[2m    [0m [90m    |[39m                            [31m[1m^[22m[2m[39m[0m[22m
+[2m    [0m [90m 38 |[39m }[0m[22m
+[2m    [0m [90m 39 |[39m[0m[22m
+[2m[22m
+[2m      [2mat VirtualConsole.<anonymous> ([22m[2mnode_modules/jest-environment-jsdom/build/index.js[2m:63:23)[22m[2m[22m
+[2m      [2mat reportException ([22m[2mnode_modules/jsdom/lib/jsdom/living/helpers/runtime-script-errors.js[2m:70:28)[22m[2m[22m
+[2m      [2mat innerInvokeEventListeners ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:353:9)[22m[2m[22m
+[2m      [2mat invokeEventListeners ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:286:3)[22m[2m[22m
+[2m      [2mat HTMLUnknownElementImpl._dispatch ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:233:9)[22m[2m[22m
+[2m      [2mat HTMLUnknownElementImpl.dispatchEvent ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:104:17)[22m[2m[22m
+[2m      [2mat HTMLUnknownElement.dispatchEvent ([22m[2mnode_modules/jsdom/lib/jsdom/living/generated/EventTarget.js[2m:241:34)[22m[2m[22m
+[2m      [2mat Object.invokeGuardedCallbackDev ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:4213:16)[22m[2m[22m
+[2m      [2mat invokeGuardedCallback ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:4277:31)[22m[2m[22m
+[2m      [2mat beginWork$1 ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:27451:7)[22m[2m[22m
+[2m      [2mat performUnitOfWork ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26560:12)[22m[2m[22m
+[2m      [2mat workLoopSync ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26466:5)[22m[2m[22m
+[2m      [2mat renderRootSync ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26434:7)[22m[2m[22m
+[2m      [2mat performConcurrentWorkOnRoot ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:25738:74)[22m[2m[22m
+[2m      [2mat flushActQueue ([22m[2mnode_modules/react/cjs/react.development.js[2m:2667:24)[22m[2m[22m
+[2m      [2mat act ([22m[2mnode_modules/react/cjs/react.development.js[2m:2582:11)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/@testing-library/react/dist/act-compat.js[2m:46:25[22m[2m[22m
+[2m      [2mat renderRoot ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:161:26)[22m[2m[22m
+[2m      [2mat render ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:247:10)[22m[2m[22m
+[2m      [2mat renderWithProviders ([22m[2msrc/utils/test-utils.tsx[2m:37:28)[22m[2m[22m
+[2m      [2mat Object.<anonymous> ([22m[2m[0m[36m__tests__/components/PlayerCard.test.tsx[39m[0m[2m:10:24)[22m[2m[22m
+
+    [2m[31mconsole.error[39m[22m
+[31m      Error: Uncaught [TypeError: Cannot read properties of undefined (reading 'name')][39m
+[31m          at reportException (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/helpers/runtime-script-errors.js:66:24)[39m
+[31m          at innerInvokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:353:9)[39m
+[31m          at invokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)[39m
+[31m          at HTMLUnknownElementImpl._dispatch (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)[39m
+[31m          at HTMLUnknownElementImpl.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:104:17)[39m
+[31m          at HTMLUnknownElement.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:241:34)[39m
+[31m          at Object.invokeGuardedCallbackDev (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4213:16)[39m
+[31m          at invokeGuardedCallback (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4277:31)[39m
+[31m          at beginWork$1 (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:27451:7)[39m
+[31m          at performUnitOfWork (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26560:12)[39m
+[31m          at workLoopSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26466:5)[39m
+[31m          at renderRootSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26434:7)[39m
+[31m          at recoverFromConcurrentError (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:25850:20)[39m
+[31m          at performConcurrentWorkOnRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:25750:22)[39m
+[31m          at flushActQueue (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2667:24)[39m
+[31m          at act (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2582:11)[39m
+[31m          at /home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/act-compat.js:46:25[39m
+[31m          at renderRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:161:26)[39m
+[31m          at render (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:247:10)[39m
+[31m          at renderWithProviders (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/utils/test-utils.tsx:37:28)[39m
+[31m          at Object.<anonymous> (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/__tests__/components/PlayerCard.test.tsx:10:24)[39m
+[31m          at Promise.then.completed (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:298:28)[39m
+[31m          at new Promise (<anonymous>)[39m
+[31m          at callAsyncCircusFn (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:231:10)[39m
+[31m          at _callCircusTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:316:40)[39m
+[31m          at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+[31m          at _runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:252:3)[39m
+[31m          at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:126:9)[39m
+[31m          at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:121:9)[39m
+[31m          at run (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:71:3)[39m
+[31m          at runAndTransformResultsToJestFormat (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)[39m
+[31m          at jestAdapter (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)[39m
+[31m          at runTestInternal (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:367:16)[39m
+[31m          at runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:444:34)[39m
+[31m          at Object.worker (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/testWorker.js:108:12) {[39m
+[31m        detail: TypeError: Cannot read properties of undefined (reading 'name')[39m
+[31m            at name (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/components/PlayerCard.tsx:18:25)[39m
+[31m            at renderWithHooks (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:16305:18)[39m
+[31m            at mountIndeterminateComponent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:20074:13)[39m
+[31m            at beginWork (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:21587:16)[39m
+[31m            at HTMLUnknownElement.callCallback (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4164:14)[39m
+[31m            at HTMLUnknownElement.callTheUserObjectsOperation (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)[39m
+[31m            at innerInvokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)[39m
+[31m            at invokeEventListeners (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)[39m
+[31m            at HTMLUnknownElementImpl._dispatch (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)[39m
+[31m            at HTMLUnknownElementImpl.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:104:17)[39m
+[31m            at HTMLUnknownElement.dispatchEvent (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:241:34)[39m
+[31m            at Object.invokeGuardedCallbackDev (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4213:16)[39m
+[31m            at invokeGuardedCallback (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:4277:31)[39m
+[31m            at beginWork$1 (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:27451:7)[39m
+[31m            at performUnitOfWork (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26560:12)[39m
+[31m            at workLoopSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26466:5)[39m
+[31m            at renderRootSync (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:26434:7)[39m
+[31m            at recoverFromConcurrentError (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:25850:20)[39m
+[31m            at performConcurrentWorkOnRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-dom/cjs/react-dom.development.js:25750:22)[39m
+[31m            at flushActQueue (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2667:24)[39m
+[31m            at act (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react/cjs/react.development.js:2582:11)[39m
+[31m            at /home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/act-compat.js:46:25[39m
+[31m            at renderRoot (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:161:26)[39m
+[31m            at render (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@testing-library/react/dist/pure.js:247:10)[39m
+[31m            at renderWithProviders (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/utils/test-utils.tsx:37:28)[39m
+[31m            at Object.<anonymous> (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/__tests__/components/PlayerCard.test.tsx:10:24)[39m
+[31m            at Promise.then.completed (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:298:28)[39m
+[31m            at new Promise (<anonymous>)[39m
+[31m            at callAsyncCircusFn (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/utils.js:231:10)[39m
+[31m            at _callCircusTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:316:40)[39m
+[31m            at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+[31m            at _runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:252:3)[39m
+[31m            at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:126:9)[39m
+[31m            at _runTestsForDescribeBlock (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:121:9)[39m
+[31m            at run (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/run.js:71:3)[39m
+[31m            at runAndTransformResultsToJestFormat (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)[39m
+[31m            at jestAdapter (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)[39m
+[31m            at runTestInternal (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:367:16)[39m
+[31m            at runTest (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/runTest.js:444:34)[39m
+[31m            at Object.worker (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/jest-runner/build/testWorker.js:108:12),[39m
+[31m        type: 'unhandled exception'[39m
+[31m      }[39m
+[2m[22m
+[2m    [0m [90m 35 |[39m     )[33m;[39m[0m[22m
+[2m    [0m [90m 36 |[39m   }[0m[22m
+[2m    [0m[31m[1m>[22m[2m[39m[90m 37 |[39m   [36mreturn[39m { store[33m,[39m [33m...[39mrender(ui[33m,[39m { wrapper[33m:[39m [33mWrapper[39m[33m,[39m [33m...[39mrenderOptions }) }[33m;[39m[0m[22m
+[2m    [0m [90m    |[39m                            [31m[1m^[22m[2m[39m[0m[22m
+[2m    [0m [90m 38 |[39m }[0m[22m
+[2m    [0m [90m 39 |[39m[0m[22m
+[2m[22m
+[2m      [2mat VirtualConsole.<anonymous> ([22m[2mnode_modules/jest-environment-jsdom/build/index.js[2m:63:23)[22m[2m[22m
+[2m      [2mat reportException ([22m[2mnode_modules/jsdom/lib/jsdom/living/helpers/runtime-script-errors.js[2m:70:28)[22m[2m[22m
+[2m      [2mat innerInvokeEventListeners ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:353:9)[22m[2m[22m
+[2m      [2mat invokeEventListeners ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:286:3)[22m[2m[22m
+[2m      [2mat HTMLUnknownElementImpl._dispatch ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:233:9)[22m[2m[22m
+[2m      [2mat HTMLUnknownElementImpl.dispatchEvent ([22m[2mnode_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js[2m:104:17)[22m[2m[22m
+[2m      [2mat HTMLUnknownElement.dispatchEvent ([22m[2mnode_modules/jsdom/lib/jsdom/living/generated/EventTarget.js[2m:241:34)[22m[2m[22m
+[2m      [2mat Object.invokeGuardedCallbackDev ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:4213:16)[22m[2m[22m
+[2m      [2mat invokeGuardedCallback ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:4277:31)[22m[2m[22m
+[2m      [2mat beginWork$1 ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:27451:7)[22m[2m[22m
+[2m      [2mat performUnitOfWork ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26560:12)[22m[2m[22m
+[2m      [2mat workLoopSync ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26466:5)[22m[2m[22m
+[2m      [2mat renderRootSync ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26434:7)[22m[2m[22m
+[2m      [2mat recoverFromConcurrentError ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:25850:20)[22m[2m[22m
+[2m      [2mat performConcurrentWorkOnRoot ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:25750:22)[22m[2m[22m
+[2m      [2mat flushActQueue ([22m[2mnode_modules/react/cjs/react.development.js[2m:2667:24)[22m[2m[22m
+[2m      [2mat act ([22m[2mnode_modules/react/cjs/react.development.js[2m:2582:11)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/@testing-library/react/dist/act-compat.js[2m:46:25[22m[2m[22m
+[2m      [2mat renderRoot ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:161:26)[22m[2m[22m
+[2m      [2mat render ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:247:10)[22m[2m[22m
+[2m      [2mat renderWithProviders ([22m[2msrc/utils/test-utils.tsx[2m:37:28)[22m[2m[22m
+[2m      [2mat Object.<anonymous> ([22m[2m[0m[36m__tests__/components/PlayerCard.test.tsx[39m[0m[2m:10:24)[22m[2m[22m
+
+    [2m[31mconsole.error[39m[22m
+[31m      The above error occurred in the <PlayerCard> component:[39m
+[31m      [39m
+[31m          at player (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/components/PlayerCard.tsx:12:44)[39m
+[31m          at EnvironmentProvider (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@chakra-ui/react-env/src/env.tsx:38:11)[39m
+[31m          at ColorModeProvider (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@chakra-ui/color-mode/src/color-mode-provider.tsx:33:5)[39m
+[31m          at ThemeProvider (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:125:32)[39m
+[31m          at ThemeProvider (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@chakra-ui/system/src/providers.tsx:17:17)[39m
+[31m          at ChakraProvider (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@chakra-ui/provider/src/chakra-provider.tsx:77:5)[39m
+[31m          at ChakraProvider2 (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/@chakra-ui/react/src/chakra-provider.tsx:23:3)[39m
+[31m          at Provider (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/node_modules/react-redux/lib/components/Provider.js:19:3)[39m
+[31m          at children (/home/molina/FAMAF/3ro-Famaf/lab-ingenieria/la-cosa-front/next/src/utils/test-utils.tsx:30:22)[39m
+[31m      [39m
+[31m      Consider adding an error boundary to your tree to customize error handling behavior.[39m
+[31m      Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.[39m
+[2m[22m
+[2m    [0m [90m 35 |[39m     )[33m;[39m[0m[22m
+[2m    [0m [90m 36 |[39m   }[0m[22m
+[2m    [0m[31m[1m>[22m[2m[39m[90m 37 |[39m   [36mreturn[39m { store[33m,[39m [33m...[39mrender(ui[33m,[39m { wrapper[33m:[39m [33mWrapper[39m[33m,[39m [33m...[39mrenderOptions }) }[33m;[39m[0m[22m
+[2m    [0m [90m    |[39m                            [31m[1m^[22m[2m[39m[0m[22m
+[2m    [0m [90m 38 |[39m }[0m[22m
+[2m    [0m [90m 39 |[39m[0m[22m
+[2m[22m
+[2m      [2mat logCapturedError ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:18687:23)[22m[2m[22m
+[2m      [2mat update.callback ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:18720:5)[22m[2m[22m
+[2m      [2mat callCallback ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:13923:12)[22m[2m[22m
+[2m      [2mat commitUpdateQueue ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:13944:9)[22m[2m[22m
+[2m      [2mat commitLayoutEffectOnFiber ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:23391:13)[22m[2m[22m
+[2m      [2mat commitLayoutMountEffects_complete ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:24688:9)[22m[2m[22m
+[2m      [2mat commitLayoutEffects_begin ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:24674:7)[22m[2m[22m
+[2m      [2mat commitLayoutEffects ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:24612:3)[22m[2m[22m
+[2m      [2mat commitRootImpl ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26823:5)[22m[2m[22m
+[2m      [2mat commitRoot ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26682:5)[22m[2m[22m
+[2m      [2mat finishConcurrentRender ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:25892:9)[22m[2m[22m
+[2m      [2mat performConcurrentWorkOnRoot ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:25809:7)[22m[2m[22m
+[2m      [2mat flushActQueue ([22m[2mnode_modules/react/cjs/react.development.js[2m:2667:24)[22m[2m[22m
+[2m      [2mat act ([22m[2mnode_modules/react/cjs/react.development.js[2m:2582:11)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/@testing-library/react/dist/act-compat.js[2m:46:25[22m[2m[22m
+[2m      [2mat renderRoot ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:161:26)[22m[2m[22m
+[2m      [2mat render ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:247:10)[22m[2m[22m
+[2m      [2mat renderWithProviders ([22m[2msrc/utils/test-utils.tsx[2m:37:28)[22m[2m[22m
+[2m      [2mat Object.<anonymous> ([22m[2m[0m[36m__tests__/components/PlayerCard.test.tsx[39m[0m[2m:10:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mComponent Player Card › has name[39m[22m
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+[2m[22m
+[2m    [0m [90m 16 |[39m         [33m<[39m[33mFlex[39m align[33m=[39m[32m"center"[39m columnGap[33m=[39m{[35m6[39m}[33m>[39m[0m[22m
+[2m    [0m [90m 17 |[39m           [33m<[39m[33mPlayerAvatar[39m player[33m=[39m{player} isSelected[33m=[39m{[36mfalse[39m} [33m/[39m[33m>[39m[0m[22m
+[2m    [0m[31m[1m>[22m[2m[39m[90m 18 |[39m           [33m<[39m[33mText[39m[33m>[39m{player[33m.[39mname}[33m<[39m[33m/[39m[33mText[39m[33m>[39m[0m[22m
+[2m    [0m [90m    |[39m                         [31m[1m^[22m[2m[39m[0m[22m
+[2m    [0m [90m 19 |[39m         [33m<[39m[33m/[39m[33mFlex[39m[33m>[39m[0m[22m
+[2m    [0m [90m 20 |[39m       [33m<[39m[33m/[39m[33mCardBody[39m[33m>[39m[0m[22m
+[2m    [0m [90m 21 |[39m     [33m<[39m[33m/[39m[33mCard[39m[33m>[39m[0m[22m
+[2m[22m
+[2m      [2mat name ([22m[2msrc/components/PlayerCard.tsx[2m:18:25)[22m[2m[22m
+[2m      [2mat renderWithHooks ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:16305:18)[22m[2m[22m
+[2m      [2mat mountIndeterminateComponent ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:20074:13)[22m[2m[22m
+[2m      [2mat beginWork ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:21587:16)[22m[2m[22m
+[2m      [2mat beginWork$1 ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:27426:14)[22m[2m[22m
+[2m      [2mat performUnitOfWork ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26560:12)[22m[2m[22m
+[2m      [2mat workLoopSync ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26466:5)[22m[2m[22m
+[2m      [2mat renderRootSync ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:26434:7)[22m[2m[22m
+[2m      [2mat recoverFromConcurrentError ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:25850:20)[22m[2m[22m
+[2m      [2mat performConcurrentWorkOnRoot ([22m[2mnode_modules/react-dom/cjs/react-dom.development.js[2m:25750:22)[22m[2m[22m
+[2m      [2mat flushActQueue ([22m[2mnode_modules/react/cjs/react.development.js[2m:2667:24)[22m[2m[22m
+[2m      [2mat act ([22m[2mnode_modules/react/cjs/react.development.js[2m:2582:11)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/@testing-library/react/dist/act-compat.js[2m:46:25[22m[2m[22m
+[2m      [2mat renderRoot ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:161:26)[22m[2m[22m
+[2m      [2mat render ([22m[2mnode_modules/@testing-library/react/dist/pure.js[2m:247:10)[22m[2m[22m
+[2m      [2mat renderWithProviders ([22m[2msrc/utils/test-utils.tsx[2m:37:28)[22m[2m[22m
+[2m      [2mat Object.<anonymous> ([22m[2m[0m[36m__tests__/components/PlayerCard.test.tsx[39m[0m[2m:10:24)[22m[2m[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/components/layouts/game/[22m[1mChatBox.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      __tests__/components/layouts/game/ChatBox.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/components/layouts/game/ChatBox.test.tsx[39m[0m[2m:19:19)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/pages/[22m[1mlobby.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      __tests__/pages/lobby.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/pages/lobby.test.tsx[39m[0m[2m:26:19)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/pages/[22m[1mindex.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      src/business/game/gameAPI/index.tsx
+      src/business/game/gameAPI/manager.tsx
+      src/components/layouts/home/FormJoinLobby.tsx
+      src/pages/index.tsx
+      __tests__/pages/index.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/index.tsx[2m:900:28)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/manager.tsx[2m:2078:27)[22m
+      [2mat Object.<anonymous> ([22msrc/components/layouts/home/FormJoinLobby.tsx[2m:1694:26)[22m
+      [2mat Object.<anonymous> ([22msrc/pages/index.tsx[2m:423:66)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/pages/index.test.tsx[39m[0m[2m:9:55)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/components/layouts/game/[22m[1mActionBox.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      __tests__/components/layouts/game/ActionBox.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/components/layouts/game/ActionBox.test.tsx[39m[0m[2m:25:19)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/components/layouts/game/[22m[1mGameEnd.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      __tests__/components/layouts/game/GameEnd.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/components/layouts/game/GameEnd.test.tsx[39m[0m[2m:24:19)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/components/layouts/hand/[22m[1mHand.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      __tests__/components/layouts/hand/Hand.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/components/layouts/hand/Hand.test.tsx[39m[0m[2m:23:19)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2m__tests__/components/layouts/game/[22m[1mGameCard.test.tsx[22m
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/pages/[22m[1mgame.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      __tests__/pages/game.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/pages/game.test.tsx[39m[0m[2m:31:19)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/pages/[22m[1m_app.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      src/business/game/gameAPI/index.tsx
+      src/business/game/gameAPI/manager.tsx
+      src/components/layouts/home/FormJoinLobby.tsx
+      src/pages/index.tsx
+      __tests__/pages/_app.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/index.tsx[2m:900:28)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/manager.tsx[2m:2078:27)[22m
+      [2mat Object.<anonymous> ([22msrc/components/layouts/home/FormJoinLobby.tsx[2m:1694:26)[22m
+      [2mat Object.<anonymous> ([22msrc/pages/index.tsx[2m:423:66)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/pages/_app.test.tsx[39m[0m[2m:11:55)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/components/[22m[1mmodalCrearPartida.test.tsx[22m
+  [1m● [22mTest suite failed to run
+
+    Cannot find module 'pages/_app' from 'src/business/game/notifications/index.tsx'
+
+    Require stack:
+      src/business/game/notifications/index.tsx
+      src/business/game/gameAPI/listener.tsx
+      src/business/game/gameAPI/index.tsx
+      src/business/game/gameAPI/manager.tsx
+      src/components/modalCrearPartida.tsx
+      __tests__/components/modalCrearPartida.test.tsx
+
+
+
+      [2mat Resolver._throwModNotFoundError ([22mnode_modules/jest-resolve/build/resolver.js[2m:427:11)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/notifications/index.tsx[2m:2831:27)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/listener.tsx[2m:1954:28)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/index.tsx[2m:900:28)[22m
+      [2mat Object.<anonymous> ([22msrc/business/game/gameAPI/manager.tsx[2m:2078:27)[22m
+      [2mat Object.<anonymous> ([22msrc/components/modalCrearPartida.tsx[2m:1604:27)[22m
+      [2mat Object.<anonymous> ([22m[0m[36m__tests__/components/modalCrearPartida.test.tsx[39m[0m[2m:13:67)[22m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m__tests__/components/layouts/home/[22m[1mGameList.test.tsx[22m ([0m[1m[41m5.538 s[49m[22m[0m)
+  [1m● [22mConsole
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+    [2m[33mconsole.warn[39m[22m
+[33m      [MSW] Warning: captured a request without a matching request handler:[39m
+[33m      [39m
+[33m        • GET http://192.168.0.108:8000/list[39m
+[33m      [39m
+[33m      If you still wish to intercept this unhandled request, please create a request handler for it.[39m
+[33m      Read more: https://mswjs.io/docs/getting-started/mocks[39m
+[2m[22m
+[2m      [2mat Object.warn ([22m[2mnode_modules/msw/src/utils/internal/devUtils.ts[2m:17:11)[22m[2m[22m
+[2m      [2mat applyStrategy ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:208:18)[22m[2m[22m
+[2m      [2mat onUnhandledRequest ([22m[2mnode_modules/msw/src/utils/request/onUnhandledRequest.ts[2m:233:3)[22m[2m[22m
+[2m      [2mat handleRequest ([22m[2mnode_modules/msw/src/utils/handleRequest.ts[2m:80:5)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/msw/src/node/SetupServerApi.ts[2m:69:24[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mComponent Game List › renders mocked games list[39m[22m
+
+    Unable to find an element with the text: #1. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<body[39m
+      [33mclass[39m=[32m"chakra-ui-light"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"css-1312qll"[39m
+          [33mdata-testid[39m=[32m"game-list"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"chakra-heading css-1nchwyw"[39m
+          [36m>[39m
+            [0mPartidas[0m
+          [36m</h2>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"css-58m9ys"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mhidden[39m=[32m""[39m
+          [33mid[39m=[32m"__chakra_env"[39m
+        [36m/>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"chakra-portal"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-top"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column; margin: 0px auto;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-top-left"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-top-right"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-bottom-left"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-bottom"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column; margin: 0px auto;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-bottom-right"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+[2m[22m
+[2m    [0m [90m 70 |[39m     })[33m;[39m[0m[22m
+[2m    [0m [90m 71 |[39m[0m[22m
+[2m    [0m[31m[1m>[22m[2m[39m[90m 72 |[39m     expect([36mawait[39m screen[33m.[39mfindByText([32m"#1"[39m))[33m.[39mtoBeInTheDocument()[33m;[39m[0m[22m
+[2m    [0m [90m    |[39m                         [31m[1m^[22m[2m[39m[0m[22m
+[2m    [0m [90m 73 |[39m     expect([36mawait[39m screen[33m.[39mfindByText([32m"La Partida de Pepe"[39m))[33m.[39mtoBeInTheDocument()[33m;[39m[0m[22m
+[2m    [0m [90m 74 |[39m     expect([36mawait[39m screen[33m.[39mfindByText([32m"5/12"[39m))[33m.[39mtoBeInTheDocument()[33m;[39m[0m[22m
+[2m    [0m [90m 75 |[39m   })[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat waitForWrapper ([22m[2mnode_modules/@testing-library/dom/dist/wait-for.js[2m:162:27)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/@testing-library/dom/dist/query-helpers.js[2m:86:33[22m[2m[22m
+[2m      [2mat Object.findByText ([22m[2m[0m[36m__tests__/components/layouts/home/GameList.test.tsx[39m[0m[2m:72:25)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mComponent Game List › renders request error[39m[22m
+
+    Unable to find an element with the text: Error cargando la Lista de Partidas Disponibles. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<body[39m
+      [33mclass[39m=[32m"chakra-ui-light"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"css-1312qll"[39m
+          [33mdata-testid[39m=[32m"game-list"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"chakra-heading css-1nchwyw"[39m
+          [36m>[39m
+            [0mPartidas[0m
+          [36m</h2>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"css-58m9ys"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mhidden[39m=[32m""[39m
+          [33mid[39m=[32m"__chakra_env"[39m
+        [36m/>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"chakra-portal"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-top"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column; margin: 0px auto;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-top-left"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-top-right"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-bottom-left"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-bottom"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column; margin: 0px auto;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Notifications"[39m
+          [33maria-live[39m=[32m"polite"[39m
+          [33mid[39m=[32m"chakra-toast-manager-bottom-right"[39m
+          [33mrole[39m=[32m"region"[39m
+          [33mstyle[39m=[32m"position: fixed; z-index: var(--toast-z-index, 5500); pointer-events: none; display: flex; flex-direction: column;"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+[2m[22m
+[2m    [0m [90m 85 |[39m     })[33m;[39m[0m[22m
+[2m    [0m [90m 86 |[39m     expect([0m[22m
+[2m    [0m[31m[1m>[22m[2m[39m[90m 87 |[39m       [36mawait[39m screen[33m.[39mfindByText([32m"Error cargando la Lista de Partidas Disponibles"[39m)[0m[22m
+[2m    [0m [90m    |[39m                    [31m[1m^[22m[2m[39m[0m[22m
+[2m    [0m [90m 88 |[39m     )[33m.[39mtoBeInTheDocument()[33m;[39m[0m[22m
+[2m    [0m [90m 89 |[39m   })[33m;[39m[0m[22m
+[2m    [0m [90m 90 |[39m })[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat waitForWrapper ([22m[2mnode_modules/@testing-library/dom/dist/wait-for.js[2m:162:27)[22m[2m[22m
+[2m      [2mat [22m[2mnode_modules/@testing-library/dom/dist/query-helpers.js[2m:86:33[22m[2m[22m
+[2m      [2mat Object.findByText ([22m[2m[0m[36m__tests__/components/layouts/home/GameList.test.tsx[39m[0m[2m:87:20)[22m[2m[22m
+
+[1m[2mRunning coverage on untested files...[22m[22m[1m[31mJest: "global" coverage threshold for lines (60%) not met: 16.7%[39m[22m
+[1mTest Suites: [22m[1m[31m12 failed[39m[22m, [1m[32m2 passed[39m[22m, 14 total
+[1mTests:       [22m[1m[31m3 failed[39m[22m, [1m[32m10 passed[39m[22m, 13 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        [1m[33m8.414 s[39m[22m
+[2mRan all test suites[22m[2m.[22m

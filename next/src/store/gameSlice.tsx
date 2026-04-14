@@ -162,16 +162,8 @@ export const initialState: GameState = {
   status: GameStatus.WAITING,
   player_in_turn: "",
   direction: true,
-  doors_positions: [1],
-  players: [{
-    id: 1,
-    name: "Test",
-    quarantine: 0,
-    status: PlayerStatus.ALIVE,
-    position: 1,
-    on_exchange: false,
-    on_turn: false,
-  },],
+  doors_positions: [],
+  players: [],
   playerData: {
     playerID: 1 ,
     cards: [
